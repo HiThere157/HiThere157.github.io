@@ -1,0 +1,28 @@
+body {    
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #444;
+}
+
+table {
+    background-color: #000000;
+    border-spacing: 0;
+}
+
+td {
+    border-radius: 2px;
+    width: 10px;
+    height: 10px;
+}
+
+span {
+    color: #222;
+}
+
+td.dead {
+    background-color: transparent;
+}
+
+td.live {
+    background-color: #525252;
+}
