@@ -44,7 +44,6 @@ function initialize() {
     createTable();
 
 	var tds = document.getElementsByTagName("td");
-	console.log(tds);
 	for(var i = 0; i < tds.length; i++){
 		tds[i].style.height = resolution.toString() + "px";
 		tds[i].style.width = resolution.toString() + "px";
