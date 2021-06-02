@@ -112,7 +112,7 @@ function setupControlButtons() {
 }
 
 function randomButtonHandler() {
-    if (playing) return;
+    if (playing){return;}
     for (var i = 0; i < rows; i++) {
         for (var j = 0; j < cols; j++) {
             var isLive = Math.round(Math.random());
@@ -130,14 +130,32 @@ function startButtonHandler() {
     if (playing) {
         console.log("Pause the game");
         playing = false;
-        this.innerHTML = "Continue";
         clearTimeout(timer);
     } else {
         console.log("Continue the game");
         playing = true;
-        this.innerHTML = "Pause";
         play();
     }
+}
+
+function clearButtonHandler() {
+    console.log("Clear the game: stop playing, clear the grid");
+    
+    playing = false;
+    clearTimeout(timer);
+    
+    var cellsList = document.getElementsByClassName("live");
+    // convert to array first, otherwise, you're working on a live node list
+    // and the update doesn't work!
+    var cells = [];
+    for (var i = 0; i < cellsList.length; i++) {
+        cells.push(cellsList[i]);
+    }
+    
+    for (var i = 0; i < cells.length; i++) {
+        cells[i].setAttribute("class", "dead");
+    }
+    resetGrids;
 }
 
 // run the life game
@@ -212,6 +230,17 @@ function countNeighbors(row, col) {
         if (grid[row+1][col+1] == 1) count++;
     }
     return count;
+}
+
+document.addEventListener('keydown', logKey);
+function logKey(e){
+    if(e.code == "Space"){
+        startButtonHandler()
+    }else if(e.code == "KeyC"){
+        clearButtonHandler()
+    }else if(e.code == "KeyR"){
+        randomButtonHandler()
+    }
 }
 
 // Start everything
