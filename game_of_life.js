@@ -6,6 +6,8 @@ var resolution = 15;
 var rows = parseInt(height/resolution);
 var cols = parseInt(width/resolution);
 
+document.getElementById("gridContainer").style.paddingTop = (parseInt((height % resolution) /2)).toString() + "px";
+
 var playing = false;
 
 var grid = new Array(rows);
