@@ -69,7 +69,8 @@ function createTable() {
             var cell = document.createElement("td");
             cell.setAttribute("id", i + "_" + j);
             cell.setAttribute("class", "dead");
-            cell.onclick = cellClickHandler;
+            //cell.onclick = cellClickHandler;
+            cell.onmouseover = cellClickHandler;
             tr.appendChild(cell);
         }
         table.appendChild(tr);
