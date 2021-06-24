@@ -1,8 +1,8 @@
 function click_icon(elem) {
-    window.location.href = list[elem.id];
+    window.location.href = list[elem.id][1];
 }
 
-var list = {"icon0-0": ["Game of Life", "https://hithere157.github.io/4gol/game_of_life.html"], "icon0-1": ["Maze Generator", "https://www.twitch.tv/"]}
+var list = {"icon0-0": ["Game of Life", "/4gol/game_of_life.html"], "icon0-1": ["Maze Generator", "/6maze/maze.html"]}
 
 function refresh_Icons() {
     var key = Object.keys(list);
