@@ -3,8 +3,8 @@ body {
     padding: 0 !important;
     background-color: #000000;
     font-family: Verdana, sans-serif;
-    font-size: large;
-    color: #cecaca;
+    font-size: medium;
+    color: #cacaca;
 }
 
 .overlay_main {
@@ -44,4 +44,20 @@ body {
 .main_icons:hover {
     background-color: #cacaca;
     color: #525252;
+}
+
+.main_p {
+    width: 100px;
+    position: absolute;
+    text-align: center;
+    transform: translateY(-50%);
+    top: 70px;
+}
+
+.main_i {
+    width: 100px;
+    position: absolute;
+    text-align: center;
+    top: 20px;
+    font-size: larger;
 }

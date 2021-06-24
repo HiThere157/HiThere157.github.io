@@ -8,6 +8,7 @@ function refresh_Icons() {
     var key = Object.keys(list);
     for(var i = 0; i < key.length; i++){
         document.getElementsByName(key[i])[0].innerText = list[key[i]][0];
+        document.getElementsByName(key[i] + "_i")[0].innerText = parseInt(key[i][4]*6) + parseInt(key[i][6]);
     }
 }
 
@@ -33,8 +34,13 @@ function setupIcons() {
 
             var iconP = document.createElement("p");
             iconP.setAttribute("name", iconId);
-            iconP.style.width = "100px";
+            iconP.className = "main_p";
             iconDiv.appendChild(iconP);
+
+            var iconI = document.createElement("p");
+            iconI.setAttribute("name", iconId.toString() + "_i");
+            iconI.className = "main_i";
+            iconDiv.appendChild(iconI);
 
             row.appendChild(iconDiv);
         }
