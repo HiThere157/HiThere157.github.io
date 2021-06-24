@@ -4,7 +4,7 @@ var tiles = [];
 var visitedN = 0;
 var resolution = 50;
 //vertival/horizontal = 1/4 => 4x horizontal
-var horizontalBias = 0.1;
+var horizontalBias = 1;
 var columns = parseInt(window.innerWidth/resolution);
 var rows = parseInt(parseInt(window.innerHeight/10)*10/resolution);
 
