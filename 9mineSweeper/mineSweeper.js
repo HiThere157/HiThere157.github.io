@@ -33,7 +33,7 @@ class Popup{
         this.w = w;
         this.h = h;
 
-        this.open = true;
+        this.open = false;
     }
 
     show(){
@@ -116,6 +116,24 @@ tiles.forEach(row => {
     });
 });
 
+function click(b){
+    var mX = mouseX;
+    var mY = mouseY;
+    let tile = tiles[parseInt(mX/resolution)][parseInt(mY/resolution)];
+
+    if(b == "LEFT"){
+        tile.showMe();
+    }else if(b == "RIGHT"){
+        tile.flag = !tile.flag;
+    }
+
+    if(checkGame() == 0){
+        alert("You Won. Refresh to Play again");
+        playing = false;
+    }
+    mUp = true;
+}
+
 function setup() {
     let canvas = createCanvas(columns*resolution, rows*resolution);
     background("#000");
@@ -162,24 +180,17 @@ function draw() {
         });
     });
 
-
-    if (mouseIsPressed && playing == true && mUp == false) {
+    if (mouseIsPressed && playing == true && mUp == false){
         var mX = mouseX;
         var mY = mouseY;
         let tile = tiles[parseInt(mX/resolution)][parseInt(mY/resolution)];
 
         if (mouseButton === LEFT && tile.flag == false) {
-            tile.showMe();
+            click("LEFT");
         }
         if (mouseButton === RIGHT && tile.show == false) {
-            tile.flag = !tile.flag;
+            click("RIGHT");
         }
-
-        if(checkGame() == 0){
-            alert("You Won. Refresh to Play again");
-            playing = false;
-        }
-        mUp = true;
     }
 
     if(popup.open == true){
@@ -196,10 +207,10 @@ function touchStarted(){
 
         }else if(popup.open == true){
             if(mouseX >= popup.x+5 && mouseX <= popup.x+5+resolution-10 && mouseY >= popup.y+5 && mouseY <= popup.y+5+resolution-10){
-                alert("confirm");
+                click("LEFT");
                 popup.open = false;
             }else if(mouseX >= popup.x+5 && mouseX <= popup.x+5+resolution-10 && mouseY >= popup.y+5+resolution && mouseY <= popup.y+5+resolution+40){
-                alert("flag");
+                click("RIGHT");
                 popup.open = false;
             }
         }
