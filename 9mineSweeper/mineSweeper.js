@@ -180,8 +180,6 @@ function draw() {
     }
 
     if(popup.open == true){
-        popup.x = mouseX;
-        popup.y = mouseY;
         popup.show();
     }
 }
@@ -190,6 +188,9 @@ function touchStarted(){
     if( /Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
         if(popup.open == false){
             popup.open = true;
+            popup.x = mouseX;
+            popup.y = mouseY;
+            
         }else if(popup.open == true){
             if(mouseX >= popup.x+5 && mouseX <= popup.x+5+40 && mouseY >= popup.y+5 && mouseY <= popup.y+5+40){
                 alert("confirm");
