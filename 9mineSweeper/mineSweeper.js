@@ -197,7 +197,7 @@ function draw() {
 
 function touchStarted(){
     if(/Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-        if(popup.open == false){
+        if(popup.open == false && playing == true){
             popup.open = true;
             popup.x = mouseX;
             popup.y = mouseY;
@@ -210,12 +210,6 @@ function touchStarted(){
             }
             popup.open = false;
         }
-    }
-}
-
-function touchMoved(){
-    if(/Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-        popup.open = false;
     }
 }
 
