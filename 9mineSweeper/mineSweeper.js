@@ -213,6 +213,11 @@ function touchStarted(){
     }
 }
 
+function touchMoved(){
+    if(/Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+        popup.open = false;
+    }
+}
 
 function mouseReleased(){
     mUp = false;
