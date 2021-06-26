@@ -138,8 +138,8 @@ function draw() {
 
 
     if (mouseIsPressed && playing == true && mUp == false) {
-        var mX = mouseX-xOff;
-        var mY = mouseY-yOff;
+        var mX = mouseX;
+        var mY = mouseY;
         let tile = tiles[parseInt(mX/resolution)][parseInt(mY/resolution)];
 
         if (mouseButton === LEFT && tile.flag == false) {
