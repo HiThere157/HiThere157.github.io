@@ -1,6 +1,9 @@
 var tiles = [];
-var visitedN = 0;
 var resolution = 50;
+if(/Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+    resolution *= 2;
+}
+
 var xOff;
 var yOff;
 var playing = true;
@@ -30,21 +33,21 @@ class Popup{
         this.w = w;
         this.h = h;
 
-        this.open = false;
+        this.open = true;
     }
 
     show(){
         fill("#5252524d");
         rect(this.x, this.y, this.w, this.h)
         fill("FFF")
-        rect(this.x+5, this.y+5, 40, 40)
+        rect(this.x+5, this.y+5, resolution-10, resolution-10)
         fill("FF0")
-        rect(this.x+5, this.y+55, 40, 40)
+        rect(this.x+5, this.y+resolution+5, resolution-10, resolution-10)
     }
 
 }
 
-var popup = new Popup(0,0,50,100);
+var popup = new Popup(0,0,resolution,resolution*2);
 
 class Tile {
     constructor(x, y, p){
@@ -185,17 +188,17 @@ function draw() {
 }
 
 function touchStarted(){
-    if( /Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    if(/Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
         if(popup.open == false){
             popup.open = true;
             popup.x = mouseX;
             popup.y = mouseY;
-            
+
         }else if(popup.open == true){
-            if(mouseX >= popup.x+5 && mouseX <= popup.x+5+40 && mouseY >= popup.y+5 && mouseY <= popup.y+5+40){
+            if(mouseX >= popup.x+5 && mouseX <= popup.x+5+resolution-10 && mouseY >= popup.y+5 && mouseY <= popup.y+5+resolution-10){
                 alert("confirm");
                 popup.open = false;
-            }else if(mouseX >= popup.x+5 && mouseX <= popup.x+5+40 && mouseY >= popup.y+5+50 && mouseY <= popup.y+5+50+40){
+            }else if(mouseX >= popup.x+5 && mouseX <= popup.x+5+resolution-10 && mouseY >= popup.y+5+resolution && mouseY <= popup.y+5+resolution+40){
                 alert("flag");
                 popup.open = false;
             }
