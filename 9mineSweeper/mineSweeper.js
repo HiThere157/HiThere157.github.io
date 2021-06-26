@@ -205,14 +205,14 @@ function touchStarted(){
         }else if(popup.open == true){
             if(mouseX >= popup.x+5 && mouseX <= popup.x+5+resolution-10 && mouseY >= popup.y+5 && mouseY <= popup.y+5+resolution-10){
                 click("LEFT", popup.x, popup.y);
-                popup.open = false;
             }else if(mouseX >= popup.x+5 && mouseX <= popup.x+5+resolution-10 && mouseY >= popup.y+5+resolution && mouseY <= popup.y+5+resolution+40){
                 click("RIGHT", popup.x, popup.y);
-                popup.open = false;
             }
+            popup.open = false;
         }
     }
 }
+
 
 function mouseReleased(){
     mUp = false;
