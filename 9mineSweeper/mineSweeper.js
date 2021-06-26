@@ -203,9 +203,9 @@ function touchStarted(){
             popup.y = mouseY;
 
         }else if(popup.open == true){
-            if(mouseX >= popup.x+5 && mouseX <= popup.x+5+resolution-10 && mouseY >= popup.y+5 && mouseY <= popup.y+5+resolution-10){
+            if(mouseX >= popup.x && mouseX <= popup.x+resolution && mouseY >= popup.y && mouseY <= popup.y+resolution){
                 click("LEFT", popup.x, popup.y);
-            }else if(mouseX >= popup.x+5 && mouseX <= popup.x+5+resolution-10 && mouseY >= popup.y+5+resolution && mouseY <= popup.y+5+resolution+40){
+            }else if(mouseX >= popup.x && mouseX <= popup.x+resolution && mouseY >= popup.y+resolution && mouseY <= popup.y+resolution*2){
                 click("RIGHT", popup.x, popup.y);
             }
             popup.open = false;
