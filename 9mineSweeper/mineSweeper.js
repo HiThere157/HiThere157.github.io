@@ -116,9 +116,7 @@ tiles.forEach(row => {
     });
 });
 
-function click(b){
-    var mX = mouseX;
-    var mY = mouseY;
+function click(b, mX, mY){
     let tile = tiles[parseInt(mX/resolution)][parseInt(mY/resolution)];
 
     if(b == "LEFT" && tile.flag == false){
@@ -183,13 +181,12 @@ function draw() {
     if (mouseIsPressed && playing == true && mUp == false){
         var mX = mouseX;
         var mY = mouseY;
-        let tile = tiles[parseInt(mX/resolution)][parseInt(mY/resolution)];
 
         if (mouseButton === LEFT) {
-            click("LEFT");
+            click("LEFT", mX, mY);
         }
         if (mouseButton === RIGHT) {
-            click("RIGHT");
+            click("RIGHT", mX, mY);
         }
     }
 
@@ -207,10 +204,10 @@ function touchStarted(){
 
         }else if(popup.open == true){
             if(mouseX >= popup.x+5 && mouseX <= popup.x+5+resolution-10 && mouseY >= popup.y+5 && mouseY <= popup.y+5+resolution-10){
-                click("LEFT");
+                click("LEFT", popup.x, popup.y);
                 popup.open = false;
             }else if(mouseX >= popup.x+5 && mouseX <= popup.x+5+resolution-10 && mouseY >= popup.y+5+resolution && mouseY <= popup.y+5+resolution+40){
-                click("RIGHT");
+                click("RIGHT", popup.x, popup.y);
                 popup.open = false;
             }
         }
