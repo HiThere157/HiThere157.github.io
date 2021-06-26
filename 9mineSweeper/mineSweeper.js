@@ -34,8 +34,6 @@ class Popup{
     }
 
     show(){
-        this.x = mouseX;
-        this.y = mouseY;
         fill("#5252524d");
         rect(this.x, this.y, this.w, this.h)
         fill("FFF")
@@ -182,6 +180,8 @@ function draw() {
     }
 
     if(popup.open == true){
+        popup.x = mouseX;
+        popup.y = mouseY;
         popup.show();
     }
 }
