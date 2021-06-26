@@ -121,9 +121,9 @@ function click(b){
     var mY = mouseY;
     let tile = tiles[parseInt(mX/resolution)][parseInt(mY/resolution)];
 
-    if(b == "LEFT"){
+    if(b == "LEFT" && tile.flag == false){
         tile.showMe();
-    }else if(b == "RIGHT"){
+    }else if(b == "RIGHT" && tile.show == false){
         tile.flag = !tile.flag;
     }
 
@@ -185,10 +185,10 @@ function draw() {
         var mY = mouseY;
         let tile = tiles[parseInt(mX/resolution)][parseInt(mY/resolution)];
 
-        if (mouseButton === LEFT && tile.flag == false) {
+        if (mouseButton === LEFT) {
             click("LEFT");
         }
-        if (mouseButton === RIGHT && tile.show == false) {
+        if (mouseButton === RIGHT) {
             click("RIGHT");
         }
     }
