@@ -23,6 +23,31 @@ function checkGame(){
     return remaining;
 }
 
+class Popup{
+    constructor(x,y,w,h){
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+
+        this.open = false;
+    }
+
+    show(){
+        this.x = mouseX;
+        this.y = mouseY;
+        fill("#5252524d");
+        rect(this.x, this.y, this.w, this.h)
+        fill("FFF")
+        rect(this.x+5, this.y+5, 40, 40)
+        fill("FF0")
+        rect(this.x+5, this.y+55, 40, 40)
+    }
+
+}
+
+var popup = new Popup(0,0,50,100);
+
 class Tile {
     constructor(x, y, p){
         this.x = x;
@@ -155,9 +180,29 @@ function draw() {
         }
         mUp = true;
     }
+
+    if(popup.open == true){
+        popup.show();
+    }
 }
 
-function mouseReleased() {
+function touchStarted(){
+    if( /Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        if(popup.open == false){
+            popup.open = true;
+        }else if(popup.open == true){
+            if(mouseX >= popup.x+5 && mouseX <= popup.x+5+40 && mouseY >= popup.y+5 && mouseY <= popup.y+5+40){
+                alert("confirm");
+                popup.open = false;
+            }else if(mouseX >= popup.x+5 && mouseX <= popup.x+5+40 && mouseY >= popup.y+5+50 && mouseY <= popup.y+5+50+40){
+                alert("flag");
+                popup.open = false;
+            }
+        }
+    }
+}
+
+function mouseReleased(){
     mUp = false;
 }
 
