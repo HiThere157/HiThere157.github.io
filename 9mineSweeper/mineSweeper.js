@@ -4,8 +4,8 @@ if(/Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/
     resolution *= 2;
 }
 
-var xOff;
-var yOff;
+var xOff_popup = 0;
+var yOff_popup = 0;
 var playing = true;
 var mUp = false;
 //vertival/horizontal = 1/4 => 4x horizontal
@@ -38,7 +38,7 @@ class Popup{
 
     show(){
         fill("#5252524d");
-        rect(this.x, this.y, this.w, this.h)
+        rect(this.x, this.y+yOff_popup, this.w, this.h)
         fill("FFF")
         rect(this.x+5, this.y+5, resolution-10, resolution-10)
         fill("FF0")
@@ -202,10 +202,14 @@ function touchStarted(){
             popup.x = mouseX;
             popup.y = mouseY;
 
+            if(parseInt(popup.y/resolution) > rows-1){
+                yOff_popup = -resolution;
+            }
+
         }else if(popup.open == true){
-            if(mouseX >= popup.x && mouseX <= popup.x+resolution && mouseY >= popup.y && mouseY <= popup.y+resolution){
+            if(mouseX >= popup.x && mouseX <= popup.x+resolution && mouseY >= popup.y+yOff_popup && mouseY <= popup.y+resolution+yOff_popup){
                 click("LEFT", popup.x, popup.y);
-            }else if(mouseX >= popup.x && mouseX <= popup.x+resolution && mouseY >= popup.y+resolution && mouseY <= popup.y+resolution*2){
+            }else if(mouseX >= popup.x && mouseX <= popup.x+resolution && mouseY >= popup.y+resolution+yOff_popup && mouseY <= popup.y+resolution*2+yOff_popup){
                 click("RIGHT", popup.x, popup.y);
             }
             popup.open = false;
