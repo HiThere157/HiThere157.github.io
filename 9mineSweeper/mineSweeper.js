@@ -202,7 +202,7 @@ function touchStarted(){
             popup.x = mouseX;
             popup.y = mouseY;
 
-            if(parseInt(popup.y/resolution) > rows-1){
+            if(parseInt(popup.y/resolution) > rows-2){
                 yOff_popup = -resolution;
             }
 
