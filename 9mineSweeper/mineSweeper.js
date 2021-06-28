@@ -37,12 +37,23 @@ class Popup{
     }
 
     show(){
-        fill("#5252524d");
-        rect(this.x+xOff_popup, this.y+yOff_popup, this.w, this.h)
-        fill("FFF")
-        rect(this.x+5+xOff_popup, this.y+5+yOff_popup, resolution-10, resolution-10)
-        fill("FF0")
-        rect(this.x+5+xOff_popup, this.y+resolution+5+yOff_popup, resolution-10, resolution-10)
+        fill("#888888bb");
+        rect(this.x+xOff_popup, this.y+yOff_popup, this.w, this.h);
+        fill("#c7c7c7c7");
+        rect(this.x+5+xOff_popup, this.y+5+yOff_popup, resolution-10, resolution-10);
+        fill("#c7c7c7c7");
+        rect(this.x+5+xOff_popup, this.y+resolution+5+yOff_popup, resolution-10, resolution-10);
+        
+        strokeWeight(0);
+        fill("#18cf18")
+        rect(this.x+5+xOff_popup+10, this.y+5+yOff_popup+10, 20, 20)        
+
+        fill("#FF0000");
+        rect(this.x+5+xOff_popup+9, this.y+resolution+5+yOff_popup+30, 20, 5)
+        rect(this.x+5+xOff_popup+15, this.y+resolution+5+yOff_popup+7, 5, 24)
+        triangle(this.x+5+xOff_popup+17, this.y+resolution+5+yOff_popup+7, this.x+5+xOff_popup+17, this.y+resolution+5+yOff_popup+15, this.x+5+xOff_popup+35, this.y+resolution+5+yOff_popup+11)
+
+        strokeWeight(1)
     }
 
 }
@@ -196,7 +207,7 @@ function draw() {
 }
 
 function touchStarted(){
-    if(/Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || true){
+    if(/Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
         if(popup.open == false && playing == true){
             popup.open = true;
             popup.x = mouseX;
