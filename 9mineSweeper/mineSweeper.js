@@ -38,11 +38,11 @@ class Popup{
 
     show(){
         fill("#5252524d");
-        rect(this.x, this.y+yOff_popup, this.w, this.h)
+        rect(this.x+xOff_popup, this.y+yOff_popup, this.w, this.h)
         fill("FFF")
-        rect(this.x+5, this.y+5, resolution-10, resolution-10)
+        rect(this.x+5+xOff_popup, this.y+5+yOff_popup, resolution-10, resolution-10)
         fill("FF0")
-        rect(this.x+5, this.y+resolution+5, resolution-10, resolution-10)
+        rect(this.x+5+xOff_popup, this.y+resolution+5+yOff_popup, resolution-10, resolution-10)
     }
 
 }
@@ -196,20 +196,28 @@ function draw() {
 }
 
 function touchStarted(){
-    if(/Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+    if(/Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || true){
         if(popup.open == false && playing == true){
             popup.open = true;
             popup.x = mouseX;
             popup.y = mouseY;
 
-            if(parseInt(popup.y/resolution) > rows-2){
-                yOff_popup = -resolution;
+            if(parseInt(popup.y/resolution) > rows-3){
+                yOff_popup = -2*resolution;
+            }else{
+                yOff_popup = 0;
+            }
+
+            if(parseInt(popup.x/resolution) > columns-2){
+                xOff_popup = -resolution;
+            }else{
+                xOff_popup = 0;
             }
 
         }else if(popup.open == true){
-            if(mouseX >= popup.x && mouseX <= popup.x+resolution && mouseY >= popup.y+yOff_popup && mouseY <= popup.y+resolution+yOff_popup){
+            if(mouseX >= popup.x+xOff_popup && mouseX <= popup.x+resolution+xOff_popup && mouseY >= popup.y+yOff_popup && mouseY <= popup.y+resolution+yOff_popup){
                 click("LEFT", popup.x, popup.y);
-            }else if(mouseX >= popup.x && mouseX <= popup.x+resolution && mouseY >= popup.y+resolution+yOff_popup && mouseY <= popup.y+resolution*2+yOff_popup){
+            }else if(mouseX >= popup.x+xOff_popup && mouseX <= popup.x+resolution+xOff_popup && mouseY >= popup.y+resolution+yOff_popup && mouseY <= popup.y+resolution*2+yOff_popup){
                 click("RIGHT", popup.x, popup.y);
             }
             popup.open = false;
