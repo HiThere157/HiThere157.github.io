@@ -46,7 +46,7 @@ class Popup{
         
         strokeWeight(0);
         fill("#18cf18")
-        rect(this.x+5+xOff_popup+10, this.y+5+yOff_popup+10, 20, 20)        
+        rect(this.x+5+xOff_popup+1/5*resolution, this.y+5+yOff_popup+1/5*resolution, 1/2.5*resolution, 1/2.5*resolution)        
 
         fill("#FF0000");
         rect(this.x+5+xOff_popup+9, this.y+resolution+5+yOff_popup+30, 20, 5)
