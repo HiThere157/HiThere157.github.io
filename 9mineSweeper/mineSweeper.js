@@ -39,11 +39,12 @@ class Popup{
     show(){
         fill("#888888bb");
         rect(this.x+xOff_popup, this.y+yOff_popup, this.w, this.h);
-        fill("#c7c7c7c7");
+        fill("#green");
         rect(this.x+5+xOff_popup, this.y+5+yOff_popup, resolution-10, resolution-10);
-        fill("#c7c7c7c7");
+        fill("red");
         rect(this.x+5+xOff_popup, this.y+resolution+5+yOff_popup, resolution-10, resolution-10);
         
+        /*
         strokeWeight(0);
         fill("#18cf18")
         rect(this.x+5+xOff_popup+1/5*resolution, this.y+5+yOff_popup+1/5*resolution, 1/2.5*resolution, 1/2.5*resolution)        
@@ -53,7 +54,7 @@ class Popup{
         rect(this.x+5+xOff_popup+15, this.y+resolution+5+yOff_popup+7, 5, 24)
         triangle(this.x+5+xOff_popup+17, this.y+resolution+5+yOff_popup+7, this.x+5+xOff_popup+17, this.y+resolution+5+yOff_popup+15, this.x+5+xOff_popup+35, this.y+resolution+5+yOff_popup+11)
 
-        strokeWeight(1)
+        strokeWeight(1)*/
     }
 
 }
