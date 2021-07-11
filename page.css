@@ -48,7 +48,6 @@ body {
 
 .main_p {
     width: 100px;
-    position: absolute;
     text-align: center;
     transform: translateY(-50%);
     top: 70px;
@@ -56,8 +55,7 @@ body {
 
 .main_i {
     width: 100px;
-    position: absolute;
     text-align: center;
-    top: 20px;
     font-size: larger;
+    top: 20px;
 }
