@@ -509,6 +509,10 @@ function updateDropdown(append = false, remove = false) {
   setupDropdown("modAxis_dropdown", datasets.dataSetMods_names, append, remove);
 }
 
+function colorChange(element){
+  document.documentElement.style.setProperty("--header", element.value)
+}
+
 function importData() {
   let r = [];
   let rp = [];

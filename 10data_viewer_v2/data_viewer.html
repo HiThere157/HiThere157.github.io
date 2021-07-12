@@ -45,9 +45,10 @@
 
         <div name="top_item" class="main_top_item">
           <div class="top_item_header">
-            <button onclick="document.getElementById('graph_popup').style = 'display: block;';">Popup</button>
+            <input type="color" style="height: 17px;" value="#00FFFF" onchange="colorChange(this)">
             <select name="top_dropdown" id="top_dropdown0" onchange="dropdownChange(this)"></select>
             <button onclick="dropdownChange(document.getElementById('top_dropdown0'))">Reload</button>
+            <button onclick="document.getElementById('graph_popup').style = 'display: block;';">Popup</button>
           </div>
           <!--Graph Div-->
           <div class="top_item_main" name="top_item_main" id="top_item_main0">
