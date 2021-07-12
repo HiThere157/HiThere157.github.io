@@ -192,7 +192,7 @@ function drawChart(id = null, hide = false) {
   var options = {
     chartArea: {
       left: 40,
-      width: '100%'
+      width: '90%'
     },
     legend: {
       position: 'top'
@@ -314,7 +314,7 @@ class DataSet {
       this.name = name;
     }
 
-    if(user_input == true){
+    if(user_input != true){
       this.name += this.id.toString();
     }
     
@@ -519,8 +519,8 @@ function importData() {
     }
   }
 
-  datasets.add(new DataSet(r, false, "", "R"));
-  datasets.add(new DataSet(rp, false, "", "R+"));
+  datasets.add(new DataSet(r, true, "", "R"));
+  datasets.add(new DataSet(rp, true, "", "R+"));
 
   updateDropdown();
 }

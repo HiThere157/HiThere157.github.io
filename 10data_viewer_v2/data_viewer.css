@@ -85,8 +85,7 @@ textarea {
 }
 .top_item_header {
   background-color: var(--header);
-  height: 5%;
-  min-height: 25px;
+  padding: 3px;
 }
 .top_item_main {
   height: 95%;
@@ -102,14 +101,14 @@ textarea {
   overflow: scroll;
 }
 .graph_header {
-  height: 5%;
+  padding: 3px;
 }
 .graph_main {
   height: 95%;
   display: none;
 }
 .table_header {
-  height: 5%;
+  padding: 3px;
   overflow: hidden;
 }
 .table_main {
@@ -133,8 +132,7 @@ textarea {
 }
 .bottom_item_header {
   background-color: var(--header);
-  height: 7%;
-  padding-top: 1%;
+  padding: 3px;
   min-height: 20px;
 }
 .bottom_item_main {
