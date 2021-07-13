@@ -1,429 +1,436 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Data Viewer v2</title>
-    <link rel="stylesheet" href="data_viewer.css">
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.1"></script>
-  </head>
-  <body>
-    <div class="header">
-      <div class="header_item">
-        <div class="header_item_header">
-          <label>Import Data</label>
-        </div>
-        <div class="header_item_main">
-          <form id="importForm" style="padding: 2px;">
-            <input type="file" id="csvFile" accept=".csv" />
-            <input type="submit" value="Submit"/>
-          </form>
-          <textarea id="dataInput" rows="3" onchange="parseData(this)"></textarea>
-        </div>
+
+<head>
+  <title>Data Viewer v2</title>
+  <link rel="stylesheet" href="data_viewer.css">
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.1"></script>
+</head>
+
+<body>
+  <div class="header">
+    <div class="header_item">
+      <div class="header_item_header">
+        <label>Import Data</label>
       </div>
-      <div class="header_item" style="border-left: solid 1px;">
-        <div class="header_item_header">
-          <label>Export Data</label>
-        </div>
-        <div class="header_item_main">
-          <button>Export Data</button>
-        </div>
+      <div class="header_item_main">
+        <form id="importForm">
+          <input type="file" id="csvFile" accept=".csv" />
+          <input type="submit" value="Submit" />
+        </form>
+        <textarea id="dataInput" rows="3" onchange="parseData(this)"></textarea>
       </div>
     </div>
-    <div class="popup" id="table_popup">
-      <div class="popup_header">
-        <label style="font-size: x-large;">Import Data</label>
-        <div class="close_button" onclick="close_popup(this)"></div>
+    <div class="header_item" style="outline: solid 1px;">
+      <div class="header_item_header">
+        <label>Export Data</label>
       </div>
-      <div class="popup_main">
-        <div class="table_popup_table" id="table_popup_table"></div>
-        <div class="table_popup_side" id="table_popup_side"></div>
+      <div class="header_item_main">
+        <div class="export_item">
+          <button>Download csv File</button>
+          <textarea id="dataExport" rows="3" onchange="parseData(this)"></textarea>
+        </div>
+        <div id="dataExportTable" class="export_item" style="overflow-y: scroll; padding-left: 1%"></div>
       </div>
     </div>
+  </div>
+  <div class="popup" id="table_popup">
+    <div class="popup_header">
+      <label style="font-size: x-large;">Import Data</label>
+      <div class="close_button" onclick="close_popup(this)"></div>
+    </div>
+    <div class="popup_main">
+      <div class="table_popup_table" id="table_popup_table"></div>
+      <div class="table_popup_side" id="table_popup_side"></div>
+    </div>
+  </div>
 
-    <div class="main">
-      <div class="main_top">
+  <div class="main">
+    <div class="main_top">
 
-        <div name="top_item" class="main_top_item">
-          <div class="top_item_header">
-            <input type="color" style="height: 17px;" value="#00FFFF" onchange="colorChange(this)">
-            <select name="top_dropdown" id="top_dropdown0" onchange="dropdownChange(this)"></select>
-            <button onclick="dropdownChange(document.getElementById('top_dropdown0'))">Reload</button>
-            <button onclick="document.getElementById('graph_popup').style = 'display: block;';">Popup</button>
-          </div>
-          <!--Graph Div-->
-          <div class="top_item_main" name="top_item_main" id="top_item_main0">
-            <div class="graph_header" name="graph_header" id="graph_header0"></div>
-            <div class="graph_main" name="graph_main" id="graph_main0"></div>
-            <div class="graph_main" id="0graph_main0"></div>
-            <div class="graph_main" id="1graph_main0"></div>
-          </div>
-          <!--Table Div-->
-          <div class="top_item_main_table" name="top_item_main_table" id="top_item_main_table0">
-            <div class="table_header" name="table_header" id="table_header0"></div>
-            <div class="table_main" name="table_main" id="table_main0"></div>
-          </div>
-          <!--Overview Div-->
-          <div class="top_item_main_overview" name="top_item_main_overview" id="top_item_main_overview0"></div>
+      <div name="top_item" class="main_top_item">
+        <div class="top_item_header">
+          <input type="color" style="height: 17px;" value="#00FFFF" onchange="colorChange(this)">
+          <select name="top_dropdown" id="top_dropdown0" onchange="dropdownChange(this)"></select>
+          <button onclick="dropdownChange(document.getElementById('top_dropdown0'))">Reload</button>
+          <button onclick="document.getElementById('graph_popup').style = 'display: block;';">Popup</button>
         </div>
-
-        <div name="top_item" class="main_top_item">
-          <div class="top_item_header">
-            <select name="top_dropdown" id="top_dropdown1" onchange="dropdownChange(this)"></select>
-            <button onclick="dropdownChange(document.getElementById('top_dropdown1'))">Reload</button>
-          </div>
-          <!--Graph Div-->
-          <div class="top_item_main" name="top_item_main" id="top_item_main1">
-            <div class="graph_header" name="graph_header" id="graph_header1"></div>
-            <div class="graph_main" name="graph_main" id="graph_main1"></div>
-            <div class="graph_main" id="0graph_main1"></div>
-            <div class="graph_main" id="1graph_main1"></div>
-          </div>
-          <!--Table Div-->
-          <div class="top_item_main_table" name="top_item_main_table" id="top_item_main_table1">
-            <div class="table_header" name="table_header" id="table_header1"></div>
-            <div class="table_main" name="table_main" id="table_main1"></div>
-          </div>
-          <!--Overview Div-->
-          <div class="top_item_main_overview" name="top_item_main_overview" id="top_item_main_overview1"></div>
+        <!--Graph Div-->
+        <div class="top_item_main" name="top_item_main" id="top_item_main0">
+          <div class="graph_header" name="graph_header" id="graph_header0"></div>
+          <div class="graph_main" name="graph_main" id="graph_main0"></div>
+          <div class="graph_main" id="0graph_main0"></div>
+          <div class="graph_main" id="1graph_main0"></div>
         </div>
-
-        <div name="top_item" class="main_top_item">
-          <div class="top_item_header">
-            <select name="top_dropdown" id="top_dropdown2" onchange="dropdownChange(this)"></select>
-            <button onclick="dropdownChange(document.getElementById('top_dropdown2'))">Reload</button>
-          </div>
-          <!--Graph Div-->
-          <div class="top_item_main" name="top_item_main" id="top_item_main2">
-            <div class="graph_header" name="graph_header" id="graph_header2"></div>
-            <div class="graph_main" name="graph_main" id="graph_main2"></div>
-            <div class="graph_main" id="0graph_main2"></div>
-            <div class="graph_main" id="1graph_main2"></div>
-          </div>
-          <!--Table Div-->
-          <div class="top_item_main_table" name="top_item_main_table" id="top_item_main_table2">
-            <div class="table_header" name="table_header" id="table_header2"></div>
-            <div class="table_main" name="table_main" id="table_main2"></div>
-          </div>
-          <!--Overview Div-->
-          <div class="top_item_main_overview" name="top_item_main_overview" id="top_item_main_overview2"></div>
+        <!--Table Div-->
+        <div class="top_item_main_table" name="top_item_main_table" id="top_item_main_table0">
+          <div class="table_header" name="table_header" id="table_header0"></div>
+          <div class="table_main" name="table_main" id="table_main0"></div>
         </div>
-
+        <!--Overview Div-->
+        <div class="top_item_main_overview" name="top_item_main_overview" id="top_item_main_overview0"></div>
       </div>
-      <div class="main_bottom">
 
-        <div name="bottom_item" class="main_bottom_item">
-          <div class="bottom_item_header" name="bottom_item_header" id="bottom_item_header0"></div>
-          <div class="bottom_item_main" name="bottom_item_main" id="bottom_item_main0"></div>
+      <div name="top_item" class="main_top_item">
+        <div class="top_item_header">
+          <select name="top_dropdown" id="top_dropdown1" onchange="dropdownChange(this)"></select>
+          <button onclick="dropdownChange(document.getElementById('top_dropdown1'))">Reload</button>
         </div>
-
-        <div name="bottom_item" class="main_bottom_item">
-          <div class="bottom_item_header" name="bottom_item_header" id="bottom_item_header1"></div>
-          <div class="bottom_item_main" name="bottom_item_main" id="bottom_item_main1"></div>
+        <!--Graph Div-->
+        <div class="top_item_main" name="top_item_main" id="top_item_main1">
+          <div class="graph_header" name="graph_header" id="graph_header1"></div>
+          <div class="graph_main" name="graph_main" id="graph_main1"></div>
+          <div class="graph_main" id="0graph_main1"></div>
+          <div class="graph_main" id="1graph_main1"></div>
         </div>
-
-        <div name="bottom_item" class="main_bottom_item">
-          <div class="bottom_item_header" name="bottom_item_header" id="bottom_item_header2"></div>
-          <div class="bottom_item_main" name="bottom_item_main" id="bottom_item_main2"></div>
+        <!--Table Div-->
+        <div class="top_item_main_table" name="top_item_main_table" id="top_item_main_table1">
+          <div class="table_header" name="table_header" id="table_header1"></div>
+          <div class="table_main" name="table_main" id="table_main1"></div>
         </div>
+        <!--Overview Div-->
+        <div class="top_item_main_overview" name="top_item_main_overview" id="top_item_main_overview1"></div>
+      </div>
 
-        <div name="bottom_item" class="main_bottom_item">
-          <div class="bottom_item_header" name="bottom_item_header" id="bottom_item_header3"></div>
-          <div class="bottom_item_main" name="bottom_item_main" id="bottom_item_main3"></div>
+      <div name="top_item" class="main_top_item">
+        <div class="top_item_header">
+          <select name="top_dropdown" id="top_dropdown2" onchange="dropdownChange(this)"></select>
+          <button onclick="dropdownChange(document.getElementById('top_dropdown2'))">Reload</button>
         </div>
+        <!--Graph Div-->
+        <div class="top_item_main" name="top_item_main" id="top_item_main2">
+          <div class="graph_header" name="graph_header" id="graph_header2"></div>
+          <div class="graph_main" name="graph_main" id="graph_main2"></div>
+          <div class="graph_main" id="0graph_main2"></div>
+          <div class="graph_main" id="1graph_main2"></div>
+        </div>
+        <!--Table Div-->
+        <div class="top_item_main_table" name="top_item_main_table" id="top_item_main_table2">
+          <div class="table_header" name="table_header" id="table_header2"></div>
+          <div class="table_main" name="table_main" id="table_main2"></div>
+        </div>
+        <!--Overview Div-->
+        <div class="top_item_main_overview" name="top_item_main_overview" id="top_item_main_overview2"></div>
+      </div>
 
+    </div>
+    <div class="main_bottom">
+
+      <div name="bottom_item" class="main_bottom_item">
+        <div class="bottom_item_header" name="bottom_item_header" id="bottom_item_header0"></div>
+        <div class="bottom_item_main" name="bottom_item_main" id="bottom_item_main0"></div>
+      </div>
+
+      <div name="bottom_item" class="main_bottom_item">
+        <div class="bottom_item_header" name="bottom_item_header" id="bottom_item_header1"></div>
+        <div class="bottom_item_main" name="bottom_item_main" id="bottom_item_main1"></div>
+      </div>
+
+      <div name="bottom_item" class="main_bottom_item">
+        <div class="bottom_item_header" name="bottom_item_header" id="bottom_item_header2"></div>
+        <div class="bottom_item_main" name="bottom_item_main" id="bottom_item_main2"></div>
+      </div>
+
+      <div name="bottom_item" class="main_bottom_item">
+        <div class="bottom_item_header" name="bottom_item_header" id="bottom_item_header3"></div>
+        <div class="bottom_item_main" name="bottom_item_main" id="bottom_item_main3"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="popup" id="graph_popup">
+    <div class="popup_header">
+      <label style="font-size: x-large;">Popup</label>
+      <div class="close_button" onclick="close_popup(this)"></div>
+    </div>
+    <div class="popup_main" style="text-align: center;">
+
+      <div name="top_item" class="main_top_item" style="width: 100%;">
+        <div class="top_item_header">
+          <select name="top_dropdown" id="top_dropdown3" onchange="dropdownChange(this)"></select>
+          <button onclick="dropdownChange(document.getElementById('top_dropdown3'))">Reload</button>
+        </div>
+        <!--Graph Div-->
+        <div class="top_item_main" name="top_item_main" id="top_item_main3">
+          <div class="graph_header" name="graph_header" id="graph_header3"></div>
+          <div class="graph_main" name="graph_main" id="graph_main3"></div>
+          <div class="graph_main" id="0graph_main3"></div>
+          <div class="graph_main" id="1graph_main3"></div>
+        </div>
+        <!--Table Div-->
+        <div class="top_item_main_table" name="top_item_main_table" id="top_item_main_table3">
+          <div class="table_header" name="table_header" id="table_header3"></div>
+          <div class="table_main" name="table_main" id="table_main3"></div>
+        </div>
+        <!--Overview Div-->
+        <div class="top_item_main_overview" name="top_item_main_overview" id="top_item_main_overview3"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="module" name="module" id="min_max">
+    <div class="IO">
+      <label>Input</label>
+      <select name="module_I" onchange="selected_Module(this)"></select>
+    </div>
+    <div class="IO_main">
+      <!--Placeholder-->
+      <div name="mod_main" style="display: none;">
+        <label class="mod_text" name="mod_text"></label>
+        <label name="mod_parent"></label>
+        <label name="mod_param"></label>
+        <input name="mod_input">
+      </div>
+
+      <div name="mod_out" style="display: none;"></div>
+      <p>
+        <label>Min:</label>
+        <label id="min_out"></label>
+        <label>Index:</label>
+        <label id="min_index_out"></label>
+      </p>
+      <p>
+        <label>Max:</label>
+        <label id="max_out"></label>
+        <label>Index:</label>
+        <label id="max_index_out"></label>
+      </p>
+    </div>
+    <div class="IO_footer">
+    </div>
+  </div>
+
+  <div class="module" name="module" id="cut">
+    <div class="IO">
+      <label>Input</label>
+      <select name="module_I" onchange="selected_Module(this)"></select>
+    </div>
+    <div class="IO_main" style="overflow: scroll;">
+      <!--Placeholder-->
+      <div name="mod_main" style="display: none;">
+        <label class="mod_text" name="mod_text"></label>
+        <label name="mod_parent"></label>
+        <label name="mod_param"></label>
+        <input name="mod_input">
+      </div>
+      <p>
+        <label>Cut Start:</label>
+        <input id="cut_start" placeholder="Start index (inc.); def. 0" onchange="selected_Module(this, true)">
+      </p>
+      <p>
+        <label>Cut End:</label>
+        <input id="cut_end" placeholder="End index (inc.); def. len" onchange="selected_Module(this, true)">
+      </p>
+      <p>
+        <label>Replace Leading Values with NaN</label>
+        <input id="cut_nan" type="checkbox" onchange="selected_Module(this, true)">
+      </p>
+      <div name="mod_out"></div>
+    </div>
+    <div class="IO_footer">
+      <button onclick="save_Set(this)">Save Set</button>
+      <input name="save_Input" placeholder="(optional) Name" style="width: 100px;">
+    </div>
+  </div>
+
+  <div class="module" name="module" id="n-fit">
+    <div class="IO">
+      <label>x-Axis</label>
+      <select name="module_Ix" id="module_Ix_fit" onchange="selected_Module(this)"></select>
+      <label>y-Axis</label>
+      <select name="module_I" id="module_I_fit" onchange="selected_Module(this)"></select>
+    </div>
+    <div class="IO_main">
+      <!--Placeholder-->
+      <div name="mod_main" style="display: none;">
+        <label class="mod_text" name="mod_text"></label>
+        <label name="mod_parent"></label>
+        <label name="mod_param"></label>
+        <input name="mod_input">
+      </div>
+      <p>
+        <label class="mod_text">n. Order:</label>
+        <input id="fit_n" placeholder="1-2; default 1" onchange="selected_Module(this, true)">
+      </p>
+      <p>
+        <label>y = ax^2 + bx + c</label>
+      </p>
+      <p>
+        <label>a = </label>
+        <label id="fit_a">0</label>
+        <label>, b = </label>
+        <label id="fit_b">0</label>
+        <label>, c = </label>
+        <label id="fit_c">0</label>
+      </p>
+      <div name="mod_out" style="display: none;"></div>
+    </div>
+    <div class="IO_footer">
+      <button onclick="save_Set(this)">Save Set</button>
+      <input name="save_Input" placeholder="(optional) Name" style="width: 100px;">
+    </div>
+  </div>
+
+  <div class="module" name="module" id="function_gen">
+    <div class="IO">
+      <label>x-Data</label>
+      <select name="module_Ix" id="molule_Ix_gen" onchange="selected_Module(this)"></select>
+      <label>Type</label>
+      <select name="fGen_types" id="molule_fGen_types" onchange="selected_Module(this)"></select>
+    </div>
+    <div class="IO_main" style="overflow: scroll;">
+      <!--Placeholder-->
+      <div name="mod_main" style="display: none;">
+        <label class="mod_text" name="mod_text"></label>
+        <label name="mod_parent"></label>
+        <label name="mod_param"></label>
+        <input name="mod_input">
+      </div>
+      <p>
+        <label>Max y:</label>
+        <input style="width: 80px;" id="max_y" placeholder="def. none" onchange="selected_Module(this, true)">
+        <label>, x Interval:</label>
+        <input style="width: 80px;" id="x_interval" placeholder="def. 0,100" onchange="selected_Module(this, true)">
+      </p>
+      <p>
+        <label>Function: </label>
+        <label id="gen_function"></label>
+      </p>
+      <p>
+        <label>a = </label>
+        <input class="gen_input" id="gen_a" placeholder="def. 1" onchange="selected_Module(this, true)"></input>
+        <label>, b = </label>
+        <input class="gen_input" id="gen_b" placeholder="def. 1" onchange="selected_Module(this, true)"></input>
+        <label>, c = </label>
+        <input class="gen_input" id="gen_c" placeholder="def. 1" onchange="selected_Module(this, true)"></input>
+      </p>
+      <p>
+        <label>d = </label>
+        <input class="gen_input" id="gen_d" placeholder="def. 0" onchange="selected_Module(this, true)"></input>
+        <label>, e = </label>
+        <input class="gen_input" id="gen_e" placeholder="def. 0" onchange="selected_Module(this, true)"></input>
+      </p>
+      <div name="mod_out"></div>
+    </div>
+    <div class="IO_footer">
+      <button onclick="save_Set(this)">Save Set</button>
+      <input name="save_Input" placeholder="(optional) Name" style="width: 100px;">
+    </div>
+  </div>
+
+  <div class="module" name="module" id="calculator">
+    <div class="IO" style="display: none;">
+      <label>Input</label>
+      <select name="module_I" onchange="selected_Module(this)"></select>
+    </div>
+    <div class="IO_main">
+      <!--Placeholder-->
+      <div name="mod_main" style="display: none;">
+        <label class="mod_text" name="mod_text"></label>
+        <label name="mod_parent"></label>
+        <label name="mod_param"></label>
+        <input name="mod_input">
+      </div>
+      <div name="mod_out" style="display: none;"></div>
+
+      <div class="calc_out">
+        <input class="calc_label_out" id="calc_out" type="number" onchange="Calc(false)"></input>
+      </div>
+      <div class="calc_row">
+        <div class="calc_button" id="calc_ac" onclick="Calc(this)"><span>AC</span></div>
+        <div class="calc_button" id="calc_pm" onclick="Calc(this)">+/-</div>
+        <div class="calc_button" id="calc_perc" onclick="Calc(this)">%</div>
+        <div class="calc_button" id="calc_div" onclick="Calc(this)">/</div>
+      </div>
+      <div class="calc_row">
+        <div class="calc_button" id="calc_7" onclick="Calc(this)">7</div>
+        <div class="calc_button" id="calc_8" onclick="Calc(this)">8</div>
+        <div class="calc_button" id="calc_9" onclick="Calc(this)">9</div>
+        <div class="calc_button" id="calc_mul" onclick="Calc(this)">*</div>
+      </div>
+      <div class="calc_row">
+        <div class="calc_button" id="calc_4" onclick="Calc(this)">4</div>
+        <div class="calc_button" id="calc_5" onclick="Calc(this)">5</div>
+        <div class="calc_button" id="calc_6" onclick="Calc(this)">6</div>
+        <div class="calc_button" id="calc_min" onclick="Calc(this)">-</div>
+      </div>
+      <div class="calc_row">
+        <div class="calc_button" id="calc_1" onclick="Calc(this)">1</div>
+        <div class="calc_button" id="calc_2" onclick="Calc(this)">2</div>
+        <div class="calc_button" id="calc_3" onclick="Calc(this)">3</div>
+        <div class="calc_button" id="calc_plus" onclick="Calc(this)">+</div>
+      </div>
+      <div class="calc_row">
+        <div class="calc_button" id="calc_0" style="width: 50%;" onclick="Calc(this)">0</div>
+        <div class="calc_button" id="calc_k" onclick="Calc(this)">,</div>
+        <div class="calc_button" id="calc_eq" onclick="Calc(this)">=</div>
       </div>
     </div>
-
-    <div class="popup" id="graph_popup">
-      <div class="popup_header">
-        <label style="font-size: x-large;">Popup</label>
-        <div class="close_button" onclick="close_popup(this)"></div>
-      </div>
-      <div class="popup_main" style="text-align: center;">
-
-        <div name="top_item" class="main_top_item" style="width: 100%;">
-          <div class="top_item_header">
-            <select name="top_dropdown" id="top_dropdown3" onchange="dropdownChange(this)"></select>
-            <button onclick="dropdownChange(document.getElementById('top_dropdown3'))">Reload</button>
-          </div>
-          <!--Graph Div-->
-          <div class="top_item_main" name="top_item_main" id="top_item_main3">
-            <div class="graph_header" name="graph_header" id="graph_header3"></div>
-            <div class="graph_main" name="graph_main" id="graph_main3"></div>
-            <div class="graph_main" id="0graph_main3"></div>
-            <div class="graph_main" id="1graph_main3"></div>
-          </div>
-          <!--Table Div-->
-          <div class="top_item_main_table" name="top_item_main_table" id="top_item_main_table3">
-            <div class="table_header" name="table_header" id="table_header3"></div>
-            <div class="table_main" name="table_main" id="table_main3"></div>
-          </div>
-          <!--Overview Div-->
-          <div class="top_item_main_overview" name="top_item_main_overview" id="top_item_main_overview3"></div>
-        </div>
-
-      </div>
+    <div class="IO_footer" style="display: none;">
     </div>
+  </div>
 
-    <div class="module" name="module" id="min_max">
-      <div class="IO">
-        <label>Input</label>
-        <select name="module_I" onchange="selected_Module(this)"></select>
-      </div>
-      <div class="IO_main">
-        <!--Placeholder-->
-        <div name="mod_main" style="display: none;">
-          <label class="mod_text" name="mod_text"></label>
-          <label name="mod_parent"></label>
-          <label name="mod_param"></label>
-          <input name="mod_input">
-        </div>
-
-        <div name="mod_out" style="display: none;"></div>
-        <p>
-          <label>Min:</label>
-          <label id="min_out"></label>
-          <label>Index:</label>
-          <label id="min_index_out"></label>
-        </p>
-        <p>
-          <label>Max:</label>
-          <label id="max_out"></label>
-          <label>Index:</label>
-          <label id="max_index_out"></label>
-        </p>
-      </div>
-      <div class="IO_footer">
-      </div>
+  <div class="module" name="module" id="links">
+    <div class="IO" style="display: none;">
+      <label>Input</label>
+      <select name="module_I" onchange="selected_Module(this)"></select>
     </div>
+    <div class="IO_main">
+      <!--Placeholder-->
+      <div name="mod_main" style="display: none;">
+        <label class="mod_text" name="mod_text"></label>
+        <label name="mod_parent"></label>
+        <label name="mod_param"></label>
+        <input name="mod_input">
+      </div>
+      <p>
+        <label>Useful links</label>
+      </p>
+      <p>
+        <a href="https://www.geogebra.org/">GeoGebra</a>
+      </p>
+      <p>
+        <a href="https://www.desmos.com/scientific">Desmos</a>
+      </p>
+      <p>
+        <a href="https://www.wolframalpha.com/">Wolfram Alpha</a>
+      </p>
 
-    <div class="module" name="module" id="cut">
-      <div class="IO">
-        <label>Input</label>
-        <select name="module_I" onchange="selected_Module(this)"></select>
-      </div>
-      <div class="IO_main" style="overflow: scroll;">
-        <!--Placeholder-->
-        <div name="mod_main" style="display: none;">
-          <label class="mod_text" name="mod_text"></label>
-          <label name="mod_parent"></label>
-          <label name="mod_param"></label>
-          <input name="mod_input">
-        </div>
-        <p>
-          <label>Cut Start:</label>
-          <input id="cut_start" placeholder="Start index (inc.); def. 0" onchange="selected_Module(this, true)">
-        </p>
-        <p>
-          <label>Cut End:</label>
-          <input id="cut_end" placeholder="End index (inc.); def. len" onchange="selected_Module(this, true)">
-        </p>
-        <p>
-          <label>Replace Leading Values with NaN</label>
-          <input id="cut_nan" type="checkbox" onchange="selected_Module(this, true)">
-        </p>
-        <div name="mod_out"></div>
-      </div>
-      <div class="IO_footer">
-        <button onclick="save_Set(this)">Save Set</button>
-        <input name="save_Input" placeholder="(optional) Name" style="width: 100px;">
-      </div>
+      <div name="mod_out" style="display: none;"></div>
     </div>
-
-    <div class="module" name="module" id="n-fit">
-      <div class="IO">
-        <label>x-Axis</label>
-        <select name="module_Ix" id="module_Ix_fit" onchange="selected_Module(this)"></select>
-        <label>y-Axis</label>
-        <select name="module_I" id="module_I_fit" onchange="selected_Module(this)"></select>
-      </div>
-      <div class="IO_main">
-        <!--Placeholder-->
-        <div name="mod_main" style="display: none;">
-          <label class="mod_text" name="mod_text"></label>
-          <label name="mod_parent"></label>
-          <label name="mod_param"></label>
-          <input name="mod_input">
-        </div>
-        <p>
-          <label class="mod_text">n. Order:</label>
-          <input id="fit_n" placeholder="1-2; default 1" onchange="selected_Module(this, true)">
-        </p>
-        <p>
-          <label>y = ax^2 + bx + c</label>
-        </p>
-        <p>
-          <label>a = </label>
-          <label id="fit_a">0</label>
-          <label>, b = </label>
-          <label id="fit_b">0</label>
-          <label>, c = </label>
-          <label id="fit_c">0</label>
-        </p>
-        <div name="mod_out" style="display: none;"></div>
-      </div>
-      <div class="IO_footer">
-        <button onclick="save_Set(this)">Save Set</button>
-        <input name="save_Input" placeholder="(optional) Name" style="width: 100px;">
-      </div>
+    <div class="IO_footer" style="display: none;">
     </div>
-    
-    <div class="module" name="module" id="function_gen">
-      <div class="IO">
-        <label>x-Data</label>
-        <select name="module_Ix" id="molule_Ix_gen" onchange="selected_Module(this)"></select>
-        <label>Type</label>
-        <select name="fGen_types" id="molule_fGen_types" onchange="selected_Module(this)"></select>
-      </div>
-      <div class="IO_main" style="overflow: scroll;">
-        <!--Placeholder-->
-        <div name="mod_main" style="display: none;">
-          <label class="mod_text" name="mod_text"></label>
-          <label name="mod_parent"></label>
-          <label name="mod_param"></label>
-          <input name="mod_input">
-        </div>
-        <p>
-          <label>Max y:</label>
-          <input style="width: 80px;" id="max_y" placeholder="def. none" onchange="selected_Module(this, true)">
-          <label>, x Interval:</label>
-          <input style="width: 80px;" id="x_interval" placeholder="def. 0,100" onchange="selected_Module(this, true)">
-        </p>
-        <p>
-          <label>Function: </label>
-          <label id="gen_function"></label>
-        </p>
-        <p>
-          <label>a = </label>
-          <input class="gen_input" id="gen_a" placeholder="def. 1" onchange="selected_Module(this, true)"></input>
-          <label>, b = </label>
-          <input class="gen_input" id="gen_b" placeholder="def. 1" onchange="selected_Module(this, true)"></input>
-          <label>, c = </label>
-          <input class="gen_input" id="gen_c" placeholder="def. 1" onchange="selected_Module(this, true)"></input>
-        </p>
-        <p>
-          <label>d = </label>
-          <input class="gen_input" id="gen_d" placeholder="def. 0" onchange="selected_Module(this, true)"></input>
-          <label>, e = </label>
-          <input class="gen_input" id="gen_e" placeholder="def. 0" onchange="selected_Module(this, true)"></input>
-        </p>
-        <div name="mod_out"></div>
-      </div>
-      <div class="IO_footer">
-        <button onclick="save_Set(this)">Save Set</button>
-        <input name="save_Input" placeholder="(optional) Name" style="width: 100px;">
-      </div>
+  </div>
+
+  <div class="module" name="module" id="simple_mod">
+    <div class="IO">
+      <label>Input</label>
+      <select name="module_I" onchange="selected_Module(this)"></select>
+      <select name="molule_Idataset" onchange="selected_Module(this)" style="display: none;"></select>
+      <input name="molule_IN" placeholder="Round to n" onchange="selected_Module(this)" style="width: 80px;">
     </div>
-
-    <div class="module" name="module" id="calculator">
-      <div class="IO" style="display: none;">
-        <label>Input</label>
-        <select name="module_I" onchange="selected_Module(this)"></select>
+    <div class="IO_main" style="overflow: scroll;">
+      <div name="mod_main" style="padding-top: 2px;">
+        <label class="mod_text" name="mod_text"></label>
+        <label name="mod_parent" style="display: none;"></label>
+        <label name="mod_param" style="display: none;"></label>
+        <input name="mod_input" placeholder="Input n" onchange="selected_Module(this, true)" style="width: 85px;">
       </div>
-      <div class="IO_main">
-        <!--Placeholder-->
-        <div name="mod_main" style="display: none;">
-          <label class="mod_text" name="mod_text"></label>
-          <label name="mod_parent"></label>
-          <label name="mod_param"></label>
-          <input name="mod_input">
-        </div>
-        <div name="mod_out" style="display: none;"></div>
-        
-        <div class="calc_out">
-          <input class="calc_label_out" id="calc_out" type="number" onchange="Calc(false)"></input>
-        </div>
-        <div class="calc_row">
-          <div class="calc_button" id="calc_ac" onclick="Calc(this)"><span>AC</span></div>
-          <div class="calc_button" id="calc_pm" onclick="Calc(this)">+/-</div>
-          <div class="calc_button" id="calc_perc" onclick="Calc(this)">%</div>
-          <div class="calc_button" id="calc_div" onclick="Calc(this)">/</div>
-        </div>
-        <div class="calc_row">
-          <div class="calc_button" id="calc_7" onclick="Calc(this)">7</div>
-          <div class="calc_button" id="calc_8" onclick="Calc(this)">8</div>
-          <div class="calc_button" id="calc_9" onclick="Calc(this)">9</div>
-          <div class="calc_button" id="calc_mul" onclick="Calc(this)">*</div>
-        </div>
-        <div class="calc_row">
-          <div class="calc_button" id="calc_4" onclick="Calc(this)">4</div>
-          <div class="calc_button" id="calc_5" onclick="Calc(this)">5</div>
-          <div class="calc_button" id="calc_6" onclick="Calc(this)">6</div>
-          <div class="calc_button" id="calc_min" onclick="Calc(this)">-</div>
-        </div>
-        <div class="calc_row">
-          <div class="calc_button" id="calc_1" onclick="Calc(this)">1</div>
-          <div class="calc_button" id="calc_2" onclick="Calc(this)">2</div>
-          <div class="calc_button" id="calc_3" onclick="Calc(this)">3</div>
-          <div class="calc_button" id="calc_plus" onclick="Calc(this)">+</div>
-        </div>
-        <div class="calc_row">
-          <div class="calc_button" id="calc_0" style="width: 50%;" onclick="Calc(this)">0</div>
-          <div class="calc_button" id="calc_k" onclick="Calc(this)">,</div>
-          <div class="calc_button" id="calc_eq" onclick="Calc(this)">=</div>
-        </div>
-      </div>
-      <div class="IO_footer" style="display: none;">
-      </div>
+      <div name="mod_out"></div>
     </div>
-
-    <div class="module" name="module" id="links">
-      <div class="IO" style="display: none;">
-        <label>Input</label>
-        <select name="module_I" onchange="selected_Module(this)"></select>
-      </div>
-      <div class="IO_main">
-        <!--Placeholder-->
-        <div name="mod_main" style="display: none;">
-          <label class="mod_text" name="mod_text"></label>
-          <label name="mod_parent"></label>
-          <label name="mod_param"></label>
-          <input name="mod_input">
-        </div>
-        <p>
-          <label>Useful links</label>
-        </p>
-        <p>
-          <a href="https://www.geogebra.org/">GeoGebra</a>
-        </p>
-        <p>
-          <a href="https://www.desmos.com/scientific">Desmos</a>
-        </p>
-        <p>
-          <a href="https://www.wolframalpha.com/">Wolfram Alpha</a>
-        </p>
-
-        <div name="mod_out" style="display: none;"></div>
-      </div>
-      <div class="IO_footer" style="display: none;">
-      </div>
+    <div class="IO_footer">
+      <button onclick="save_Set(this)">Save Set</button>
+      <input name="save_Input" placeholder="(optional) Name" style="width: 100px;">
     </div>
+  </div>
 
-    <div class="module" name="module" id="simple_mod">
-      <div class="IO">
-        <label>Input</label>
-        <select name="module_I" onchange="selected_Module(this)"></select>
-        <select name="molule_Idataset" onchange="selected_Module(this)" style="display: none;"></select>
-        <input name="molule_IN" placeholder="Round to n" onchange="selected_Module(this)" style="width: 80px;">
-      </div>
-      <div class="IO_main" style="overflow: scroll;">
-        <div name="mod_main" style="padding-top: 2px;">
-          <label class="mod_text" name="mod_text"></label>
-          <label name="mod_parent" style="display: none;"></label>
-          <label name="mod_param" style="display: none;"></label>
-          <input name="mod_input" placeholder="Input n" onchange="selected_Module(this, true)" style="width: 85px;">
-        </div>
-        <div name="mod_out"></div>
-      </div>
-      <div class="IO_footer">
-        <button onclick="save_Set(this)">Save Set</button>
-        <input name="save_Input" placeholder="(optional) Name" style="width: 100px;">
-      </div>
-    </div>
+  <script src="csv_data.js"></script>
+  <script src="modules.js"></script>
+  <script src="data_viewer.js"></script>
+  <script src="polynomial_regression.js"></script>
+</body>
 
-    <script src="csv_data.js"></script>
-    <script src="modules.js"></script>
-    <script src="data_viewer.js"></script>
-    <script src="polynomial_regression.js"></script>
-  </body>
 </html>

@@ -223,7 +223,7 @@ function overviewTable() {
   var names = ["table_popup_side", "top_item_main_overview0", "top_item_main_overview1", "top_item_main_overview2", "top_item_main_overview3"];
   names.forEach(name => {
     var element = document.getElementById(name);
-    let overviewArray = [["Name", "ID", "Type", "Length", "Operation", "Parent", "Param", "Action"]];
+    var overviewArray = [["Name", "ID", "Type", "Length", "Operation", "Parent", "Param", "Action"]];
 
     datasets.dataSet_list.forEach(dataset => {
       if (dataset != null) {
@@ -233,6 +233,42 @@ function overviewTable() {
 
     element.innerHTML = makeTableHTML(overviewArray);
   });
+}
+
+function exportTable() {
+  var exportArray = [["Name", "Export", "", "Name", "Export"]];
+
+  var tmp = [];
+  for (let i = 0; i < datasets.dataSet_names.length; i++) {
+    tmp.push(datasets.dataSet_names[i]);
+    tmp.push("<input type='checkbox' id='E" + i + "' onchange='exportField()' checked>");
+    tmp.push("");
+
+    if (i == datasets.dataSet_names.length - 1 && tmp.length == 3) {
+      tmp.push("")
+      tmp.push("")
+      tmp.push("")
+    }
+
+    if (tmp.length == 6) {
+      tmp.splice(-1, 1);
+      exportArray.push(tmp);
+      tmp = [];
+    }
+  }
+
+  document.getElementById("dataExportTable").innerHTML = makeTableHTML(exportArray);
+}
+
+function exportField() {
+  var fieldElement = document.getElementById("dataExport");
+  fieldElement.value = "";
+
+  for (let i = 0; i < datasets.dataSet_names.length; i++) {
+    if (document.getElementById("E" + i).checked == true) {
+      fieldElement.value += datasets.dataSet_names[i];
+    }
+  }
 }
 
 function table(element) {
@@ -267,7 +303,7 @@ function table(element) {
     for (let j = 0; j < index.length; j++) {
       var tmp = "";
       if (index[j] != 0) {
-        tmp = Number( (datasets.dataSet_list[index[j] - 1].values[i]).toFixed(4) );
+        tmp = Number((datasets.dataSet_list[index[j] - 1].values[i]).toFixed(4));
       }
 
       if (tmp == undefined) {
@@ -314,10 +350,10 @@ class DataSet {
       this.name = name;
     }
 
-    if(user_input != true){
+    if (user_input != true) {
       this.name += this.id.toString();
     }
-    
+
     this.operation = operation;
     this.showing = showing;
     this.user_input = user_input;
@@ -492,11 +528,12 @@ function dropdownChange(element) {
   if (graph == true) {
     drawChart(id);
   }
-
 }
 
 function updateDropdown(append = false, remove = false) {
   overviewTable();
+  exportTable();
+  exportField();
 
   setupDropdown("xAxis_dropdown", datasets.dataSet_names, append, remove);
   setupDropdown("yAxis_dropdown", datasets.dataSet_names, append, remove);
@@ -509,7 +546,7 @@ function updateDropdown(append = false, remove = false) {
   setupDropdown("modAxis_dropdown", datasets.dataSetMods_names, append, remove);
 }
 
-function colorChange(element){
+function colorChange(element) {
   document.documentElement.style.setProperty("--header", element.value)
 }
 
@@ -518,8 +555,8 @@ function importData() {
   let rp = [];
   for (let i = -1000; i < 1001; i++) {
     r.push(i / 10);
-    if(i >= 0){
-      rp.push(i/10)
+    if (i >= 0) {
+      rp.push(i / 10)
     }
   }
 

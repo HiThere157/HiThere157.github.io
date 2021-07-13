@@ -17,7 +17,6 @@ function csvToArray(str, delimiter = ",") {
 
 function parseData(element) {
   var str = element.value;
-  console.log(str);
   var tmpRows = str.split("]");
   var data = [];
 
@@ -32,7 +31,6 @@ function parseData(element) {
     }
 
   }
-  console.log(data)
   csvData = data;
 
   showData();

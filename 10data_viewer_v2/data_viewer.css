@@ -48,7 +48,7 @@ textarea {
 }
 .header_item {
   height: 100%;
-  width: 49.9%;
+  width: 50%;
   float: left;
 }
 .header_item_header {
@@ -57,8 +57,14 @@ textarea {
   font-size: medium;
 }
 .header_item_main {
-  height: 50%;
-  width: 97%;
+  height: 75%;
+  width: 99%;
+  padding: 2px;
+}
+.export_item {
+  width: 49.5%;
+  height: 100%;
+  float: left;
 }
 .main {
   background-color: var(--pimary-background);
