@@ -263,21 +263,61 @@ function exportTable() {
 function exportField() {
   var fieldElement = document.getElementById("dataExport");
   fieldElement.value = "";
+  var dataString = [];
+  var indexes = [];
 
+  var tmp = [];
+  var maxLen = 0;
   for (let i = 0; i < datasets.dataSet_names.length; i++) {
     if (document.getElementById("E" + i).checked == true) {
-      fieldElement.value += datasets.dataSet_names[i];
+      tmp.push(datasets.dataSet_names[i]);
+      indexes.push(i);
+      var len = datasets.dataSet_list[i].len;
+
+      if(len > maxLen){
+        maxLen = len;
+      }
     }
+  }
+
+  if(indexes.length > 1){
+    dataString.push(tmp)
+    for(let i = 0; i < maxLen; i++){
+      var tmp = [];
+      indexes.forEach(index => {
+        if(datasets.dataSet_list[index].values[i] == undefined){
+          tmp.push("");
+        }else{
+          tmp.push(datasets.dataSet_list[index].values[i])
+        }
+      });
+  
+      dataString.push(tmp)
+    }
+  }else{
+    dataString = [datasets.dataSet_list[indexes[0]].values]
+  }
+
+  var output = []
+
+  dataString.forEach(set => {
+    output.push("[" + set.toString() + "]")
+  });
+
+  if(output.length == 1){
+    fieldElement.value = output[0];
+  }else{
+    fieldElement.value = "[" + output.toString() + "]";
   }
 }
 
 function table(element) {
-  let id = element.getAttribute("name");
+  var id = element.getAttribute("name");
   id = id[id.length - 1]
-  let index = [];
-  let tableArray = [];
-  let tmpArray = ["Index"];
-  let maxLen = 0;
+  var index = [];
+  var tableArray = [];
+  var tmpArray = ["Index"];
+  var maxLen = 0;
 
   document.getElementsByName("column_dropdown" + id.toString()).forEach(element => {
     var len = 0;
@@ -297,7 +337,7 @@ function table(element) {
   tableArray.push(tmpArray);
 
   for (let i = 0; i < maxLen; i++) {
-    let tmpArray = [];
+    var tmpArray = [];
     tmpArray.push(i);
 
     for (let j = 0; j < index.length; j++) {
