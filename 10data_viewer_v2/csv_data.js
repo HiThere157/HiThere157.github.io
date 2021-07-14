@@ -4,6 +4,89 @@ var csvData = [];
 var buttonData = [];
 var skip_row = false;
 
+function exportTable() {
+  var exportArray = [["Name", "Export", "", "Name", "Export"]];
+
+  var tmp = [];
+  var add_ = "checked";
+  for (let i = 0; i < datasets.dataSet_names.length; i++) {
+    if(["R", "R+"].includes(datasets.dataSet_names[i]) == true){
+      add_ = "";
+    }else{
+      add_ = "checked";
+    }
+
+    tmp.push(datasets.dataSet_names[i]);
+    tmp.push("<input type='checkbox' id='E" + i + "' onchange='exportField()' " + add_ + ">");
+    tmp.push("");
+
+    if (i == datasets.dataSet_names.length - 1 && tmp.length == 3) {
+      tmp.push("")
+      tmp.push("")
+      tmp.push("")
+    }
+
+    if (tmp.length == 6) {
+      tmp.splice(-1, 1);
+      exportArray.push(tmp);
+      tmp = [];
+    }
+  }
+
+  document.getElementById("dataExportTable").innerHTML = makeTableHTML(exportArray);
+}
+
+function exportField() {
+  var fieldElement = document.getElementById("dataExport");
+  fieldElement.value = "";
+  var dataString = [];
+  var indexes = [];
+
+  var tmp = [];
+  var maxLen = 0;
+  for (let i = 0; i < datasets.dataSet_names.length; i++) {
+    if (document.getElementById("E" + i).checked == true) {
+      tmp.push(datasets.dataSet_names[i]);
+      indexes.push(i);
+      var len = datasets.dataSet_list[i].len;
+
+      if(len > maxLen){
+        maxLen = len;
+      }
+    }
+  }
+
+  if(indexes.length > 1){
+    dataString.push(tmp)
+    for(let i = 0; i < maxLen; i++){
+      var tmp = [];
+      indexes.forEach(index => {
+        if(datasets.dataSet_list[index].values[i] == undefined){
+          tmp.push("");
+        }else{
+          tmp.push(datasets.dataSet_list[index].values[i])
+        }
+      });
+  
+      dataString.push(tmp)
+    }
+  }else{
+    dataString = [datasets.dataSet_list[indexes[0]].values]
+  }
+
+  var output = []
+
+  dataString.forEach(set => {
+    output.push("[" + set.toString() + "]")
+  });
+
+  if(output.length == 1){
+    fieldElement.value = output[0];
+  }else{
+    fieldElement.value = "[" + output.toString() + "]";
+  }
+}
+
 function csvToArray(str, delimiter = ",") {
   let rows = str.split("\n");
   let array = [];
@@ -40,7 +123,7 @@ function setButtonData() {
   buttonData = [];
   var add_ = "";
   if (skip_row == true) {
-    add_ = " checked";
+    add_ = "checked";
   }
   var header = ["<input type='checkbox' id='hR' onchange='showData(this)' " + add_ + "><label for='hR'>1. Row Header</label>"];
 
