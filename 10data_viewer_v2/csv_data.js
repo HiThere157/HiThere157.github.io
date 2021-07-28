@@ -71,7 +71,9 @@ function exportField() {
       dataString.push(tmp)
     }
   }else{
-    dataString = [datasets.dataSet_list[indexes[0]].values]
+    if(indexes.length != 0){
+      dataString = [datasets.dataSet_list[indexes[0]].values]
+    }
   }
 
   var output = []
