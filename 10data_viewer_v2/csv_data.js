@@ -10,9 +10,9 @@ function exportTable() {
   var tmp = [];
   var add_ = "checked";
   for (let i = 0; i < datasets.dataSet_names.length; i++) {
-    if(["R", "R+"].includes(datasets.dataSet_names[i]) == true){
+    if (["R", "R+"].includes(datasets.dataSet_names[i]) == true) {
       add_ = "";
-    }else{
+    } else {
       add_ = "checked";
     }
 
@@ -50,28 +50,28 @@ function exportField() {
       indexes.push(i);
       var len = datasets.dataSet_list[i].len;
 
-      if(len > maxLen){
+      if (len > maxLen) {
         maxLen = len;
       }
     }
   }
 
-  if(indexes.length > 1){
+  if (indexes.length > 1) {
     dataString.push(tmp)
-    for(let i = 0; i < maxLen; i++){
+    for (let i = 0; i < maxLen; i++) {
       var tmp = [];
       indexes.forEach(index => {
-        if(datasets.dataSet_list[index].values[i] == undefined){
+        if (datasets.dataSet_list[index].values[i] == undefined) {
           tmp.push("");
-        }else{
+        } else {
           tmp.push(datasets.dataSet_list[index].values[i])
         }
       });
-  
+
       dataString.push(tmp)
     }
-  }else{
-    if(indexes.length != 0){
+  } else {
+    if (indexes.length != 0) {
       dataString = [datasets.dataSet_list[indexes[0]].values]
     }
   }
@@ -82,9 +82,9 @@ function exportField() {
     output.push("[" + set.toString() + "]")
   });
 
-  if(output.length == 1){
+  if (output.length == 1) {
     fieldElement.value = output[0];
-  }else{
+  } else {
     fieldElement.value = "[" + output.toString() + "]";
   }
 }

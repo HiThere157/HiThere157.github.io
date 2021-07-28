@@ -197,7 +197,8 @@ function drawChart(id = null, hide = false) {
     legend: {
       position: 'top'
     },
-    width: '100%'
+    width: '100%',
+    backgroundColor: "#e2e2e2"
   };
 
   if (id == null) {

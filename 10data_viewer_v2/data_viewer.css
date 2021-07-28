@@ -2,8 +2,28 @@
   --pimary-background: #cecece;
   --secondary-background: #a8a8a8;
   --item-background: #e2e2e2;
-  --popup-background: #ececec;
+  --popup-background: #fce8e8;
   --header: aqua;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }
 
 html, body {
@@ -104,7 +124,7 @@ textarea {
 .top_item_main_overview{
   height: 95%;
   display: none;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 .graph_header {
   padding: 3px;
@@ -119,7 +139,7 @@ textarea {
 }
 .table_main {
   height: 95%;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .main_bottom {
