@@ -395,6 +395,33 @@ function Gaussian_Average(element, data, nDigits, n) {
   }
 }
 
+function Ngen(element, data, nDigits, n) {
+  if (element.selectedIndex != 0) {
+    var useDefault = false;
+    if (n == "") {
+      n = 1;
+      useDefault = true;
+    } else {
+      n = Number(n);
+    }
+
+    var tmp = [];
+    var noiseTable = [["Index", "Value", "Noise"]];
+
+    if (data.type == "number") {
+      for (let i = 0; i < data.len; i++) {
+        tmp.push(Number((data.values[i] + Math.random()*n*2-n).toFixed(nDigits)));
+      }
+
+      for (let i = 0; i < tmp.length; i++) {
+        noiseTable.push([i, data.values[i], tmp[i]]);
+      }
+
+      return [noiseTable, tmp, data.name, n];
+    }
+  }
+}
+
 function Fgen() {
   let x_data_index = document.getElementById("molule_Ix_gen").selectedIndex;
   var x_data = null;
@@ -673,6 +700,10 @@ function show_Module(name, id, simple_mod = false) {
     } else if (name == "gaussian_average") {
       mod_text.innerText = "a =";
       mod_input.setAttribute("placeholder", txt + "def. 1");
+
+    } else if(name == "noise_gen"){
+      mod_text.innerText = "+-a";
+      mod_input.setAttribute("placeholder", txt + "def. 1");
     }
   }
 }
@@ -717,7 +748,11 @@ function selected_Module(element, depth = false) {
   if (nDigits == "") {
     nDigits = 4;
   }
-
+  //element => Module Input Dropdown HTML element
+  //data => selected data with the Input Dropdown
+  //nDigits => Round to n Digits
+  //n => mod Parameter
+  //datasetData => selected data with the Selcond Input Dropdown
   var returned = [];
   if (data != undefined || operation == "function_gen") {
     if (operation == "min_max") {
@@ -761,6 +796,10 @@ function selected_Module(element, depth = false) {
 
     } else if (operation == "function_gen") {
       returned = Fgen();
+
+    } else if(operation == "noise_gen"){
+      returned = Ngen(element, data, nDigits, n);
+
     } else {
       console.log(operation)
     }

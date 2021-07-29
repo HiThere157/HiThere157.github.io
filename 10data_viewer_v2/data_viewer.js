@@ -122,7 +122,7 @@ function setupDropdown(name, options, append = false, remove = false) {
   }
 }
 setupDropdown("top_dropdown", ["--Select--", "Graph", "Scatter Chart", "Pie Chart", "Table", "Overview"]);
-setupDropdown("bottom_dropdown", [["--Select--", "Min Max", "Delta", "Abs", "Gaussian Average"], ["--Select--", "Log", "Exp", "Root", "Add/Sub", "Mul", "Pow"], ["--Select--", "n-Fit", "xFlip", "Cut"], ["--Select--", "Calculator", "Function Gen", "Links"]]);
+setupDropdown("bottom_dropdown", [["--Select--", "Min Max", "Delta", "Abs", "Gaussian Average"], ["--Select--", "Log", "Exp", "Root", "Add/Sub", "Mul", "Pow"], ["--Select--", "n-Fit", "xFlip", "Cut"], ["--Select--", "Calculator", "Function Gen", "Noise Gen", "Links"]]);
 setupDropdown("fGen_types", ["--Select--", "Poly", "Exp", "Log", "Sin", "Cos", "Tan"])
 
 class Chart {
