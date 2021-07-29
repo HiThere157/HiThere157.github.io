@@ -613,7 +613,6 @@ function Calc(element) {
   }
 
   document.getElementById("calc_out").value = tmp;
-  console.log(calcs);
 }
 
 function update_slot_offset() {
