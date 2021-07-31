@@ -41,7 +41,7 @@
 
       <div name="top_item" class="main_top_item">
         <div class="top_item_header">
-          <input type="color" style="height: 17px;" value="#00FFFF" onchange="colorChange(this)">
+          <input type="color" style="height: 15px;" value="#00FFFF" onchange="colorChange(this)">
           <select name="top_dropdown" id="top_dropdown0" onchange="dropdownChange(this)"></select>
           <button onclick="dropdownChange(document.getElementById('top_dropdown0'))">Reload</button>
           <button onclick="document.getElementById('graph_popup').style = 'display: block;';">Popup</button>
@@ -292,13 +292,13 @@
         <label>Max y:</label>
         <input style="width: 80px;" id="max_y" placeholder="def. none" onchange="selected_Module(this, true)">
         <label>, x Interval:</label>
-        <input style="width: 80px;" id="x_interval" placeholder="def. 0,100" onchange="selected_Module(this, true)">
+        <input style="width: 80px;" id="x_interval" placeholder="def. 0,100,1" onchange="selected_Module(this, true)">
       </p>
-      <p>
+      <p name="gen_ps">
         <label>Function: </label>
         <label id="gen_function"></label>
       </p>
-      <p>
+      <p name="gen_ps">
         <label>a = </label>
         <input class="gen_input" id="gen_a" placeholder="def. 1" onchange="selected_Module(this, true)"></input>
         <label>, b = </label>
@@ -306,7 +306,7 @@
         <label>, c = </label>
         <input class="gen_input" id="gen_c" placeholder="def. 1" onchange="selected_Module(this, true)"></input>
       </p>
-      <p>
+      <p name="gen_ps">
         <label>d = </label>
         <input class="gen_input" id="gen_d" placeholder="def. 0" onchange="selected_Module(this, true)"></input>
         <label>, e = </label>

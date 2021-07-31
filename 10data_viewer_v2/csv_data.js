@@ -265,5 +265,5 @@ function saveData(element) {
 
   element.style = "background-color: #cccccc;";
   datasets.add(new DataSet(tmpRet[1], true, "Data", name.replaceAll('"', '').trim(), "", "", tmpRet[0]));
-  updateDropdown();
+  updateDropdown(true);
 }

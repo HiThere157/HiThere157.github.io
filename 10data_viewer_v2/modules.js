@@ -397,10 +397,8 @@ function Gaussian_Average(element, data, nDigits, n) {
 
 function Ngen(element, data, nDigits, n) {
   if (element.selectedIndex != 0) {
-    var useDefault = false;
     if (n == "") {
       n = 1;
-      useDefault = true;
     } else {
       n = Number(n);
     }
@@ -410,7 +408,7 @@ function Ngen(element, data, nDigits, n) {
 
     if (data.type == "number") {
       for (let i = 0; i < data.len; i++) {
-        tmp.push(Number((data.values[i] + Math.random()*n*2-n).toFixed(nDigits)));
+        tmp.push(Number((data.values[i] + Math.random() * n * 2 - n).toFixed(nDigits)));
       }
 
       for (let i = 0; i < tmp.length; i++) {
@@ -422,7 +420,7 @@ function Ngen(element, data, nDigits, n) {
   }
 }
 
-function Fgen() {
+function Fgen(nDigits) {
   let x_data_index = document.getElementById("molule_Ix_gen").selectedIndex;
   var x_data = null;
 
@@ -478,71 +476,105 @@ function Fgen() {
     max_y = Number(max_y);
   }
 
+  var x_interval_set = false;
   if (x_interval == "") {
-    x_interval = [0, 100];
+    x_interval = [0, 100, 1];
   } else {
     x_interval = x_interval.split(",");
+
+    if (x_interval.length == 1) {
+      x_interval.push(100)
+    }
+    if (x_interval.length == 2) {
+      x_interval.push(1)
+    }
+
+    if (x_interval[2] < 0.001) {
+      x_interval[2] = 0.001;
+    }
+    x_interval_set = true;
   }
 
   x = [];
   if (x_data == null) {
-    for (let i = Number(x_interval[0]); i < Number(x_interval[1]); i++) {
-      x.push(i)
+    for (let i = Number(x_interval[0]); i < Number(x_interval[1]); i += Number(x_interval[2])) {
+      x.push(Number(i.toFixed(nDigits)));
     }
 
   } else {
     x_data.values.forEach(value => {
-      x.push(value)
+      if (x_interval_set == true) {
+        if (value >= Number(x_interval[0]) && value <= Number(x_interval[1])) {
+          x.push(value);
+        }
+      } else {
+        x.push(value);
+      }
     });
   }
 
   var tmp = [];
   var genTable = [["Index", "x", "y"]];
 
+  if (type == "Linear") {
+    document.getElementsByName("gen_ps").forEach(element => {
+      element.style.display = "none";
+    });
+
+    x.forEach(n => {
+      tmp.push(Number((n).toFixed(nDigits)))
+    });
+
+  } else {
+    document.getElementsByName("gen_ps").forEach(element => {
+      element.style.display = "block";
+    });
+  }
+
   if (type == "Poly") {
     type_label.innerText = "y = ax^4 + bx^3 + cx^2 + dx + e";
     x.forEach(n => {
-      tmp.push(Number((a * Math.pow(n, 4) + b * Math.pow(n, 3) + c * Math.pow(n, 2) + d * n + e).toFixed(4)))
+      tmp.push(Number((a * Math.pow(n, 4) + b * Math.pow(n, 3) + c * Math.pow(n, 2) + d * n + e).toFixed(nDigits)))
     });
 
   } else if (type == "Exp") {
     type_label.innerText = "y= a * b^[c * (x - d)] + e";
     x.forEach(n => {
-      tmp.push(Number((a * Math.pow(b, (c * (n - d))) + e).toFixed(4)))
+      tmp.push(Number((a * Math.pow(b, (c * (n - d))) + e).toFixed(nDigits)))
     });
 
   } else if (type == "Log") {
     type_label.innerText = "y= a * log(b, [c * (x - d)]) + e";
     x.forEach(n => {
-      tmp.push(Number((a * Math.log(c * (n - d)) / Math.log(b) + e).toFixed(4)))
+      tmp.push(Number((a * Math.log(c * (n - d)) / Math.log(b) + e).toFixed(nDigits)))
     });
 
   } else if (type == "Sin") {
     type_label.innerText = "y= a * sin[b * (x - c)] + d";
     x.forEach(n => {
-      tmp.push(Number((a * Math.sin(b * (n - c)) + d).toFixed(4)))
+      tmp.push(Number((a * Math.sin(b * (n - c)) + d).toFixed(nDigits)))
     });
 
   } else if (type == "Cos") {
     type_label.innerText = "y= a * cos[b * (x - c)] + d";
     x.forEach(n => {
-      tmp.push(Number((a * Math.cos(b * (n - c)) + d).toFixed(4)))
+      tmp.push(Number((a * Math.cos(b * (n - c)) + d).toFixed(nDigits)))
     });
 
   } else if (type == "Tan") {
     type_label.innerText = "y= a * tan[b * (x - c)] + d";
     x.forEach(n => {
-      tmp.push(Number((a * Math.tan(b * (n - c)) + d).toFixed(4)))
+      tmp.push(Number((a * Math.tan(b * (n - c)) + d).toFixed(nDigits)))
     });
 
   }
 
   for (let i = 0; i < tmp.length; i++) {
-    genTable.push([i, x[i], tmp[i]]);
-
     if (tmp[i] >= max_y || tmp[i] <= -1 * max_y) {
       tmp[i] = NaN;
     }
+
+    genTable.push([i, x[i], tmp[i]]);
   }
 
   return [genTable, tmp, "Fgen(" + type + ")", a + "," + b + "," + c + "," + d + "," + e];
@@ -700,7 +732,7 @@ function show_Module(name, id, simple_mod = false) {
       mod_text.innerText = "a =";
       mod_input.setAttribute("placeholder", txt + "def. 1");
 
-    } else if(name == "noise_gen"){
+    } else if (name == "noise_gen") {
       mod_text.innerText = "+-a";
       mod_input.setAttribute("placeholder", txt + "def. 1");
     }
@@ -794,9 +826,9 @@ function selected_Module(element, depth = false) {
       returned = xFlip(element, data);
 
     } else if (operation == "function_gen") {
-      returned = Fgen();
+      returned = Fgen(nDigits);
 
-    } else if(operation == "noise_gen"){
+    } else if (operation == "noise_gen") {
       returned = Ngen(element, data, nDigits, n);
 
     } else {
