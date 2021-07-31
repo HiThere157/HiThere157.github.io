@@ -395,6 +395,7 @@ function Gaussian_Average(element, data, nDigits, n) {
   }
 }
 
+//Noise Generator
 function Ngen(element, data, nDigits, n) {
   if (element.selectedIndex != 0) {
     if (n == "") {
@@ -420,6 +421,7 @@ function Ngen(element, data, nDigits, n) {
   }
 }
 
+//Function Generator
 function Fgen(nDigits) {
   let x_data_index = document.getElementById("molule_Ix_gen").selectedIndex;
   var x_data = null;
@@ -580,6 +582,7 @@ function Fgen(nDigits) {
   return [genTable, tmp, "Fgen(" + type + ")", a + "," + b + "," + c + "," + d + "," + e];
 }
 
+//Calculator
 var calcs = [""];
 function Calc(element) {
   var solution = "";
@@ -647,6 +650,7 @@ function Calc(element) {
   document.getElementById("calc_out").value = tmp;
 }
 
+//updates slot offset; otherwise wrong match of document.getElementsByName(), if no module is present in the slot to the left
 function update_slot_offset() {
   slot_offset = { 0: 0, 1: 0, 2: 0, 3: 0 };
 
@@ -666,6 +670,7 @@ function update_slot_offset() {
   }
 }
 
+//copies a module to a slot
 function show_Module(name, id, simple_mod = false) {
   update_slot_offset()
   let element_name = name;
@@ -754,6 +759,7 @@ function save_Set(element) {
   updateDropdown(true);
 }
 
+//onchange of every input/dropdown inside a module
 function selected_Module(element, depth = false) {
   update_slot_offset();
 

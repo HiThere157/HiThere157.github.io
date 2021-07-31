@@ -75,6 +75,5 @@ function Fit() {
     elements[i].innerText = Number(tmp).toFixed(2)
   }
 
-
   return [null, curveY, name, n]
 }

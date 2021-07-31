@@ -65,12 +65,14 @@ function makeTableHTML(Array) {
   }
 }
 
+//remove all Options from an 'select' element
 function removeAllOptions(element) {
   while (element.options.length > 0) {
     element.remove(0);
   }
 }
 
+//sets dropdown options for an 'select' element
 function setupDropdown(name, options, append = false, remove = false) {
   var s = false;
   if (name == "yAxis_dropdown" || name.substring(0, name.length - 1) == "column_dropdown" || name == "module_I" || name == "modAxis_dropdown" || name == "molule_Idataset") {
@@ -125,6 +127,7 @@ setupDropdown("top_dropdown", ["--Select--", "Graph", "Scatter Chart", "Pie Char
 setupDropdown("bottom_dropdown", [["--Select--", "Min Max", "Delta", "Abs", "Gaussian Average"], ["--Select--", "Log", "Exp", "Root", "Add/Sub", "Mul", "Pow"], ["--Select--", "n-Fit", "xFlip", "Cut"], ["--Select--", "Calculator", "Function Gen", "Noise Gen", "Links"]]);
 setupDropdown("fGen_types", ["--Select--", "Linear", "Poly", "Exp", "Log", "Sin", "Cos", "Tan"])
 
+//contains 3 google Chart charts; sets data for chart
 class Chart {
   constructor(element, data) {
     this.chart = new google.visualization.LineChart(element);
@@ -166,6 +169,7 @@ class Chart {
   }
 }
 
+//creates all the charts; creates dummy data
 var charts = []
 function initCharts() {
   google.charts.load("44", {
@@ -188,6 +192,7 @@ function initCharts() {
 }
 initCharts();
 
+//draws, updates charts; hide them when they are created
 function drawChart(id = null, hide = false) {
   var options = {
     chartArea: {
@@ -220,6 +225,7 @@ function drawChart(id = null, hide = false) {
   }
 }
 
+//updates all overview tables
 function overviewTable() {
   var names = ["table_popup_side", "top_item_main_overview0", "top_item_main_overview1", "top_item_main_overview2", "top_item_main_overview3"];
   names.forEach(name => {
@@ -236,6 +242,7 @@ function overviewTable() {
   });
 }
 
+//creates custom table for data
 function table(element) {
   var id = element.getAttribute("name");
   id = id[id.length - 1]
@@ -283,6 +290,7 @@ function table(element) {
   document.getElementById("table_main" + id.toString()).innerHTML = makeTableHTML(tableArray);
 }
 
+//holdes datasets; add new sets
 class DataSets {
   constructor() {
     this.dataSet_list = [];
@@ -302,6 +310,7 @@ class DataSets {
 }
 var datasets = new DataSets;
 
+//holdes all information for a dataset
 class DataSet {
   constructor(values, user_input = true, operation = "Data", name = "", parent = "", param = "", type = "", showing = true) {
     this.values = values;
@@ -397,6 +406,7 @@ function renameSet(element) {
   }
 }
 
+//show only selected chart
 function showChart(chartId, id) {
   document.getElementById("graph_main" + id).style = "display: none;";
   document.getElementById("0" + "graph_main" + id).style = "display: none;";
@@ -408,6 +418,7 @@ function showChart(chartId, id) {
   document.getElementById("y-Axis" + id).innerText = "y-Axis";
 }
 
+//on change of every dropdown
 function dropdownChange(element) {
   let value = element.options[element.selectedIndex].text;
   let id = element.id[element.id.length - 1];
@@ -506,6 +517,7 @@ function dropdownChange(element) {
   }
 }
 
+//updates all dropdowns, i.e. on new dataset
 function updateDropdown(append = false, remove = false) {
   overviewTable();
   exportTable();
@@ -522,10 +534,12 @@ function updateDropdown(append = false, remove = false) {
   setupDropdown("modAxis_dropdown", datasets.dataSetMods_names, append, remove);
 }
 
+//on new overlay color
 function colorChange(element) {
   document.documentElement.style.setProperty("--header", element.value)
 }
 
+//import default datasets
 function importData() {
   let r = [];
   let rp = [];

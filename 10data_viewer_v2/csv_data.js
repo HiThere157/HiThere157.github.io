@@ -4,6 +4,7 @@ var csvData = [];
 var buttonData = [];
 var skip_row = false;
 
+//Show, Update the export table TR; on data change
 function exportTable() {
   var exportArray = [["Name", "Export", "", "Name", "Export"]];
 
@@ -36,6 +37,7 @@ function exportTable() {
   document.getElementById("dataExportTable").innerHTML = makeTableHTML(exportArray);
 }
 
+//Updates the data export textfield TR; onchange checkboxes in the export Table
 function exportField() {
   var fieldElement = document.getElementById("dataExport");
   fieldElement.value = "";
@@ -89,6 +91,7 @@ function exportField() {
   }
 }
 
+//Converts csv String to array
 function csvToArray(str, delimiter = ",") {
   let rows = str.split("\n");
   let array = [];
@@ -100,6 +103,8 @@ function csvToArray(str, delimiter = ",") {
   return array;
 }
 
+//Parse String from data import textfield TL; on 'Submit' button, if no file uploaded
+//Open import popup 
 function parseData(element) {
   var str = element.value;
   var tmpRows = str.split("]");
@@ -121,6 +126,7 @@ function parseData(element) {
   showData();
 }
 
+//Adds the 'Import Data' Buttons to the import table in the popup
 function setButtonData() {
   buttonData = [];
   var add_ = "";
@@ -147,6 +153,8 @@ function setButtonData() {
   buttonData.unshift(header);
 }
 
+//Shows import popup & displays tables
+//Detects, if data header available (name)
 function showData(element = null) {
   document.getElementById("table_popup").style = "display: block;";
   skip_row = false;
@@ -195,6 +203,7 @@ function showData(element = null) {
   overviewTable(document.getElementById("table_popup_side"));
 }
 
+//on 'Submit' button
 importForm.addEventListener("submit", function (e) {
   e.preventDefault();
   var input = csvFile.files[0];
@@ -213,11 +222,13 @@ importForm.addEventListener("submit", function (e) {
   }
 });
 
+//closes popup
 function close_popup(element) {
   let parent = element.parentElement.parentElement;
   parent.style = "display: none;";
 }
 
+//get type of an array
 function getType(array) {
   var ret = "number";
   let retArray = [];
@@ -239,6 +250,7 @@ function getType(array) {
   return [ret, array];
 }
 
+//saves the data to a dataset
 function saveData(element) {
   let id = element.id.substring(2, element.id.length);
   let type = element.id[1];
