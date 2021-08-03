@@ -59,19 +59,26 @@ function exportField() {
   }
 
   if (indexes.length > 1) {
-    dataString.push(tmp)
-    for (let i = 0; i < maxLen; i++) {
-      var tmp = [];
-      indexes.forEach(index => {
-        if (datasets.dataSet_list[index].values[i] == undefined) {
-          tmp.push("");
-        } else {
-          tmp.push(datasets.dataSet_list[index].values[i])
-        }
-      });
-
+    if (document.getElementById("formatOutput").checked == true) {
       dataString.push(tmp)
+      for (let i = 0; i < maxLen; i++) {
+        var tmp = [];
+        indexes.forEach(index => {
+          if (datasets.dataSet_list[index].values[i] == undefined) {
+            tmp.push("");
+          } else {
+            tmp.push(datasets.dataSet_list[index].values[i])
+          }
+        });
+
+        dataString.push(tmp)
+      }
+    } else {
+      indexes.forEach(index => {
+        dataString.push([datasets.dataSet_list[index].values])
+      });
     }
+
   } else {
     if (indexes.length != 0) {
       dataString = [datasets.dataSet_list[indexes[0]].values]
@@ -126,6 +133,24 @@ function parseData(element) {
   showData();
 }
 
+//i.e. shape (2,5) -> (5,2)
+function transpose() {
+  let shape = [csvData[0].length, csvData.length];
+  var temp = [];
+
+  for (let j = 0; j < shape[0]; j++) {
+    var newRow = [];
+    for (let i = 0; i < shape[1]; i++) {
+      newRow.push(csvData[i][j]);
+    }
+    temp.push(newRow);
+  }
+
+  csvData = temp;
+
+  showData();
+}
+
 //Adds the 'Import Data' Buttons to the import table in the popup
 function setButtonData() {
   buttonData = [];
@@ -133,7 +158,7 @@ function setButtonData() {
   if (skip_row == true) {
     add_ = "checked";
   }
-  var header = ["<input type='checkbox' id='hR' onchange='showData(this)' " + add_ + "><label for='hR'>1. Row Header</label>"];
+  var header = ["<button onclick='transpose()'>T</button><input type='checkbox' id='hR' onchange='showData(this)' " + add_ + "><label for='hR'>1. Row Header</label>"];
 
   for (let i = 0; i < csvData.length; i++) {
     var row = [];

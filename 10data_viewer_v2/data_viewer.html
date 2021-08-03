@@ -29,6 +29,7 @@
       <div class="header_item_main">
         <div class="export_item">
           <button>Download csv File</button>
+          <label>Format Output to CSV Format</label><input id="formatOutput" type="checkbox" onchange="exportField()" checked>
           <textarea id="dataExport" rows="3" onchange="parseData(this)"></textarea>
         </div>
         <div id="dataExportTable" class="export_item" style="overflow-y: scroll; padding-left: 1%"></div>

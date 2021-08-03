@@ -2,7 +2,7 @@ function click_icon(elem) {
     window.location.href = list[elem.id][1];
 }
 
-var list = {"icon0-0": ["Game of Life", "/4gol/game_of_life.html"], "icon0-1": ["Maze Generator", "/6maze/maze.html"], "icon0-2": ["Mine Sweeper", "/9mineSweeper/mineSweeper.html"], "icon1-5": ["Data Viewer v2 (T)", "/10data_viewer_v2/data_viewer.html"]}
+var list = {"icon0-0": ["Game of Life", "/4gol/game_of_life.html"], "icon0-1": ["Maze Generator", "/6maze/maze.html"], "icon0-2": ["Mine Sweeper", "/9mineSweeper/mineSweeper.html"], "icon1-5": ["Data Viewer v2", "/10data_viewer_v2/data_viewer.html"]}
 
 function refresh_Icons() {
     var key = Object.keys(list);
