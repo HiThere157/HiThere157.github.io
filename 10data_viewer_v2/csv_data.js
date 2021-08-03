@@ -164,7 +164,7 @@ function setButtonData() {
     var row = [];
     for (let j = 0; j < csvData[0].length + 1; j++) {
       if (i == 0 && j != 0) {
-        header.push("<button id='sC" + j + "' onclick='saveData(this)'>Save Column</button><br><label class='table_label' id='lC" + j + "'></label>");
+        header.push("<button name='sCs' id='sC" + j + "' onclick='saveData(this)'>Save Column</button><br><label class='table_label' id='lC" + j + "'></label>");
       }
       if (j == 0) {
         row.push("<button id='sR" + i + "' onclick='saveData(this)'>Save Row</button><label id='lR'" + i + "></label>");
@@ -273,6 +273,13 @@ function getType(array) {
   }
 
   return [ret, array];
+}
+
+//save all Columns as datasets
+function importAll(){
+  document.getElementsByName("sCs").forEach(element => {
+    saveData(element)
+  });
 }
 
 //saves the data to a dataset
