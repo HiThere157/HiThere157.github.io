@@ -11,32 +11,32 @@ function Fit() {
   if (n == "") {
     n = 1;
   } else {
-    n = parseInt(n)
+    n = parseInt(n);
   }
 
   if (yAxis != 0) {
-    y_vals = datasets.dataSet_list[yAxis - 1].values
-    name = datasets.dataSet_list[yAxis - 1].name
+    y_vals = datasets.dataSet_list[yAxis - 1].values;
+    name = datasets.dataSet_list[yAxis - 1].name;
   } else {
-    return []
+    return [];
   }
 
   if (xAxis != 0) {
-    x_vals = datasets.dataSet_list[xAxis - 1].values
+    x_vals = datasets.dataSet_list[xAxis - 1].values;
   } else {
-    x_vals = []
+    x_vals = [];
     for (let i = 0; i < y_vals.length; i++) {
-      x_vals.push(i)
+      x_vals.push(i);
     }
   }
 
-  var koeff = []
+  var koeff = [];
 
   const learningRate = 0.2;
   const optimizer = tf.train.adam(learningRate);
 
   for (let i = 0; i < n + 1; i++) {
-    koeff.push(tf.variable(tf.scalar(Math.random(-1, 1))))
+    koeff.push(tf.variable(tf.scalar(Math.random(-1, 1))));
   }
 
   function loss(pred, labels) {
@@ -47,9 +47,9 @@ function Fit() {
     const xs = tf.tensor1d(x);
 
     if (n == 1) {
-      var ys = xs.mul(koeff[1]).add(koeff[0])
+      var ys = xs.mul(koeff[1]).add(koeff[0]);
     } else if (n == 2) {
-      var ys = xs.square().mul(koeff[2]).add(xs.mul(koeff[1])).add(koeff[0])
+      var ys = xs.square().mul(koeff[2]).add(xs.mul(koeff[1])).add(koeff[0]);
     }
 
     return ys;
@@ -68,12 +68,12 @@ function Fit() {
     ys.dispose();
   }
 
-  var elements = [document.getElementById("fit_c"), document.getElementById("fit_b"), document.getElementById("fit_a")]
+  var elements = [document.getElementById("fit_c"), document.getElementById("fit_b"), document.getElementById("fit_a")];
 
   for (let i = 0; i < koeff.length; i++) {
     let tmp = koeff[i].dataSync();
-    elements[i].innerText = Number(tmp).toFixed(2)
+    elements[i].innerText = Number(tmp).toFixed(2);
   }
 
-  return [null, curveY, name, n]
+  return [null, curveY, name, n];
 }

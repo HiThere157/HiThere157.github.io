@@ -27,28 +27,27 @@ function Min_Max(element) {
 }
 
 function xFlip(element, data) {
-  console.log(element.selectedIndex)
   if (element.selectedIndex != 0) {
     var xflipTable = [["Index", "Value", "xFlip"]];
     var tmp = [];
 
     for (let i = 0; i < data.len; i++) {
-      tmp.push(data.values[data.len - 1 - i])
+      tmp.push(data.values[data.len - 1 - i]);
     }
 
     for (let i = 0; i < tmp.length; i++) {
       xflipTable.push([i, data.values[i], tmp[i]]);
     }
 
-    return [xflipTable, tmp, data.name, ""]
+    return [xflipTable, tmp, data.name, ""];
   }
 }
 
 function Cut(element, data) {
   if (element.selectedIndex != 0) {
-    var start = document.getElementById("cut_start").value
-    var end = document.getElementById("cut_end").value
-    var replaceNaN = document.getElementById("cut_nan").checked
+    var start = document.getElementById("cut_start").value;
+    var end = document.getElementById("cut_end").value;
+    var replaceNaN = document.getElementById("cut_nan").checked;
 
     var cutTable = [["Index", "Value", "Cut"]];
     var tmp = [];
@@ -56,34 +55,34 @@ function Cut(element, data) {
     if (start == "") {
       start = 0;
     } else {
-      start = parseInt(start)
+      start = parseInt(start);
     }
 
     if (end == "") {
-      end = data.len - 1
+      end = data.len - 1;
     } else {
-      end = parseInt(end)
+      end = parseInt(end);
     }
 
     for (let i = 0; i < data.len; i++) {
       if (i < start) {
         if (replaceNaN == true) {
-          tmp.push(NaN)
+          tmp.push(NaN);
         }
       } else if (i >= start && i <= end) {
-        tmp.push(data.values[i])
+        tmp.push(data.values[i]);
       }
     }
 
     for (let i = 0; i < data.len; i++) {
       if (tmp[i] == undefined) {
-        cutTable.push([i, data.values[i], ""])
+        cutTable.push([i, data.values[i], ""]);
       } else {
-        cutTable.push([i, data.values[i], tmp[i]])
+        cutTable.push([i, data.values[i], tmp[i]]);
       }
     }
 
-    return [cutTable, tmp, data.name, start + "," + end]
+    return [cutTable, tmp, data.name, start + "," + end];
   }
 }
 
@@ -345,20 +344,20 @@ function Gaussian_Average(element, data, nDigits, n) {
     function mk(a, i) {
       var tmpKernel = [];
       var kernel = [];
-      var s = 0
+      var s = 0;
 
       for (let x = i[0]; x < i[1]; x++) {
         let tmp = 1 / (Math.sqrt(Math.PI) * a) * Math.exp(-Math.pow(x / 2, 2) / Math.pow(a, 2));
         tmpKernel.push(tmp);
         s += tmp;
-        console.log(s)
+        console.log(s);
       }
 
       tmpKernel.forEach(value => {
         kernel.push(value * 1 / s);
       });
 
-      return kernel
+      return kernel;
     }
 
     if (n == "") {
@@ -381,7 +380,7 @@ function Gaussian_Average(element, data, nDigits, n) {
           }
           tmp.push(Number(tmpValue.toFixed(nDigits)));
         } else {
-          tmp.push(NaN)
+          tmp.push(NaN);
         }
 
       }
@@ -427,7 +426,7 @@ function Fgen(nDigits) {
   var x_data = null;
 
   if (x_data_index != 0) {
-    x_data = datasets.dataSet_list[x_data_index - 1]
+    x_data = datasets.dataSet_list[x_data_index - 1];
   }
 
   let type = document.getElementById("molule_fGen_types").value;
@@ -485,10 +484,10 @@ function Fgen(nDigits) {
     x_interval = x_interval.split(",");
 
     if (x_interval.length == 1) {
-      x_interval.push(100)
+      x_interval.push(100);
     }
     if (x_interval.length == 2) {
-      x_interval.push(1)
+      x_interval.push(1);
     }
 
     if (x_interval[2] < 0.001) {
@@ -524,7 +523,7 @@ function Fgen(nDigits) {
     });
 
     x.forEach(n => {
-      tmp.push(Number((n).toFixed(nDigits)))
+      tmp.push(Number((n).toFixed(nDigits)));
     });
 
   } else {
@@ -536,37 +535,37 @@ function Fgen(nDigits) {
   if (type == "Poly") {
     type_label.innerText = "y = ax^4 + bx^3 + cx^2 + dx + e";
     x.forEach(n => {
-      tmp.push(Number((a * Math.pow(n, 4) + b * Math.pow(n, 3) + c * Math.pow(n, 2) + d * n + e).toFixed(nDigits)))
+      tmp.push(Number((a * Math.pow(n, 4) + b * Math.pow(n, 3) + c * Math.pow(n, 2) + d * n + e).toFixed(nDigits)));
     });
 
   } else if (type == "Exp") {
     type_label.innerText = "y= a * b^[c * (x - d)] + e";
     x.forEach(n => {
-      tmp.push(Number((a * Math.pow(b, (c * (n - d))) + e).toFixed(nDigits)))
+      tmp.push(Number((a * Math.pow(b, (c * (n - d))) + e).toFixed(nDigits)));
     });
 
   } else if (type == "Log") {
     type_label.innerText = "y= a * log(b, [c * (x - d)]) + e";
     x.forEach(n => {
-      tmp.push(Number((a * Math.log(c * (n - d)) / Math.log(b) + e).toFixed(nDigits)))
+      tmp.push(Number((a * Math.log(c * (n - d)) / Math.log(b) + e).toFixed(nDigits)));
     });
 
   } else if (type == "Sin") {
     type_label.innerText = "y= a * sin[b * (x - c)] + d";
     x.forEach(n => {
-      tmp.push(Number((a * Math.sin(b * (n - c)) + d).toFixed(nDigits)))
+      tmp.push(Number((a * Math.sin(b * (n - c)) + d).toFixed(nDigits)));
     });
 
   } else if (type == "Cos") {
     type_label.innerText = "y= a * cos[b * (x - c)] + d";
     x.forEach(n => {
-      tmp.push(Number((a * Math.cos(b * (n - c)) + d).toFixed(nDigits)))
+      tmp.push(Number((a * Math.cos(b * (n - c)) + d).toFixed(nDigits)));
     });
 
   } else if (type == "Tan") {
     type_label.innerText = "y= a * tan[b * (x - c)] + d";
     x.forEach(n => {
-      tmp.push(Number((a * Math.tan(b * (n - c)) + d).toFixed(nDigits)))
+      tmp.push(Number((a * Math.tan(b * (n - c)) + d).toFixed(nDigits)));
     });
 
   }
@@ -596,7 +595,7 @@ function Calc(element) {
     calcs[calcs.length - 1] += pressed;
 
   } else if (pressed == "k" && calcs[calcs.length - 1].includes(".") == false) {
-    calcs[calcs.length - 1] += "."
+    calcs[calcs.length - 1] += ".";
 
   } else if (["div", "mul", "min", "plus", "perc", "pm"].includes(pressed)) {
 
@@ -623,13 +622,13 @@ function Calc(element) {
         solution = Number(calcs[i]);
       } else {
         if (calcs[i] == "mul") {
-          solution *= Number(calcs[i + 1])
+          solution *= Number(calcs[i + 1]);
         } else if (calcs[i] == "div") {
-          solution /= Number(calcs[i + 1])
+          solution /= Number(calcs[i + 1]);
         } else if (calcs[i] == "min") {
-          solution -= Number(calcs[i + 1])
+          solution -= Number(calcs[i + 1]);
         } else if (calcs[i] == "plus") {
-          solution += Number(calcs[i + 1])
+          solution += Number(calcs[i + 1]);
         }
       }
     }
@@ -644,7 +643,7 @@ function Calc(element) {
 
   if (solution != "") {
     tmp = solution;
-    calcs = [solution.toString()]
+    calcs = [solution.toString()];
   }
 
   document.getElementById("calc_out").value = tmp;
@@ -838,7 +837,7 @@ function selected_Module(element, depth = false) {
       returned = Ngen(element, data, nDigits, n);
 
     } else {
-      console.log(operation)
+      console.log(operation);
     }
 
     if (returned != []) {

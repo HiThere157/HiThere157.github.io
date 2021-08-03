@@ -22,9 +22,9 @@ function exportTable() {
     tmp.push("");
 
     if (i == datasets.dataSet_names.length - 1 && tmp.length == 3) {
-      tmp.push("")
-      tmp.push("")
-      tmp.push("")
+      tmp.push("");
+      tmp.push("");
+      tmp.push("");
     }
 
     if (tmp.length == 6) {
@@ -38,7 +38,7 @@ function exportTable() {
 }
 
 //Updates the data export textfield TR; onchange checkboxes in the export Table
-function exportField() {
+function exportField(override = false) {
   var fieldElement = document.getElementById("dataExport");
   fieldElement.value = "";
   var dataString = [];
@@ -58,37 +58,38 @@ function exportField() {
     }
   }
 
-  if (indexes.length > 1) {
+  if (indexes.length > 1 && override == false) {
+    document.getElementById("formatOutput").checked = true;
+  } else if (indexes.length != 0 && override == false) {
+    document.getElementById("formatOutput").checked = false;
+  }
+
+  if (indexes.length > 0) {
     if (document.getElementById("formatOutput").checked == true) {
-      dataString.push(tmp)
+      dataString.push(tmp);
       for (let i = 0; i < maxLen; i++) {
         var tmp = [];
         indexes.forEach(index => {
           if (datasets.dataSet_list[index].values[i] == undefined) {
             tmp.push("");
           } else {
-            tmp.push(datasets.dataSet_list[index].values[i])
+            tmp.push(datasets.dataSet_list[index].values[i]);
           }
         });
 
-        dataString.push(tmp)
+        dataString.push(tmp);
       }
     } else {
       indexes.forEach(index => {
-        dataString.push([datasets.dataSet_list[index].values])
+        dataString.push([datasets.dataSet_list[index].values]);
       });
-    }
-
-  } else {
-    if (indexes.length != 0) {
-      dataString = [datasets.dataSet_list[indexes[0]].values]
     }
   }
 
-  var output = []
+  var output = [];
 
   dataString.forEach(set => {
-    output.push("[" + set.toString() + "]")
+    output.push("[" + set.toString() + "]");
   });
 
   if (output.length == 1) {
@@ -120,11 +121,11 @@ function parseData(element) {
   for (let i = 0; i < tmpRows.length; i++) {
     let tmp = tmpRows[i].replaceAll("[", "").replaceAll('\"', "").split(",");
     if (i != 0) {
-      tmp.shift()
+      tmp.shift();
     }
 
     if (tmp.length != 0) {
-      data.push(tmp)
+      data.push(tmp);
     }
 
   }
@@ -200,9 +201,9 @@ function showData(element = null) {
     }
   }
 
-  setButtonData()
+  setButtonData();
 
-  var combinedData = []
+  var combinedData = [];
   for (let i = 0; i < buttonData.length; i++) {
     var row = [];
     for (let j = 0; j < buttonData[0].length; j++) {
@@ -276,9 +277,9 @@ function getType(array) {
 }
 
 //save all Columns as datasets
-function importAll(){
+function importAll() {
   document.getElementsByName("sCs").forEach(element => {
-    saveData(element)
+    saveData(element);
   });
 }
 

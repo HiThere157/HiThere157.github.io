@@ -94,7 +94,7 @@ function setupDropdown(name, options, append = false, remove = false) {
         removeAllOptions(element);
 
         if (name == "bottom_dropdown" && append == false) {
-          options_ = options[element.id[element.id.length - 1]]
+          options_ = options[element.id[element.id.length - 1]];
         } else {
           options_ = options;
         }
@@ -125,7 +125,7 @@ function setupDropdown(name, options, append = false, remove = false) {
 }
 setupDropdown("top_dropdown", ["--Select--", "Graph", "Scatter Chart", "Pie Chart", "Table", "Overview"]);
 setupDropdown("bottom_dropdown", [["--Select--", "Min Max", "Delta", "Abs", "Gaussian Average"], ["--Select--", "Log", "Exp", "Root", "Add/Sub", "Mul", "Pow"], ["--Select--", "n-Fit", "xFlip", "Cut"], ["--Select--", "Calculator", "Function Gen", "Noise Gen", "Links"]]);
-setupDropdown("fGen_types", ["--Select--", "Linear", "Poly", "Exp", "Log", "Sin", "Cos", "Tan"])
+setupDropdown("fGen_types", ["--Select--", "Linear", "Poly", "Exp", "Log", "Sin", "Cos", "Tan"]);
 
 //contains 3 google Chart charts; sets data for chart
 class Chart {
@@ -149,7 +149,6 @@ class Chart {
 
     } else {
       this.data.addColumn("number", "x");
-      console.log()
       this.data.addColumn(y.type, y.name);
 
       var values = [];
@@ -245,7 +244,7 @@ function overviewTable() {
 //creates custom table for data
 function table(element) {
   var id = element.getAttribute("name");
-  id = id[id.length - 1]
+  id = id[id.length - 1];
   var index = [];
   var tableArray = [];
   var tmpArray = ["Index"];
@@ -254,7 +253,7 @@ function table(element) {
   document.getElementsByName("column_dropdown" + id.toString()).forEach(element => {
     var len = 0;
 
-    index.push(element.selectedIndex)
+    index.push(element.selectedIndex);
     if (element.selectedIndex != 0) {
       var len = datasets.dataSet_list[element.selectedIndex - 1].len;
       tmpArray.push(datasets.dataSet_names[element.selectedIndex - 1]);
@@ -381,14 +380,14 @@ function deleteSet(element) {
 }
 
 function renameSet(element) {
-  let name = element.getAttribute("name")
+  let name = element.getAttribute("name");
   let new_name = window.prompt("Enter new name", "");
 
   if (new_name != null || new_name != "") {
     let index = datasets.dataSet_names.indexOf(name);
 
     if (datasets.dataSet_names.indexOf(new_name) != -1) {
-      new_name += datasets.dataSet_list[index].id
+      new_name += datasets.dataSet_list[index].id;
     }
 
     datasets.dataSet_list[index].name = new_name;
@@ -530,13 +529,13 @@ function updateDropdown(append = false, remove = false) {
   }
   setupDropdown("module_I", datasets.dataSet_names, append, remove);
   setupDropdown("module_Ix", datasets.dataSet_names, append, remove);
-  setupDropdown("molule_Idataset", datasets.dataSet_names, append, remove)
+  setupDropdown("molule_Idataset", datasets.dataSet_names, append, remove);
   setupDropdown("modAxis_dropdown", datasets.dataSetMods_names, append, remove);
 }
 
 //on new overlay color
 function colorChange(element) {
-  document.documentElement.style.setProperty("--header", element.value)
+  document.documentElement.style.setProperty("--header", element.value);
 }
 
 //import default datasets
@@ -546,7 +545,7 @@ function importData() {
   for (let i = -1000; i < 1001; i++) {
     r.push(i / 10);
     if (i >= 0) {
-      rp.push(i / 10)
+      rp.push(i / 10);
     }
   }
 
@@ -561,7 +560,7 @@ function importTestData() {
     [NaN, 0, 0.4307, 0.6826, 0.8614, 1, 1.1133, 1.2091, 1.292, 1.3652, 1.4307, 1.4899, 1.544, 1.5937, 1.6397, 1.6826, 1.7227, 1.7604, 1.7959, 1.8295, 1.8614, 1.8917, 1.9206, 1.9482, 1.9746, 2, 2.0244, 2.0478, 2.0704, 2.0922, 2.1133, 2.1337, 2.1534, 2.1725, 2.1911, 2.2091, 2.2266, 2.2436, 2.2602, 2.2763, 2.292, 2.3074, 2.3223, 2.337, 2.3512, 2.3652, 2.3789, 2.3922, 2.4053, 2.4181],
     [NaN, -0.1368, 0.6703, 0.8718, 0.6206, 0.7772, 1.3517, 1.3775, 1.1259, 1.5494, 1.5538, 1.5324, 1.4842, 1.4384, 1.5625, 1.6888, 1.7656, 1.989, 1.7658, 1.8658, 2.1068, 1.7356, 2.1082, 1.7945, 1.927, 2.0463, 1.7878, 2.193, 1.986, 1.9449, 2.3494, 2.3796, 2.3472, 2.3393, 2.2007, 2.1986, 2.1299, 2.3887, 2.1213, 2.111, 2.517, 2.4481, 2.5304, 2.1298, 2.1617, 2.327, 2.4663, 2.4972, 2.1611, 2.4104],
     [-99, -71.3, -49, -31.5, -18.2, -8.5, -1.8, 2.5, 5, 6.3, 7, 7.7, 9, 11.5, 15.8, 22.5, 32.2, 45.5, 63, 85.3]
-  ]
+  ];
 
   datasets.add(new DataSet(td[0], false, "Test"));
   datasets.add(new DataSet(td[1], false, "Test"));
