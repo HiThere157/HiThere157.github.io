@@ -193,6 +193,7 @@ initCharts();
 
 //draws, updates charts; hide them when they are created
 function drawChart(id = null, hide = false) {
+  let color = window.getComputedStyle(document.documentElement).getPropertyValue('--item-background');
   var options = {
     chartArea: {
       left: 40,
@@ -202,7 +203,7 @@ function drawChart(id = null, hide = false) {
       position: 'top'
     },
     width: '100%',
-    backgroundColor: "#e2e2e2"
+    backgroundColor: color
   };
 
   if (id == null) {
