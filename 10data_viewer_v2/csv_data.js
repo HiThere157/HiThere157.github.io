@@ -45,16 +45,10 @@ function exportField(override = false) {
   var indexes = [];
 
   var tmp = [];
-  var maxLen = 0;
   for (let i = 0; i < datasets.dataSet_names.length; i++) {
     if (document.getElementById("E" + i).checked == true) {
       tmp.push(datasets.dataSet_names[i]);
       indexes.push(i);
-      var len = datasets.dataSet_list[i].len;
-
-      if (len > maxLen) {
-        maxLen = len;
-      }
     }
   }
 
@@ -67,7 +61,7 @@ function exportField(override = false) {
   if (indexes.length > 0) {
     if (document.getElementById("formatOutput").checked == true) {
       dataString.push(tmp);
-      for (let i = 0; i < maxLen; i++) {
+      for (let i = 0; i < updateLen(); i++) {
         var tmp = [];
         indexes.forEach(index => {
           if (datasets.dataSet_list[index].values[i] == undefined) {
@@ -134,9 +128,22 @@ function parseData(element) {
   showData();
 }
 
+//get the len of the longest row in csvData
+function updateLen() {
+  var maxLen = 0;
+  csvData.forEach(row => {
+    if (row.length > maxLen) {
+      maxLen = row.length;
+    }
+  });
+
+  return maxLen
+}
+
 //i.e. shape (2,5) -> (5,2)
 function transpose() {
-  let shape = [csvData[0].length, csvData.length];
+
+  let shape = [updateLen(), csvData.length];
   var temp = [];
 
   for (let j = 0; j < shape[0]; j++) {
@@ -163,7 +170,7 @@ function setButtonData() {
 
   for (let i = 0; i < csvData.length; i++) {
     var row = [];
-    for (let j = 0; j < csvData[0].length + 1; j++) {
+    for (let j = 0; j < updateLen() + 1; j++) {
       if (i == 0 && j != 0) {
         header.push("<button name='sCs' id='sC" + j + "' onclick='saveData(this)'>Save Column</button><br><label class='table_label' id='lC" + j + "'></label>");
       }
@@ -259,7 +266,7 @@ function getType(array) {
   var ret = "number";
   let retArray = [];
   array.forEach(value => {
-    if (isNaN(Number(value)) == true) {
+    if (isNaN(Number(value)) == true && value != undefined) {
       ret = "string";
       value.replaceAll('\"', '');
     }
