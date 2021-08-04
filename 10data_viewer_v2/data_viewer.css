@@ -51,7 +51,7 @@ td {
 p {
   margin: 0;
 }
-button, select {
+button, select, input {
   cursor: pointer;
 }
 textarea {
@@ -194,7 +194,7 @@ textarea {
   height: 30px;
   width: 30px;
   right: 6px;
-  border-radius: 50px;
+  border-radius: 7px;
   border: solid 1px;
   background-image: url("icons/cross_icon.svg");
   background-repeat: no-repeat;

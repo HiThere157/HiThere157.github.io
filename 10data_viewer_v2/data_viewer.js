@@ -53,7 +53,11 @@ function makeTableHTML(Array) {
     for (var i = 0; i < Array.length; i++) {
       result += "<tr>";
       for (var j = 0; j < Array[i].length; j++) {
-        result += "<td>" + Array[i][j].toString() + "</td>";
+        var tmp = Array[i][j];
+        if (tmp == undefined) {
+          tmp = "";
+        }
+        result += "<td>" + tmp.toString() + "</td>";
       }
       result += "</tr>";
     }
@@ -202,7 +206,7 @@ function drawChart(id = null, hide = false) {
       position: 'top'
     },
     width: '100%',
-    backgroundColor: { fill:'transparent' }
+    backgroundColor: { fill: 'transparent' }
   };
 
   if (id == null) {
@@ -274,11 +278,13 @@ function table(element) {
     for (let j = 0; j < index.length; j++) {
       var tmp = "";
       if (index[j] != 0) {
-        tmp = Number((datasets.dataSet_list[index[j] - 1].values[i]).toFixed(4));
+        tmp = datasets.dataSet_list[index[j] - 1].values[i];
       }
 
       if (tmp == undefined) {
         tmp = "";
+      } else if (tmp != "") {
+        tmp = Number(tmp.toFixed(4)).toString();
       }
 
       tmpArray.push(tmp);

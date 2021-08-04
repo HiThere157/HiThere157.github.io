@@ -302,13 +302,16 @@ function saveData(element) {
     data = csvData[id];
   } else if (type == "C") {
     for (let i = start_index; i < csvData.length; i++) {
-      data.push(csvData[i][id - 1]);
+      var tmp = csvData[i][id - 1]
+      if (tmp != "" && tmp != undefined) {
+        data.push(tmp);
+      }
     }
   }
 
   let tmpRet = getType(data);
 
-  if(tmpRet[1].length != 0){
+  if (tmpRet[1].length != 0) {
     element.style = "background-color: #cccccc;";
     datasets.add(new DataSet(tmpRet[1], true, "Data", name.replaceAll('"', '').trim(), "", "", tmpRet[0]));
     updateDropdown(true);
