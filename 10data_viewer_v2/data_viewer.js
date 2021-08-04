@@ -77,7 +77,7 @@ function removeAllOptions(element) {
 }
 
 //sets dropdown options for an 'select' element
-function setupDropdown(name, options, append = false, remove = false) {
+function setupDropdown(name, options, append = false, remove = false, mod = true) {
   var s = false;
   if (name == "yAxis_dropdown" || name.substring(0, name.length - 1) == "column_dropdown" || name == "module_I" || name == "modAxis_dropdown" || name == "molule_Idataset") {
     options.unshift("--Select--");
@@ -114,7 +114,7 @@ function setupDropdown(name, options, append = false, remove = false) {
 
     if (remove == false) {
       options_.forEach(option => {
-        if (option != null) {
+        if (option != null && mod == true) {
           let opt = document.createElement("option");
           opt.text = option;
           element.add(opt);
@@ -523,7 +523,7 @@ function dropdownChange(element) {
 }
 
 //updates all dropdowns, i.e. on new dataset
-function updateDropdown(append = false, remove = false) {
+function updateDropdown(append = false, remove = false, mod = true) {
   overviewTable();
   exportTable();
   exportField();
@@ -536,7 +536,7 @@ function updateDropdown(append = false, remove = false) {
   setupDropdown("module_I", datasets.dataSet_names, append, remove);
   setupDropdown("module_Ix", datasets.dataSet_names, append, remove);
   setupDropdown("molule_Idataset", datasets.dataSet_names, append, remove);
-  setupDropdown("modAxis_dropdown", datasets.dataSetMods_names, append, remove);
+  setupDropdown("modAxis_dropdown", datasets.dataSetMods_names, append, remove, mod);
 }
 
 //on new overlay color
