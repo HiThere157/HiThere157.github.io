@@ -584,15 +584,16 @@ function Fgen(nDigits) {
 //Calculator
 var calcs = [""];
 function Calc(element) {
-  var solution = "";
+  var solution = undefined;
   var pressed = undefined;
+  var lastOp = undefined;
 
   if (element != false) {
     pressed = element.id.split("_")[1];
   }
 
   if (isNaN(Number(pressed)) == false) {
-    calcs[calcs.length - 1] += pressed;
+    calcs[calcs.length - 1] = Number(calcs[calcs.length - 1] + pressed).toString();
 
   } else if (pressed == "k" && calcs[calcs.length - 1].includes(".") == false) {
     calcs[calcs.length - 1] += ".";
@@ -603,18 +604,18 @@ function Calc(element) {
       calcs[calcs.length - 1] = (Number(calcs[calcs.length - 1]) / 100).toString();
 
     } else if (pressed == "pm") {
-      calcs[calcs.length - 1] = (Number(calcs[calcs.length - 1]) * 100).toString();
+      calcs[calcs.length - 1] = (Number(calcs[calcs.length - 1]) * -1).toString();
 
     } else {
       calcs.push(pressed);
+      lastOp = pressed;
       calcs.push("");
     }
 
   } else if (pressed == "ac") {
-    calcs = [""];
+    calcs = ["0"];
 
   } else if (pressed == "eq" && calcs.length > 2) {
-    calcs[calcs.length - 1] = calcs[calcs.length - 1];
     solution = 0;
 
     for (let i = 0; i < calcs.length; i++) {
@@ -634,6 +635,14 @@ function Calc(element) {
     }
   }
 
+  ["div", "mul", "min", "plus"].forEach(element => {
+    document.getElementById("calc_" + element).style = "";
+  });
+
+  if (lastOp != undefined) {
+    document.getElementById("calc_" + lastOp).style = "background-color: #A3A3A3;";
+  }
+
   var tmp = "";
   for (let i = 0; i < calcs.length; i++) {
     if (isNaN(Number(calcs[i])) == false) {
@@ -641,11 +650,14 @@ function Calc(element) {
     }
   }
 
-  if (solution != "") {
+  if (solution != undefined) {
     tmp = solution;
     calcs = [solution.toString()];
   }
 
+  if (tmp == NaN) {
+    tmp = 0;
+  }
   document.getElementById("calc_out").value = tmp;
 }
 
@@ -690,6 +702,10 @@ function show_Module(name, id, simple_mod = false) {
   copy.setAttribute("name", "module" + id.toString());
 
   document.getElementById("bottom_item_main" + id.toString()).appendChild(copy);
+
+  if (name == "calculator") {
+    document.getElementById("calc_out").value = 0;
+  }
 
   if (simple_mod == true) {
     let mod_text = document.getElementsByName("mod_text")[id - slot_offset[id]];
