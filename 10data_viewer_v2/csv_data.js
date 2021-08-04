@@ -45,10 +45,16 @@ function exportField(override = false) {
   var indexes = [];
 
   var tmp = [];
+  var maxLen = 0;
   for (let i = 0; i < datasets.dataSet_names.length; i++) {
     if (document.getElementById("E" + i).checked == true) {
       tmp.push(datasets.dataSet_names[i]);
       indexes.push(i);
+      var len = datasets.dataSet_list[i].len;
+
+      if (len > maxLen) {
+        maxLen = len;
+      }
     }
   }
 
@@ -61,7 +67,7 @@ function exportField(override = false) {
   if (indexes.length > 0) {
     if (document.getElementById("formatOutput").checked == true) {
       dataString.push(tmp);
-      for (let i = 0; i < updateLen(); i++) {
+      for (let i = 0; i < maxLen; i++) {
         var tmp = [];
         indexes.forEach(index => {
           if (datasets.dataSet_list[index].values[i] == undefined) {
