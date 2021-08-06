@@ -101,6 +101,7 @@ function exportField(override = false) {
 
 //Converts csv String to array
 function csvToArray(str, delimiter = ",") {
+  str = str.replaceAll("[],", "").replaceAll("[]", "");
   let rows = str.split("\n");
   let array = [];
 
@@ -312,11 +313,17 @@ function saveData(element) {
 
   var data = [];
   if (type == "R") {
-    data = csvData[id];
+    csvData[id].forEach(element => {
+      if (element != "" && element != undefined) {
+        data.push(element);
+      }
+    });
+
   } else if (type == "C") {
     for (let i = start_index; i < csvData.length; i++) {
       var tmp = csvData[i][id - 1]
       if (tmp != "" && tmp != undefined) {
+        console.log("pushed:" + tmp.toString())
         data.push(tmp);
       }
     }
