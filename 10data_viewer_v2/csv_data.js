@@ -268,7 +268,7 @@ function close_popup(element) {
   parent.style = "display: none;";
 }
 
-//get type of an array
+//get datatype of an array
 function getType(array) {
   var ret = "number";
   let retArray = [];
@@ -323,7 +323,6 @@ function saveData(element) {
     for (let i = start_index; i < csvData.length; i++) {
       var tmp = csvData[i][id - 1]
       if (tmp != "" && tmp != undefined) {
-        console.log("pushed:" + tmp.toString())
         data.push(tmp);
       }
     }

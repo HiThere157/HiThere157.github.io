@@ -9,7 +9,7 @@ Number.prototype.between = function (a, b) {
 };
 
 function setup() {
-  createCanvas(1000, 800);
+  createCanvas(window.innerWidth, window.innerHeight-5);
   background("#000");
 
   for (var a = 0; a < Math.PI * 2; a += Math.PI / 75) {
