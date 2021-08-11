@@ -19,7 +19,7 @@
           <input type="file" id="csvFile" accept=".csv" />
           <input type="submit" value="Submit" />
         </form>
-        <textarea id="dataInput" rows="3" onchange="parseData(this)"></textarea>
+        <textarea id="dataInput" rows="3" onchange="parseData(this)" spellcheck="false"></textarea>
       </div>
     </div>
     <div class="header_item" style="outline: solid 1px;">
@@ -29,8 +29,10 @@
       <div class="header_item_main">
         <div class="export_item">
           <button>Download csv File</button>
-          <label>CSV Format</label><input id="formatOutput" type="checkbox" onchange="exportField(true)">
-          <textarea id="dataExport" rows="3" onchange="parseData(this)"></textarea>
+          <button id="copyButton" onclick="copyToClip()">Copy to Clipboard</button>
+          <label>CSV Format</label>
+          <input id="formatOutput" type="checkbox" onchange="exportField(true)">
+          <textarea id="dataExport" rows="3" onchange="parseData(this)" spellcheck="false"></textarea>
         </div>
         <div id="dataExportTable" class="export_item" style="overflow-y: scroll;"></div>
       </div>

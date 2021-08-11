@@ -4,6 +4,8 @@ var csvData = [];
 var buttonData = [];
 var skip_row = false;
 
+var buttonColor = getComputedStyle(document.body).getPropertyValue("--button-pressed")
+
 //Show, Update the export table TR; on data change
 function exportTable() {
   var exportArray = [["Name", "Export", "", "Name", "Export"]];
@@ -37,8 +39,10 @@ function exportTable() {
   document.getElementById("dataExportTable").innerHTML = makeTableHTML(exportArray);
 }
 
-//Updates the data export textfield TR; onchange checkboxes in the export Table
+//Updates the data export textfield TR; onchange checkboxes in the export Table and format checkbox
 function exportField(override = false) {
+  document.getElementById("copyButton").style = "";
+
   var fieldElement = document.getElementById("dataExport");
   fieldElement.value = "";
   var dataString = [];
@@ -97,6 +101,18 @@ function exportField(override = false) {
   } else {
     fieldElement.value = "[" + output.toString() + "]";
   }
+}
+
+//Copies the output string to the clipboard
+function copyToClip() {
+  var copyText = document.getElementById("dataExport");
+
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+
+  document.execCommand("copy");
+
+  document.getElementById("copyButton").style.backgroundColor = buttonColor;
 }
 
 //Converts csv String to array
@@ -331,7 +347,7 @@ function saveData(element) {
   let tmpRet = getType(data);
 
   if (tmpRet[1].length != 0) {
-    element.style = "background-color: #cccccc;";
+    element.style.backgroundColor = buttonColor;
     datasets.add(new DataSet(tmpRet[1], true, "Data", name.replaceAll('"', '').trim(), "", "", tmpRet[0]));
     updateDropdown(true, false, false);
   }
