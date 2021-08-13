@@ -56,6 +56,7 @@ button, select, input {
   cursor: pointer;
 }
 textarea {
+  position: relative;
   width: 90%;
 }
 
