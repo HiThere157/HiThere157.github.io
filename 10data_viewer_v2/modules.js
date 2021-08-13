@@ -522,6 +522,8 @@ function Fgen(nDigits) {
       element.style.display = "none";
     });
 
+    genTable = [["Index", "x"]];
+
     x.forEach(n => {
       tmp.push(Number((n).toFixed(nDigits)));
     });
@@ -575,7 +577,11 @@ function Fgen(nDigits) {
       tmp[i] = NaN;
     }
 
-    genTable.push([i, x[i], tmp[i]]);
+    if (type == "Linear") {
+      genTable.push([i, tmp[i]]);
+    } else {
+      genTable.push([i, x[i], tmp[i]]);
+    }
   }
 
   return [genTable, tmp, "Fgen(" + type + ")", a + "," + b + "," + c + "," + d + "," + e];

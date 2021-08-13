@@ -389,7 +389,7 @@ function renameSet(element) {
   let name = element.getAttribute("name");
   let new_name = window.prompt("Enter new name", "");
 
-  if (new_name != null || new_name != "") {
+  if (new_name != null && new_name != "") {
     let index = datasets.dataSet_names.indexOf(name);
 
     if (datasets.dataSet_names.indexOf(new_name) != -1) {

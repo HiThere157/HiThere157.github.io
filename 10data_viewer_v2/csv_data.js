@@ -40,11 +40,13 @@ function exportTable() {
 }
 
 //Updates the data export textfield TR; onchange checkboxes in the export Table and format checkbox
-function exportField(override = false) {
-  document.getElementById("copyButton").style = "";
+function exportField(override = false, csvFile = false) {
+  if (csvFile == false) {
+    document.getElementById("copyButton").style = "";
+    document.getElementById("exportButton").style = "";
+  }
 
   var fieldElement = document.getElementById("dataExport");
-  fieldElement.value = "";
   var dataString = [];
   var indexes = [];
 
@@ -69,7 +71,7 @@ function exportField(override = false) {
   }
 
   if (indexes.length > 0) {
-    if (document.getElementById("formatOutput").checked == true) {
+    if (document.getElementById("formatOutput").checked == true || csvFile == true) {
       dataString.push(tmp);
       for (let i = 0; i < maxLen; i++) {
         var tmp = [];
@@ -90,16 +92,57 @@ function exportField(override = false) {
     }
   }
 
+  if (csvFile == true) {
+    return dataString;
+  }
+
   var output = [];
 
   dataString.forEach(set => {
     output.push("[" + set.toString() + "]");
   });
 
+  fieldElement.value = "";
   if (output.length == 1) {
     fieldElement.value = output[0];
   } else {
     fieldElement.value = "[" + output.toString() + "]";
+  }
+}
+
+//gets datastring from exportField() and downloads csv File
+function makeCSV() {
+  var fileName = window.prompt("Enter Filename", "")
+
+  if (fileName != null && fileName != "") {
+    if (fileName.substring(0, 2) != "!h") {
+      var rows = exportField(false, true);
+      let csvContent = "data:text/csv;charset=utf-8,";
+
+      rows.forEach(function (rowArray) {
+        let row = rowArray.join(",");
+        csvContent += row + "\r\n";
+      });
+
+      var encodedUri = encodeURI(csvContent);
+      var link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("name", "dl")
+      link.setAttribute("download", fileName + ".csv");
+      document.body.appendChild(link); // Required for FF
+
+      link.click();
+      document.getElementById("exportButton").style.backgroundColor = buttonColor;
+
+    } else {
+      var links = document.getElementsByName("dl");
+      var link = links[links.length - 1 - fileName.substring(2, fileName.length)];
+
+      if (link != undefined) {
+        link.click();
+        document.getElementById("exportButton").style.backgroundColor = buttonColor;
+      }
+    }
   }
 }
 
@@ -111,13 +154,12 @@ function copyToClip() {
   copyText.setSelectionRange(0, 99999);
 
   document.execCommand("copy");
-
   document.getElementById("copyButton").style.backgroundColor = buttonColor;
 }
 
 //Converts csv String to array
 function csvToArray(str, delimiter = ",") {
-  str = str.replaceAll("[],", "").replaceAll("[]", "");
+  str = str.replaceAll("\r", "");
   let rows = str.split("\n");
   let array = [];
 
