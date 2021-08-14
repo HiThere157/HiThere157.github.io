@@ -52,12 +52,28 @@ td {
 p {
   margin: 0;
 }
-button, select, input {
+button, select, input[type=submit], input[type=file], input[type=checkbox], input[type=color] {
   cursor: pointer;
 }
+
+input[type="color"] {
+	-webkit-appearance: none;
+	border: none;
+	width: 32px;
+	height: 32px;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+	border: none;
+}
+
 textarea {
   position: relative;
   width: 90%;
+  min-height: 20px;
+  min-width: 100px;
 }
 
 .header {
@@ -114,6 +130,10 @@ textarea {
 .top_item_header {
   background-color: var(--header);
   padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 5px;
 }
 .top_item_main {
   height: 95%;
