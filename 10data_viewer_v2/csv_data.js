@@ -111,11 +111,13 @@ function exportField(override = false, csvFile = false) {
 }
 
 //gets datastring from exportField() and downloads csv File
-function makeCSV() {
-  var fileName = window.prompt("Enter Filename", "")
+function makeCSVBtn() {
+  openPopup("promptPopup", "prompt_io", "Enter Filename", makeCSV, [])
+}
 
-  if (fileName != null && fileName != "") {
-    if (fileName.substring(0, 2) != "!h") {
+function makeCSV(prompt) {
+  if (prompt != null && prompt != "") {
+    if (prompt.substring(0, 2) != "!h") {
       var rows = exportField(false, true);
       let csvContent = "data:text/csv;charset=utf-8,";
 
@@ -128,7 +130,7 @@ function makeCSV() {
       var link = document.createElement("a");
       link.setAttribute("href", encodedUri);
       link.setAttribute("name", "dl")
-      link.setAttribute("download", fileName + ".csv");
+      link.setAttribute("download", prompt + ".csv");
       document.body.appendChild(link); // Required for FF
 
       link.click();
@@ -136,7 +138,7 @@ function makeCSV() {
 
     } else {
       var links = document.getElementsByName("dl");
-      var link = links[links.length - 1 - fileName.substring(2, fileName.length)];
+      var link = links[links.length - 1 - prompt.substring(2, prompt.length)];
 
       if (link != undefined) {
         link.click();

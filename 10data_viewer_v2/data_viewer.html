@@ -28,7 +28,7 @@
       </div>
       <div class="header_item_main">
         <div class="export_item">
-          <button id="exportButton" onclick="makeCSV()">Download csv File</button>
+          <button id="exportButton" onclick="makeCSVBtn()">Download csv File</button>
           <button id="copyButton" onclick="copyToClip()">Copy to Clipboard</button>
           <label>CSV Format</label>
           <input id="formatOutput" type="checkbox" onchange="exportField(true)">
@@ -182,18 +182,20 @@
       </div>
       <div class="prompt_main">
         <div id="prompt_co" name="prompt_option" class="prompt_option" style="display: none;">
-          <button name="cancel_Btn" class="promptInput" onchange="promptSubmit(this)">Cancel</button>
-          <button name="ok_Btn" class="promptInput" style="background-color: #8AB4F8;" onchange="promptSubmit(this)">Ok</button>
+          <button name="cancel_Btn" class="promptInput" onclick="promptSubmit(this)">Cancel</button>
+          <button name="ok_Btn" class="promptInput" style="background-color: #8AB4F8;" onclick="promptSubmit(this)">Ok</button>
+          <input id="dontAsk" type="checkbox">
+          <label style="font-size: large;">Dont show again</label>
         </div>
 
         <div id="prompt_io" name="prompt_option" class="prompt_option" style="display: none;">
           <input id="prompt_Input" onchange="promptSubmit(this)">
-          <button name="cancel_Btn" class="promptInput" onchange="promptSubmit(this)">Cancel</button>
-          <button name="ok_Btn" class="promptInput" style="background-color: #8AB4F8;" onchange="promptSubmit(this)">Ok</button>
+          <button name="cancel_Btn" class="promptInput" onclick="promptSubmit(this)">Cancel</button>
+          <button name="ok_Btn" class="promptInput" style="background-color: #8AB4F8;" onclick="promptSubmit(this)">Ok</button>
         </div>
 
         <div id="prompt_o" name="prompt_option" class="prompt_option">
-          <button name="ok_Btn" class="promptInput" style="background-color: #8AB4F8;" onchange="promptSubmit(this)">Ok</button>
+          <button name="ok_Btn" class="promptInput" style="background-color: #8AB4F8;" onclick="promptSubmit(this)">Ok</button>
         </div>
       </div>
     </div>

@@ -259,7 +259,7 @@ function overviewTable() {
 
     datasets.dataSet_list.forEach(dataset => {
       if (dataset != null) {
-        overviewArray.push([dataset.name, dataset.id, dataset.type, dataset.len, dataset.operation, dataset.parent, dataset.param, "<button name='" + dataset.name + "' onclick='deleteSet(this)'>Delete</button><button name='" + dataset.name + "' onclick='renameSet(this)'>Rename</button>"]);
+        overviewArray.push([dataset.name, dataset.id, dataset.type, dataset.len, dataset.operation, dataset.parent, dataset.param, "<button name='" + dataset.name + "' onclick='deleteSetBtn(this)'>Delete</button><button name='" + dataset.name + "' onclick='renameSetBtn(this)'>Rename</button>"]);
       }
     });
 
@@ -267,10 +267,11 @@ function overviewTable() {
   });
 }
 
+//enables the edit buttons for a specific dataset
 var alerted = false;
 function enableEdit(element) {
   if (alerted == false) {
-    alert("You have to 'Reload' the charts for changes to apply.");
+    openPopup("promptPopup", "prompt_o", "You have to 'Reload' the charts for changes to apply.");
     alerted = true;
   }
 
@@ -285,15 +286,24 @@ function enableEdit(element) {
   table(id);
 }
 
+//changes value in dataset
 function editValue(element) {
   let id = element.parentElement.parentElement.parentElement.parentElement.parentElement.id;
-  id = id[id.length - 1]
+  id = id[id.length - 1];
   elementId = element.id;
-  table(id, elementId.substring(0, 1), elementId.substring(1).split(","))
+  let op = elementId.substring(0, 1);
+
+  if (op == "e") {
+    openPopup("promptPopup", "prompt_io", "Enter new value", table, [id, op, elementId.substring(1).split(",")]);
+  } else if (op == "d") {
+    openPopup("promptPopup", "prompt_co", "Are you sure?", table, [id, op, elementId.substring(1).split(",")], "deleteValue");
+  } else {
+    table(id, op, elementId.substring(1).split(","));
+  }
 }
 
 //creates custom table for data
-function table(id, editV = undefined, param = undefined) {
+function table(id, editV = undefined, param = undefined, prompt = undefined) {
   var index = [];
   var tableArray = [];
   var tmpArray = ["Index"];
@@ -323,25 +333,26 @@ function table(id, editV = undefined, param = undefined) {
   tableArray.push(tmpArray);
 
   if (editV == "e") {
-    let value = window.prompt("Enter new Value", "").toString();
-    if (value != null) {
+    if (prompt != null) {
       let set = datasets.dataSet_list[index[param[1] - 1] - 1]
 
       if (set.type == "number") {
-        value = Number(value);
+        prompt = Number(prompt);
       }
 
-      set.values[param[0] - 1] = value;
+      set.values[param[0] - 1] = prompt;
 
       exportField()
     }
   } else if (editV == "d") {
-    let set = datasets.dataSet_list[index[param[1] - 1] - 1]
-    set.values.splice(param[0] - 1, 1);
+    if (prompt == true) {
+      let set = datasets.dataSet_list[index[param[1] - 1] - 1]
+      set.values.splice(param[0] - 1, 1);
 
-    set.updateValues(set.values);
-    overviewTable();
-    maxLen -= 1;
+      set.updateValues(set.values);
+      overviewTable();
+      maxLen -= 1;
+    }
   }
 
   for (let i = 0; i < maxLen; i++) {
@@ -431,9 +442,13 @@ class DataSet {
   }
 }
 
-function deleteSet(element) {
+//Delete Dataset
+function deleteSetBtn(element) {
+  openPopup("promptPopup", "prompt_co", "Are you Sure?", deleteSet, [element], "deleteSet");
+}
+function deleteSet(element, prompt) {
   let name = element.getAttribute("name")
-  if (confirm("Are you Sure?") == true) {
+  if (prompt == true) {
     if (datasets.dataSetMods_names.length != 0) {
       let index = datasets.dataSetMods_names.indexOf(name);
 
@@ -451,29 +466,108 @@ function deleteSet(element) {
   }
 }
 
-function renameSet(element) {
+//Rename Dataset
+function renameSetBtn(element) {
+  openPopup("promptPopup", "prompt_io", "Enter new name", renameSet, [element]);
+}
+function renameSet(element, prompt) {
   let name = element.getAttribute("name");
-  let new_name = window.prompt("Enter new name", "");
 
-  if (new_name != null && new_name != "") {
+  if (prompt != null && prompt != "") {
     let index = datasets.dataSet_names.indexOf(name);
 
-    if (datasets.dataSet_names.indexOf(new_name) != -1) {
-      new_name += datasets.dataSet_list[index].id;
+    if (datasets.dataSet_names.indexOf(prompt) != -1) {
+      prompt += datasets.dataSet_list[index].id;
     }
 
-    datasets.dataSet_list[index].name = new_name;
-    datasets.dataSet_names[index] = new_name;
+    datasets.dataSet_list[index].name = prompt;
+    datasets.dataSet_names[index] = prompt;
 
     if (datasets.dataSetMods_names.length != 0) {
       let index = datasets.dataSetMods_names.indexOf(name);
 
       if (index != -1) {
-        datasets.dataSetMods_names[index] = new_name;
+        datasets.dataSetMods_names[index] = prompt;
       }
     }
 
     updateDropdown();
+  }
+}
+
+//on input in the custom prompt
+function promptSubmit(element) {
+  let ret;
+
+  if (element != null) {
+    if (element.getAttribute("name") == "ok_Btn") {
+      if (element.parentElement.id == "prompt_io") {
+        ret = document.getElementById("prompt_Input").value;
+      } else {
+        ret = true;
+      }
+
+      if(element.parentElement.id == "prompt_co"){
+        let tmp = document.getElementById("dontAsk");
+        if(tmp.checked == true){
+          dontShow.push(awaitButton["event"]);
+          tmp.checked = false;
+        }
+      }
+
+    } else if (element.getAttribute("name") == "cancel_Btn") {
+      ret = null;
+
+    } else if (element.id = "prompt_Input") {
+      ret = document.getElementById("prompt_Input").value;
+    }
+    document.getElementById("prompt_Input").value = "";
+
+  } else {
+    ret = true;
+  }
+
+  if (awaitButton["callback"] != undefined) {
+    awaitButton["args"].push(ret);
+    awaitButton["callback"](...awaitButton["args"]);
+    awaitButton = {};
+  }
+  openPopup(null)
+}
+
+//Opens a Popup, hides every other
+var awaitButton = {};
+var dontShow = [];
+function openPopup(id, type = undefined, labelText = "", callback = undefined, args = undefined, event = undefined) {
+  awaitButton = {};
+
+  if (callback != undefined) {
+    awaitButton["callback"] = callback;
+    awaitButton["args"] = args;
+    awaitButton["event"] = event;
+  }
+
+  if (dontShow.indexOf(event) != -1) {
+    promptSubmit(null);
+
+  } else {
+    document.getElementsByName("popup").forEach(element => {
+      element.style = "display: none;";
+    });
+
+    if (id != null) {
+      document.getElementById(id).style = "display: block";
+    }
+
+    if (type != undefined) {
+      document.getElementById("promptLabel").innerText = labelText;
+
+      document.getElementsByName("prompt_option").forEach(element => {
+        element.style = "display: none;";
+      });
+
+      document.getElementById(type).style = "display: flex;";
+    }
   }
 }
 
