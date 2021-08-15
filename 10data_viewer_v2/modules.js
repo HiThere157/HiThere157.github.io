@@ -584,7 +584,13 @@ function Fgen(nDigits) {
     }
   }
 
-  return [genTable, tmp, "Fgen(" + type + ")", a + "," + b + "," + c + "," + d + "," + e];
+  let ret = [genTable, tmp, "Fgen(" + type + ")", a + "," + b + "," + c + "," + d + "," + e];
+
+  if (Number(x_interval[2]) != 1) {
+    ret.push(x)
+  }
+
+  return ret;
 }
 
 //Calculator
@@ -765,19 +771,30 @@ function show_Module(name, id, simple_mod = false) {
   }
 }
 
+//saves Values from tempSet to a new Dataset
 function save_Set(element) {
   update_slot_offset();
   let parent = element.parentElement.parentElement;
   let id = parent.id[parent.id.length - 1];
   let operation = parent.id.substring(0, parent.id.length - 1);
-
+  let n = 1;
   if (tempSet[operation] != undefined) {
-    datasets.add(new DataSet(tempSet[operation], false, operation, document.getElementsByName("save_Input")[id - slot_offset[id]].value,
-      document.getElementsByName("mod_parent")[id - slot_offset[id]].innerText,
-      document.getElementsByName("mod_param")[id - slot_offset[id]].innerText));
+    let tmp = new DataSet(tempSet[operation], false, operation, document.getElementsByName("save_Input")[id - slot_offset[id]].value,
+    document.getElementsByName("mod_parent")[id - slot_offset[id]].innerText,
+    document.getElementsByName("mod_param")[id - slot_offset[id]].innerText);
+
+    datasets.add(tmp);
+
+    if (operation == "function_gen") {
+      if(tempSet["xValues"] != undefined){
+        n = 2;
+        datasets.add(new DataSet(tempSet["xValues"], true, "xValues(fgen)", "xValues" + tmp.id, tmp.name));
+        delete tempSet["xValues"];
+      }
+    }
   }
 
-  updateDropdown(true);
+  updateDropdown(n);
 }
 
 //onchange of every input/dropdown inside a module
@@ -867,6 +884,10 @@ function selected_Module(element, depth = false) {
       document.getElementsByName("mod_parent")[id - slot_offset[id]].innerText = returned[2];
       document.getElementsByName("mod_param")[id - slot_offset[id]].innerText = returned[3];
       tempSet[operation] = returned[1];
+
+      if (returned[4] != undefined) {
+        tempSet["xValues"] = returned[4];
+      }
     }
   }
 }

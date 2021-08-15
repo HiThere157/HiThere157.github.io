@@ -390,7 +390,7 @@ function saveData(element) {
 
   if (tmpRet[1].length != 0) {
     element.style.backgroundColor = buttonColor;
-    datasets.add(new DataSet(tmpRet[1], true, "Data", name.replaceAll('"', '').trim(), "", "", tmpRet[0]));
+    datasets.add(new DataSet(tmpRet[1], true, "Import", name.replaceAll('"', '').trim(), "", "", tmpRet[0]));
     updateDropdown(true, false, false);
   }
 }

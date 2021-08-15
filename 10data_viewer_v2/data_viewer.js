@@ -8,7 +8,7 @@ function setupHTML() {
       select.onchange = function () { dropdownChange(this); };
 
       let label = document.createElement("label");
-      label.innerText = "C " + n.toString();
+      label.innerText = " C" + n.toString() + ":";
 
       element.appendChild(label);
       element.appendChild(select);
@@ -17,6 +17,19 @@ function setupHTML() {
 
   document.getElementsByName("graph_header").forEach(element => {
     let id = element.id[element.id.length - 1];
+
+    let scaleLabel = document.createElement("label");
+    scaleLabel.id = "setScaleLabel" + id.toString();
+    scaleLabel.innerText = "Log Scale";
+
+    let scaleInput = document.createElement("input");
+    scaleInput.type = "checkbox";
+    scaleInput.setAttribute("name", "setScale");
+    scaleInput.id = "setScale" + id.toString();
+    scaleInput.onchange = function () { dropdownChange(this, false); };
+
+    element.appendChild(scaleLabel);
+    element.appendChild(scaleInput);
 
     let axis_ = ["x", "y", "mod"];
     axis_.forEach(axis => {
@@ -47,17 +60,24 @@ function setupHTML() {
 }
 setupHTML();
 
-function makeTableHTML(Array) {
+function makeTableHTML(Array, buttons = false) {
   if (Array != null) {
     var result = "<table>";
     for (var i = 0; i < Array.length; i++) {
       result += "<tr>";
       for (var j = 0; j < Array[i].length; j++) {
         var tmp = Array[i][j];
+        var htmlButton = " <button id='" + i + "," + j + "' onclick='editValue(this)'>E</button>"
         if (tmp == undefined) {
           tmp = "";
         }
-        result += "<td>" + tmp.toString() + "</td>";
+        result += "<td>" + tmp.toString();
+
+        if (tmp.toString() != "" && i >= 1 && j >= 1 && buttons == true) {
+          result += htmlButton;
+        }
+
+        result += "</td>";
       }
       result += "</tr>";
     }
@@ -77,7 +97,7 @@ function removeAllOptions(element) {
 }
 
 //sets dropdown options for an 'select' element
-function setupDropdown(name, options, append = false, remove = false, mod = true) {
+function setupDropdown(name, options, append = 0, remove = false, mod = true) {
   var s = false;
   if (name == "yAxis_dropdown" || name.substring(0, name.length - 1) == "column_dropdown" || name == "module_I" || name == "modAxis_dropdown" || name == "molule_Idataset") {
     options.unshift("--Select--");
@@ -91,13 +111,13 @@ function setupDropdown(name, options, append = false, remove = false, mod = true
   elements.forEach(element => {
     var options_;
 
-    if (append == true && name != "top_dropdown" && name != "bottom_dropdown") {
-      options_ = [options[options.length - 1]];
+    if (append != 0 && name != "top_dropdown" && name != "bottom_dropdown") {
+      options_ = options.slice(options.length - append);
     } else {
       if (remove == false) {
         removeAllOptions(element);
 
-        if (name == "bottom_dropdown" && append == false) {
+        if (name == "bottom_dropdown" && append == 0) {
           options_ = options[element.id[element.id.length - 1]];
         } else {
           options_ = options;
@@ -196,7 +216,7 @@ function initCharts() {
 initCharts();
 
 //draws, updates charts; hide them when they are created
-function drawChart(id = null, hide = false) {
+function drawChart(id = null, hide = false, scale = "linear") {
   var options = {
     chartArea: {
       left: 40,
@@ -206,7 +226,8 @@ function drawChart(id = null, hide = false) {
       position: 'top'
     },
     width: '100%',
-    backgroundColor: { fill: 'transparent' }
+    backgroundColor: { fill: 'transparent' },
+    vAxis: { scaleType: scale }
   };
 
   if (id == null) {
@@ -245,10 +266,15 @@ function overviewTable() {
   });
 }
 
+
+function editValue(element) {
+  let id = element.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+  id = id[id.length - 1]
+  table(id, true, element.id.split(","))
+}
+
 //creates custom table for data
-function table(element) {
-  var id = element.getAttribute("name");
-  id = id[id.length - 1];
+function table(id, editV = false, param = undefined) {
   var index = [];
   var tableArray = [];
   var tmpArray = ["Index"];
@@ -271,6 +297,21 @@ function table(element) {
   });
   tableArray.push(tmpArray);
 
+  if (editV == true) {
+    let value = window.prompt("Enter new Value", "").toString();
+    if(value != null){
+      let set = datasets.dataSet_list[index[param[1] - 1] - 1]
+
+      if(set.type == "number"){
+        value = Number(value);
+      }
+
+      set.values[param[0] - 1] = value;
+
+      exportField()
+    }
+  }
+
   for (let i = 0; i < maxLen; i++) {
     var tmpArray = [];
     tmpArray.push(i);
@@ -283,8 +324,8 @@ function table(element) {
 
       if (tmp == undefined) {
         tmp = "";
-      } else if (tmp != "") {
-        tmp = Number(tmp.toFixed(4)).toString();
+      } else if (tmp != "" && isNaN(tmp) == false) {
+        tmp = Number(Number(tmp).toFixed(4)).toString();
       }
 
       tmpArray.push(tmp);
@@ -292,7 +333,7 @@ function table(element) {
 
     tableArray.push(tmpArray);
   }
-  document.getElementById("table_main" + id.toString()).innerHTML = makeTableHTML(tableArray);
+  document.getElementById("table_main" + id.toString()).innerHTML = makeTableHTML(tableArray, true);
 }
 
 //holdes datasets; add new sets
@@ -317,7 +358,7 @@ var datasets = new DataSets;
 
 //holdes all information for a dataset
 class DataSet {
-  constructor(values, user_input = true, operation = "Data", name = "", parent = "", param = "", type = "", showing = true) {
+  constructor(values, checkName = true, operation = "Data", name = "", parent = "", param = "", type = "", showing = true) {
     this.values = values;
     this.type = type;
     this.parent = parent;
@@ -330,7 +371,7 @@ class DataSet {
       this.name = name;
     }
 
-    if (user_input == false) {
+    if (checkName == false) {
       this.name += this.id;
     } else {
       if (datasets.dataSet_names.indexOf(this.name) != -1) {
@@ -340,7 +381,7 @@ class DataSet {
 
     this.operation = operation;
     this.showing = showing;
-    this.user_input = user_input;
+    this.checkName = checkName;
 
     this.len = values.length;
 
@@ -351,7 +392,7 @@ class DataSet {
   }
 
   updateValues(new_values, type = "", operation = "") {
-    if (this.user_input == false) {
+    if (this.checkName == false) {
       this.values = new_values;
       this.type = type;
       this.operation = operation;
@@ -380,7 +421,7 @@ function deleteSet(element) {
     datasets.dataSet_list.splice(index, 1);
     datasets.dataSet_names.splice(index, 1);
 
-    updateDropdown(false, true);
+    updateDropdown(0, true);
     datasets.deletedSets += 1;
   }
 }
@@ -424,11 +465,15 @@ function showChart(chartId, id) {
 }
 
 //on change of every dropdown
-function dropdownChange(element) {
-  let value = element.options[element.selectedIndex].text;
+function dropdownChange(element, isDropdown = true) {
+  if (isDropdown == true) {
+    var value = element.options[element.selectedIndex].text;
+  }
   let id = element.id[element.id.length - 1];
   let name = element.getAttribute("name");
+  let nameId = name[name.length - 1];
   let graph = true;
+  let scale = "linear";
 
   if (name.indexOf("Axis") != -1) {
     var xAxis = document.getElementById("xAxis_dropdown" + id);
@@ -496,7 +541,7 @@ function dropdownChange(element) {
     }
 
   } else if (name.substring(0, name.length - 1) == "column_dropdown") {
-    table(element);
+    table(nameId);
     graph = false;
 
   } else if (name == "bottom_dropdown") {
@@ -515,15 +560,20 @@ function dropdownChange(element) {
     }
 
     graph = false;
+
+  } else if (name == "setScale") {
+    if (document.getElementById("setScale" + id).checked == true) {
+      scale = "log";
+    }
   }
 
   if (graph == true) {
-    drawChart(id);
+    drawChart(id, false, scale);
   }
 }
 
 //updates all dropdowns, i.e. on new dataset
-function updateDropdown(append = false, remove = false, mod = true) {
+function updateDropdown(append = 0, remove = false, mod = true) {
   overviewTable();
   exportTable();
   exportField();
