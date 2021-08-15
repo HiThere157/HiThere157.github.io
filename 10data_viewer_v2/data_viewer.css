@@ -187,6 +187,7 @@ textarea {
   height: 93%;
 }
 
+
 .promptbg {
   display: none;
   position: absolute;
@@ -219,6 +220,11 @@ textarea {
   width: 20%;
   border-radius: 2px;
   border: solid 1px;
+  opacity: 0.75;
+  transition: 250ms;
+}
+.promptInput:hover {
+  opacity: 1;
 }
 .prompt_header {
   padding: 5px 0 0 10px;
@@ -264,11 +270,12 @@ textarea {
   background-image: url("icons/cross_icon.svg");
   background-repeat: no-repeat;
   background-position: center;
-  transition: 300ms;
+  transition: 250ms;
+  opacity: 0.75;
   display: inline-block;
 }
 .close_button:hover {
-  background-color: var(--item-background);
+  opacity: 1;
 }
 .table_popup_table {
   height: 100%;

@@ -507,9 +507,9 @@ function promptSubmit(element) {
         ret = true;
       }
 
-      if(element.parentElement.id == "prompt_co"){
+      if (element.parentElement.id == "prompt_co") {
         let tmp = document.getElementById("dontAsk");
-        if(tmp.checked == true){
+        if (tmp.checked == true) {
           dontShow.push(awaitButton["event"]);
           tmp.checked = false;
         }
@@ -532,7 +532,7 @@ function promptSubmit(element) {
     awaitButton["callback"](...awaitButton["args"]);
     awaitButton = {};
   }
-  openPopup(null)
+  openPopup(null, "close_prompt");
 }
 
 //Opens a Popup, hides every other
@@ -551,9 +551,13 @@ function openPopup(id, type = undefined, labelText = "", callback = undefined, a
     promptSubmit(null);
 
   } else {
-    document.getElementsByName("popup").forEach(element => {
-      element.style = "display: none;";
-    });
+    if(type != "close_prompt" && id == null){
+      document.getElementsByName("popup").forEach(element => {
+        element.style = "display: none;";
+      });
+    }else{
+      document.getElementById("promptPopup").style = "display: none";
+    }
 
     if (id != null) {
       document.getElementById(id).style = "display: block";
