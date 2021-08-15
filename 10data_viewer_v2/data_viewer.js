@@ -60,6 +60,7 @@ function setupHTML() {
 }
 setupHTML();
 
+var edits = [0, 0, 0, 0, 0]
 function makeTableHTML(Array, buttons = false) {
   if (Array != null) {
     var result = "<table>";
@@ -67,13 +68,13 @@ function makeTableHTML(Array, buttons = false) {
       result += "<tr>";
       for (var j = 0; j < Array[i].length; j++) {
         var tmp = Array[i][j];
-        var htmlButton = " <button id='" + i + "," + j + "' onclick='editValue(this)'>E</button>"
+        var htmlButton = " <button id='e" + i + "," + j + "' onclick='editValue(this)'>E</button><button id='d" + i + "," + j + "' onclick='editValue(this)'>D</button>"
         if (tmp == undefined) {
           tmp = "";
         }
         result += "<td>" + tmp.toString();
 
-        if (tmp.toString() != "" && i >= 1 && j >= 1 && buttons == true) {
+        if (tmp.toString() != "" && i >= 1 && j >= 1 && buttons == true && edits[j - 1] == 1) {
           result += htmlButton;
         }
 
@@ -266,15 +267,33 @@ function overviewTable() {
   });
 }
 
+var alerted = false;
+function enableEdit(element) {
+  if (alerted == false) {
+    alert("You have to 'Reload' the charts for changes to apply.");
+    alerted = true;
+  }
+
+  let id = element.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+  id = id[id.length - 1]
+  let index = element.id.substring(10) - 1;
+  if (edits[index] == 0) {
+    edits[index] = 1;
+  } else {
+    edits[index] = 0;
+  }
+  table(id);
+}
 
 function editValue(element) {
   let id = element.parentElement.parentElement.parentElement.parentElement.parentElement.id;
   id = id[id.length - 1]
-  table(id, true, element.id.split(","))
+  elementId = element.id;
+  table(id, elementId.substring(0, 1), elementId.substring(1).split(","))
 }
 
 //creates custom table for data
-function table(id, editV = false, param = undefined) {
+function table(id, editV = undefined, param = undefined) {
   var index = [];
   var tableArray = [];
   var tmpArray = ["Index"];
@@ -286,7 +305,13 @@ function table(id, editV = false, param = undefined) {
     index.push(element.selectedIndex);
     if (element.selectedIndex != 0) {
       var len = datasets.dataSet_list[element.selectedIndex - 1].len;
-      tmpArray.push(datasets.dataSet_names[element.selectedIndex - 1]);
+      let add_ = "";
+
+      if (edits[tmpArray.length - 1] == 1) {
+        add_ = "checked";
+      }
+
+      tmpArray.push(datasets.dataSet_names[element.selectedIndex - 1] + "<label> - edit</label><input id='editEnable" + tmpArray.length + "' onchange='enableEdit(this)' type='checkbox' " + add_ + ">");
     } else {
       tmpArray.push("None");
     }
@@ -297,12 +322,12 @@ function table(id, editV = false, param = undefined) {
   });
   tableArray.push(tmpArray);
 
-  if (editV == true) {
+  if (editV == "e") {
     let value = window.prompt("Enter new Value", "").toString();
-    if(value != null){
+    if (value != null) {
       let set = datasets.dataSet_list[index[param[1] - 1] - 1]
 
-      if(set.type == "number"){
+      if (set.type == "number") {
         value = Number(value);
       }
 
@@ -310,6 +335,13 @@ function table(id, editV = false, param = undefined) {
 
       exportField()
     }
+  } else if (editV == "d") {
+    let set = datasets.dataSet_list[index[param[1] - 1] - 1]
+    set.values.splice(param[0] - 1, 1);
+
+    set.updateValues(set.values);
+    overviewTable();
+    maxLen -= 1;
   }
 
   for (let i = 0; i < maxLen; i++) {
@@ -388,27 +420,20 @@ class DataSet {
     if (this.type == "") {
       this.type = typeof values[0];
     }
-
   }
 
-  updateValues(new_values, type = "", operation = "") {
-    if (this.checkName == false) {
-      this.values = new_values;
+  updateValues(new_values, type = "") {
+    this.values = new_values;
+    if (type != "") {
       this.type = type;
-      this.operation = operation;
-
-      this.len = values.length;
-
-      if (this.type == "") {
-        this.type = typeof values[0];
-      }
     }
+    this.len = new_values.length;
   }
 }
 
 function deleteSet(element) {
   let name = element.getAttribute("name")
-  if (confirm("Are you sure?") == true) {
+  if (confirm("Are you Sure?") == true) {
     if (datasets.dataSetMods_names.length != 0) {
       let index = datasets.dataSetMods_names.indexOf(name);
 

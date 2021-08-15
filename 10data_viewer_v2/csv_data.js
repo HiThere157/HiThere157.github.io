@@ -254,7 +254,7 @@ function setButtonData() {
 //Shows import popup & displays tables
 //Detects, if data header available (name)
 function showData(element = null) {
-  document.getElementById("table_popup").style = "display: block;";
+  openPopup("table_popup")
   skip_row = false;
 
   if (element != null) {
@@ -319,12 +319,6 @@ importForm.addEventListener("submit", function (e) {
     parseData(document.getElementById("dataInput"));
   }
 });
-
-//closes popup
-function close_popup(element) {
-  let parent = element.parentElement.parentElement;
-  parent.style = "display: none;";
-}
 
 //get datatype of an array
 function getType(array) {

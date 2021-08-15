@@ -5,6 +5,7 @@
   --popup-background: #fce8e8;
   --header: aqua;
   --button-pressed: #cccccc;
+  --prompt-background: #bbbbbbdd;
 }
 
 /* width */
@@ -186,9 +187,51 @@ textarea {
   height: 93%;
 }
 
-
+.promptbg {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: var(--prompt-background);
+}
+.promptPopup {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  height: 80px;
+  width: 30%;
+  border-radius: 0 0 3px 3px;
+  border: solid 1px;
+  background-color: var(--popup-background);
+}
+.prompt_option {
+  display: flex;
+  justify-content: center;
+  column-gap: 5px;
+}
+.promptInput {
+  height: 30px;
+  width: 45%;
+  border-radius: 2px;
+  border: solid 1px;
+}
+.prompt_header {
+  padding: 5px;
+  padding-bottom: 0;
+  height: 35px;
+  width: 100%;
+}
+.prompt_main {
+  height: 45px;
+  width: 100%;
+}
 .popup {
   display: none;
+  overflow: hidden;
   position: absolute;
   border: solid 1px;
   border-radius: 3px;

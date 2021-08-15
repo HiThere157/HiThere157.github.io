@@ -47,7 +47,7 @@
           <input type="color" style="height: 15px;" value="#00FFFF" onchange="colorChange(this)">
           <select name="top_dropdown" id="top_dropdown0" onchange="dropdownChange(this)"></select>
           <button onclick="dropdownChange(document.getElementById('yAxis_dropdown0'))">Reload</button>
-          <button onclick="document.getElementById('graph_popup').style = 'display: block;';">Popup</button>
+          <button onclick="openPopup('graph_popup')">Popup</button>
         </div>
         <!--Graph Div-->
         <div class="top_item_main" name="top_item_main" id="top_item_main0">
@@ -133,10 +133,10 @@
     </div>
   </div>
 
-  <div class="popup" id="graph_popup">
+  <div name="popup" class="popup" id="graph_popup">
     <div class="popup_header">
       <label style="font-size: x-large;">Popup</label>
-      <div class="close_button" onclick="close_popup(this)"></div>
+      <div class="close_button" onclick="openPopup(null)"></div>
     </div>
     <div class="popup_main" style="text-align: center;">
       <div name="top_item" class="main_top_item" style="width: 100%;">
@@ -162,15 +162,40 @@
     </div>
   </div>
 
-  <div class="popup" id="table_popup">
+  <div name="popup" class="popup" id="table_popup">
     <div class="popup_header">
       <label style="font-size: x-large;">Import Data</label>
       <button onclick="importAll()">Import all Columns</button>
-      <div class="close_button" onclick="close_popup(this)"></div>
+      <div class="close_button" onclick="openPopup(null)"></div>
     </div>
     <div class="popup_main">
       <div class="table_popup_table" id="table_popup_table"></div>
       <div class="table_popup_side" id="table_popup_side"></div>
+    </div>
+  </div>
+
+  <div name="popup" class="promptbg" id="promptPopup">
+    <div class="promptPopup">
+      <div class="prompt_header">
+        <div class="close_button" onclick="openPopup(null)"></div>
+        <label id="promptLabel" style="font-size: x-large;">tt</label>
+      </div>
+      <div class="prompt_main">
+        <div id="prompt_co" name="prompt_option" class="prompt_option" style="display: none;">
+          <button name="cancel_Btn" class="promptInput" onchange="promptSubmit(this)">Cancel</button>
+          <button name="ok_Btn" class="promptInput" style="background-color: #8AB4F8;" onchange="promptSubmit(this)">Ok</button>
+        </div>
+
+        <div id="prompt_io" name="prompt_option" class="prompt_option" style="display: none;">
+          <input id="prompt_Input" onchange="promptSubmit(this)">
+          <button name="cancel_Btn" class="promptInput" onchange="promptSubmit(this)">Cancel</button>
+          <button name="ok_Btn" class="promptInput" style="background-color: #8AB4F8;" onchange="promptSubmit(this)">Ok</button>
+        </div>
+
+        <div id="prompt_o" name="prompt_option" class="prompt_option">
+          <button name="ok_Btn" class="promptInput" style="background-color: #8AB4F8;" onchange="promptSubmit(this)">Ok</button>
+        </div>
+      </div>
     </div>
   </div>
 
