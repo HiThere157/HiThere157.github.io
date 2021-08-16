@@ -2,30 +2,34 @@ var vectors = [];
 var walls = [];
 var pos = [[], []];
 
-Number.prototype.between = function (a, b) {
-  var min = Math.min.apply(Math, [a, b]),
-    max = Math.max.apply(Math, [a, b]);
-  return this >= min && this <= max;
-};
+function isbetween(x, a, b) {
+  let tmpA = a;
+  let tmpB = b;
+  if (tmpA > tmpB) {
+    [tmpA, tmpB] = [tmpB, tmpA];
+  }
+
+  return x >= tmpA && x <= tmpB
+}
 
 function setup() {
-  createCanvas(window.innerWidth, window.innerHeight-5);
+  createCanvas(window.innerWidth, window.innerHeight - 5);
   background("#000");
 
-  for (var a = 0; a < Math.PI * 2; a += Math.PI / 75) {
+  for (var a = 0; a < Math.PI * 2; a += Math.PI / 100) {
     vectors.push(createVector(Math.sin(a), Math.cos(a)));
   }
 
-  walls.push([[500, 100], createVector(-500, 600)]);
+  walls.push([[500, 100], createVector(-400, 600)]);
   walls.push([[50, 100], createVector(500, 100)]);
   walls.push([[100, 600], createVector(600, 50)]);
-  walls.push([[700, 200], createVector(50, 200)]);
+  walls.push([[1200, 200], createVector(75, 300)]);
 }
 
 function draw() {
   background("#000")
   strokeWeight(1)
-  stroke("#FFF")
+  stroke("#777")
 
   var solutions = {};
   walls.forEach(wall => {
@@ -43,7 +47,7 @@ function draw() {
       var x = mouseX + s * vx;
       var y = mouseY + s * vy;
 
-      if (x.between(wx, wx+wvx) && s > 0) {
+      if (isbetween(x, wx, wx + wvx) && isbetween(y, wy, wy + wvy) && s > 0) {
         circle(x, y, 3);
         if (solutions[i] == undefined) {
           solutions[i] = [[x, y]];
