@@ -16,7 +16,7 @@ function setup() {
   createCanvas(window.innerWidth, window.innerHeight - 5);
   background("#000");
 
-  for (var a = 0; a < Math.PI * 2; a += Math.PI / 100) {
+  for (var a = 0; a < Math.PI * 2; a += Math.PI / 150) {
     vectors.push(createVector(Math.sin(a), Math.cos(a)));
   }
 
@@ -27,13 +27,13 @@ function setup() {
 }
 
 function draw() {
-  background("#000")
-  strokeWeight(1)
-  stroke("#777")
+  background("#000");
+  strokeWeight(1);
+  stroke("#777");
 
   var solutions = {};
   walls.forEach(wall => {
-    line(wall[0][0], wall[0][1], wall[0][0] + wall[1].x, wall[0][1] + wall[1].y)
+    line(wall[0][0], wall[0][1], wall[0][0] + wall[1].x, wall[0][1] + wall[1].y);
     for (let i = 0; i < vectors.length; i++) {
       var vx = vectors[i].x;
       var vy = vectors[i].y;
@@ -60,10 +60,13 @@ function draw() {
 
   for (let i = 0; i < vectors.length; i++) {
     if (solutions[i] == undefined) {
-      line(mouseX, mouseY, mouseX + vectors[i].x * 5000, mouseY + vectors[i].y * 5000);
+      stroke("#888");
+      line(mouseX, mouseY, mouseX + vectors[i].x * 9999, mouseY + vectors[i].y * 9999);
     } else {
+      stroke("#777");
       if (solutions[i].length == 1) {
         line(mouseX, mouseY, solutions[i][0][0], solutions[i][0][1]);
+        
       } else {
         var d = [];
         solutions[i].forEach(solution => {
