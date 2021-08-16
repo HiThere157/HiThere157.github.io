@@ -68,7 +68,7 @@ function makeTableHTML(Array, buttons = false) {
       result += "<tr>";
       for (var j = 0; j < Array[i].length; j++) {
         var tmp = Array[i][j];
-        var htmlButton = " <button id='e" + i + "," + j + "' onclick='editValue(this)'>E</button><button id='d" + i + "," + j + "' onclick='editValue(this)'>D</button>"
+        var htmlButton = " <button id='e" + i + "," + j + "' onclick='editValue(this)'>E</button><button id='d" + i + "," + j + "' onclick='editValue(this)'>D</button><button id='i" + i + "," + j + "' onclick='editValue(this)'>I</button>"
         if (tmp == undefined) {
           tmp = "";
         }
@@ -267,6 +267,26 @@ function overviewTable() {
   });
 }
 
+//simulates dropdown changes to update charts, tables, overview and the export textfield
+function updateAll() {
+  overviewTable();
+  exportField();
+
+  document.getElementsByName("yAxis_dropdown").forEach(element => {
+    dropdownChange(element);
+  });
+
+  for (let i = 0; i < 4; i++) {
+    table(i);
+  }
+
+  document.getElementsByName("module_I").forEach(element => {
+    if (element.parentElement.style.display != "none" && element.parentElement.parentElement.style.display != "") {
+      selected_Module(element);
+    }
+  });
+}
+
 //enables the edit buttons for a specific dataset
 var alerted = false;
 function enableEdit(element) {
@@ -297,6 +317,8 @@ function editValue(element) {
     openPopup("promptPopup", "prompt_io", "Enter new value", table, [id, op, elementId.substring(1).split(",")]);
   } else if (op == "d") {
     openPopup("promptPopup", "prompt_co", "Are you sure?", table, [id, op, elementId.substring(1).split(",")], "deleteValue");
+  } else if (op == "i") {
+    openPopup("promptPopup", "prompt_ios", ["Enter new value", "above", "below"], table, [id, op, elementId.substring(1).split(",")]);
   } else {
     table(id, op, elementId.substring(1).split(","));
   }
@@ -342,16 +364,32 @@ function table(id, editV = undefined, param = undefined, prompt = undefined) {
 
       set.values[param[0] - 1] = prompt;
 
-      exportField()
+      updateAll();
     }
+
   } else if (editV == "d") {
     if (prompt == true) {
       let set = datasets.dataSet_list[index[param[1] - 1] - 1]
       set.values.splice(param[0] - 1, 1);
 
       set.updateValues(set.values);
-      overviewTable();
+      updateAll();
       maxLen -= 1;
+    }
+
+  } else if (editV == "i") {
+    if (prompt[0] != null) {
+      let set = datasets.dataSet_list[index[param[1] - 1] - 1]
+
+      if (set.type == "number") {
+        prompt[0] = Number(prompt[0]);
+      }
+
+      set.values.splice(param[0] - 1 + prompt[1], 0, prompt[0]);
+
+      set.updateValues(set.values);
+      updateAll();
+      maxLen += 1;
     }
   }
 
@@ -498,30 +536,47 @@ function renameSet(element, prompt) {
 //on input in the custom prompt
 function promptSubmit(element) {
   let ret;
-
   if (element != null) {
-    if (element.getAttribute("name") == "ok_Btn") {
-      if (element.parentElement.id == "prompt_io") {
-        ret = document.getElementById("prompt_Input").value;
-      } else {
-        ret = true;
-      }
+    let parentId = element.parentElement.id;
+    let elementName = element.getAttribute("name");
 
-      if (element.parentElement.id == "prompt_co") {
-        let tmp = document.getElementById("dontAsk");
-        if (tmp.checked == true) {
-          dontShow.push(awaitButton["event"]);
-          tmp.checked = false;
+    if (parentId == "prompt_co" || parentId == "prompt_o") {
+      if (elementName == "ok_Btn") {
+
+        if (parentId == "prompt_co") {
+          let tmp = document.getElementById("dontAsk");
+          if (tmp.checked == true && awaitButton["event"] != undefined) {
+            dontShow.push(awaitButton["event"]);
+            tmp.checked = false;
+          }
         }
+
+        ret = true;
+      } else {
+        ret = null;
       }
 
-    } else if (element.getAttribute("name") == "cancel_Btn") {
-      ret = null;
+    } else if (parentId == "prompt_io") {
+      if (elementName == "ok_Btn" || element.id == "prompt_Input") {
+        let tmp = document.getElementById("prompt_Input");
+        ret = tmp.value;
+        tmp.value = "";
 
-    } else if (element.id = "prompt_Input") {
-      ret = document.getElementById("prompt_Input").value;
+      } else {
+        ret = null;
+      }
+
+    } else if (parentId == "prompt_ios") {
+      if (elementName == "ok_Btn" || element.id == "prompt_Input_ios") {
+        let tmp = document.getElementById("prompt_Input_ios");
+        ret = tmp.value;
+        tmp.value = "";
+      } else {
+        ret = null;
+      }
+
+      ret = [ret, document.getElementById("switch_ios").checked];
     }
-    document.getElementById("prompt_Input").value = "";
 
   } else {
     ret = true;
@@ -551,20 +606,26 @@ function openPopup(id, type = undefined, labelText = "", callback = undefined, a
     promptSubmit(null);
 
   } else {
-    if(type != "close_prompt" && id == null){
+    if (type != "close_prompt" && id == null) {
       document.getElementsByName("popup").forEach(element => {
         element.style = "display: none;";
       });
-    }else{
-      document.getElementById("promptPopup").style = "display: none";
+    } else {
+      document.getElementById("promptPopup").style = "display: none;";
     }
 
     if (id != null) {
-      document.getElementById(id).style = "display: block";
+      document.getElementById(id).style = "display: block;";
     }
 
-    if (type != undefined) {
-      document.getElementById("promptLabel").innerText = labelText;
+    if (type != undefined && type != "close_prompt") {
+      if (type != "prompt_ios") {
+        document.getElementById("promptLabel").innerText = labelText;
+      } else {
+        document.getElementById("promptLabel").innerText = labelText[0];
+        document.getElementById("slider_before").innerText = labelText[1];
+        document.getElementById("slider_after").innerText = labelText[2];
+      }
 
       document.getElementsByName("prompt_option").forEach(element => {
         element.style = "display: none;";

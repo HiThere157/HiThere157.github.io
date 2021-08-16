@@ -350,7 +350,6 @@ function Gaussian_Average(element, data, nDigits, n) {
         let tmp = 1 / (Math.sqrt(Math.PI) * a) * Math.exp(-Math.pow(x / 2, 2) / Math.pow(a, 2));
         tmpKernel.push(tmp);
         s += tmp;
-        console.log(s);
       }
 
       tmpKernel.forEach(value => {
@@ -780,13 +779,13 @@ function save_Set(element) {
   let n = 1;
   if (tempSet[operation] != undefined) {
     let tmp = new DataSet(tempSet[operation], false, operation, document.getElementsByName("save_Input")[id - slot_offset[id]].value,
-    document.getElementsByName("mod_parent")[id - slot_offset[id]].innerText,
-    document.getElementsByName("mod_param")[id - slot_offset[id]].innerText);
+      document.getElementsByName("mod_parent")[id - slot_offset[id]].innerText,
+      document.getElementsByName("mod_param")[id - slot_offset[id]].innerText);
 
     datasets.add(tmp);
 
     if (operation == "function_gen") {
-      if(tempSet["xValues"] != undefined){
+      if (tempSet["xValues"] != undefined) {
         n = 2;
         datasets.add(new DataSet(tempSet["xValues"], true, "xValues(fgen)", "xValues" + tmp.id, tmp.name));
         delete tempSet["xValues"];

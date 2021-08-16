@@ -8,22 +8,16 @@
   --prompt-background: #bbbbbbdd;
 }
 
-/* width */
+/* custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
 }
-
-/* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f1; 
 }
- 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #888; 
 }
-
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
@@ -56,7 +50,14 @@ p {
 button, select, input[type=submit], input[type=file], input[type=checkbox], input[type=color] {
   cursor: pointer;
 }
+textarea {
+  position: relative;
+  width: 90%;
+  min-height: 20px;
+  min-width: 100px;
+}
 
+/* custom color input */
 input[type="color"] {
 	-webkit-appearance: none;
 	border: none;
@@ -70,13 +71,59 @@ input[type="color"]::-webkit-color-swatch {
 	border: none;
 }
 
-textarea {
+/* custom on/off switch */
+.switch {
   position: relative;
-  width: 90%;
-  min-height: 20px;
-  min-width: 100px;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
 }
 
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 30px;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 24px;
+  width: 24px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+input:checked + .slider {
+  background-color: #2196F3;
+}
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+input:checked + .slider:before {
+  -webkit-transform: translateX(28px);
+  -ms-transform: translateX(28px);
+  transform: translateX(28px);
+}
+
+/* main layout */
 .header {
   background-color: var(--pimary-background);
   height: 10%;
@@ -114,7 +161,7 @@ textarea {
   min-height: 700px;
 }
 
-
+/* top row layout */
 .main_top {
   background-color: var(--secondary-background);
   height: 50%;
@@ -165,6 +212,7 @@ textarea {
   overflow-y: scroll;
 }
 
+/* bottom row layout */
 .main_bottom {
   background-color: var(--secondary-background);
   height: 50%;
@@ -187,7 +235,7 @@ textarea {
   height: 93%;
 }
 
-
+/* custom prompt */
 .promptbg {
   display: none;
   position: absolute;
@@ -223,6 +271,12 @@ textarea {
   opacity: 0.75;
   transition: 250ms;
 }
+.promptInput.okBtn {
+  background-color: #8AB4F8;
+}
+.promptInput.input {
+  height: 26px;
+}
 .promptInput:hover {
   opacity: 1;
 }
@@ -235,6 +289,8 @@ textarea {
   height: 45px;
   width: 100%;
 }
+
+/* input/chart popup */
 .popup {
   display: none;
   overflow: hidden;
@@ -259,24 +315,6 @@ textarea {
   height: 96%;
   width: 100%;
 }
-.close_button {
-  position: absolute;
-  background-color: var(--pimary-background);
-  height: 30px;
-  width: 30px;
-  right: 6px;
-  border-radius: 7px;
-  border: solid 1px;
-  background-image: url("icons/cross_icon.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  transition: 250ms;
-  opacity: 0.75;
-  display: inline-block;
-}
-.close_button:hover {
-  opacity: 1;
-}
 .table_popup_table {
   height: 100%;
   width: 50%;
@@ -294,6 +332,25 @@ textarea {
   border-radius: 4px;
   padding: 1px;
   display: none;
+}
+
+.close_button {
+  position: absolute;
+  background-color: var(--pimary-background);
+  height: 30px;
+  width: 30px;
+  right: 6px;
+  border-radius: 7px;
+  border: solid 1px;
+  background-image: url("icons/cross_icon.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: 250ms;
+  opacity: 0.75;
+  display: inline-block;
+}
+.close_button:hover {
+  opacity: 1;
 }
 
 /*Modules*/
@@ -352,7 +409,6 @@ textarea {
 .calc_button:hover {
   background-color: var(--pimary-background);
 }
-
 .gen_input {
   width: 50px;
 }
