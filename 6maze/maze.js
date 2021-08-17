@@ -160,6 +160,7 @@ while (visitedN < columns * rows) {
 }
 
 function setup() {
+  frameRate(10);
   createCanvas(columns * resolution, rows * resolution);
   background("#000");
 
