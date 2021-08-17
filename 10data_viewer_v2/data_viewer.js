@@ -288,13 +288,7 @@ function updateAll() {
 }
 
 //enables the edit buttons for a specific dataset
-var alerted = false;
 function enableEdit(element) {
-  if (alerted == false) {
-    openPopup("promptPopup", "prompt_o", "You have to 'Reload' the charts for changes to apply.");
-    alerted = true;
-  }
-
   let id = element.parentElement.parentElement.parentElement.parentElement.parentElement.id;
   id = id[id.length - 1]
   let index = element.id.substring(10) - 1;
