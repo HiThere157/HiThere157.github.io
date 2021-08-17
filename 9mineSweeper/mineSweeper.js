@@ -156,6 +156,7 @@ function click(b, mX, mY) {
 function setup() {
   let canvas = createCanvas(columns * resolution, rows * resolution);
   background("#000");
+  frameRate(20);
   xOff = parseInt((window.innerWidth - columns * resolution) / 2);
   yOff = parseInt((window.innerHeight - rows * resolution) / 2);
   canvas.position(xOff, yOff);
