@@ -8,7 +8,7 @@ function setupHTML() {
       select.onchange = function () { dropdownChange(this); };
 
       let label = document.createElement("label");
-      label.innerText = " C" + n.toString() + ":";
+      label.innerText = "C" + n.toString() + ":";
 
       element.appendChild(label);
       element.appendChild(select);

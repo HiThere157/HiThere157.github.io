@@ -202,13 +202,22 @@ input:checked + .slider:before {
   overflow-y: scroll;
 }
 .graph_header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 3px;
   padding: 3px;
+  overflow: hidden;
 }
 .graph_main {
   height: 95%;
   display: none;
 }
 .table_header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 3px;
   padding: 3px;
   overflow: hidden;
 }
@@ -423,4 +432,27 @@ input:checked + .slider:before {
 }
 .gen_input {
   width: 50px;
+}
+
+/* links */
+.link_icon {
+  height: 15px;
+  width: 15px;
+  background-image: url(icons/external_link_icon.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+a {
+  color: #0000FF;
+  opacity: 0.75;
+  transition: 250ms;
+}
+a:hover {
+  opacity: 1;
+}
+.link_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 3px;
 }
