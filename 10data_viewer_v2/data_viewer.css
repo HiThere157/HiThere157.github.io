@@ -375,6 +375,7 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: center;
   height: 10%;
+  background-color: var(--pimary-background);
 }
 .module {
   height: 100%;
