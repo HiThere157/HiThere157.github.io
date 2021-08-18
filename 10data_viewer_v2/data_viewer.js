@@ -101,7 +101,7 @@ function removeAllOptions(element) {
 function setupDropdown(name, options, append = 0, remove = false, mod = true) {
   var s = false;
   if (name == "yAxis_dropdown" || name.substring(0, name.length - 1) == "column_dropdown" || name == "module_I" || name == "modAxis_dropdown" || name == "molule_Idataset") {
-    options.unshift("--Select--");
+    options.unshift("-Select-");
     s = true;
   } else if (name == "xAxis_dropdown" || name == "module_Ix") {
     options.unshift("N");
@@ -148,9 +148,9 @@ function setupDropdown(name, options, append = 0, remove = false, mod = true) {
     options.shift();
   }
 }
-setupDropdown("top_dropdown", ["--Select--", "Graph", "Scatter Chart", "Pie Chart", "Table", "Overview"]);
-setupDropdown("bottom_dropdown", [["--Select--", "Min Max", "Delta", "Abs", "Gaussian Average"], ["--Select--", "Log", "Exp", "Root", "Add/Sub", "Mul", "Pow"], ["--Select--", "n-Fit", "xFlip", "Cut"], ["--Select--", "Calculator", "Function Gen", "Noise Gen", "Links"]]);
-setupDropdown("fGen_types", ["--Select--", "Linear", "Poly", "Exp", "Log", "Sin", "Cos", "Tan"]);
+setupDropdown("top_dropdown", ["-Select-", "Graph", "Scatter", "Pie Chart", "Table", "Overview"]);
+setupDropdown("bottom_dropdown", [["-Select-", "Min Max", "Delta", "Abs", "Gaussian Average"], ["-Select-", "Log", "Exp", "Root", "Add/Sub", "Mul", "Div", "Pow"], ["-Select-", "n-Fit", "xFlip", "Cut"], ["-Select-", "Calculator", "Function Gen", "Noise Gen", "Links"]]);
+setupDropdown("fGen_types", ["-Select-", "Linear", "Poly", "Exp", "Log", "Sin", "Cos", "Tan"]);
 
 //contains 3 google Chart charts; sets data for chart
 class Chart {
@@ -670,11 +670,11 @@ function dropdownChange(element, isDropdown = true) {
     document.getElementById("top_item_main_table" + id).style = "display: none;";
     document.getElementById("top_item_main_overview" + id).style = "display: none;";
 
-    if (value == "Graph" || value == "Scatter Chart" || value == "Pie Chart") {
+    if (value == "Graph" || value == "Scatter" || value == "Pie Chart") {
       document.getElementById("top_item_main" + id).style = "display: block;";
       if (value == "Graph") {
         showChart("", id);
-      } else if (value == "Scatter Chart") {
+      } else if (value == "Scatter") {
         showChart("0", id);
       } else if (value == "Pie Chart") {
         showChart("1", id);

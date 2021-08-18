@@ -279,7 +279,7 @@ function Mul(element, data, nDigits, n, datasetData) {
     }
 
     var tmp = [];
-    var mul_divTable = [["Index", "Value", "Mul"]];
+    var mulTable = [["Index", "Value", "Mul"]];
 
     if (data.type == "number") {
       if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
@@ -295,10 +295,45 @@ function Mul(element, data, nDigits, n, datasetData) {
       }
 
       for (let i = 0; i < tmp.length; i++) {
-        mul_divTable.push([i, data.values[i], tmp[i]]);
+        mulTable.push([i, data.values[i], tmp[i]]);
       }
 
-      return [mul_divTable, tmp, data.name, n];
+      return [mulTable, tmp, data.name, n];
+    }
+  }
+}
+
+function Div(element, data, nDigits, n, datasetData) {
+  if (element.selectedIndex != 0) {
+    var useDefault = false;
+    if (n == "") {
+      n = 1;
+      useDefault = true;
+    } else {
+      n = Number(n);
+    }
+
+    var tmp = [];
+    var divTable = [["Index", "Value", "Div"]];
+
+    if (data.type == "number") {
+      if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
+        for (let i = 0; i < data.len; i++) {
+          tmp.push(Number((data.values[i] / n).toFixed(nDigits)));
+        }
+
+      } else if (datasetData != undefined && datasetData.type == "number") {
+        for (let i = 0; i < data.len; i++) {
+          tmp.push(Number((data.values[i] / datasetData.values[i]).toFixed(nDigits)));
+        }
+        n = datasetData.name;
+      }
+
+      for (let i = 0; i < tmp.length; i++) {
+        divTable.push([i, data.values[i], tmp[i]]);
+      }
+
+      return [divTable, tmp, data.name, n];
     }
   }
 }
@@ -754,6 +789,11 @@ function show_Module(name, id, simple_mod = false) {
       mod_input.setAttribute("placeholder", txt + "def. -1");
       mod_inputDataset.style = "";
 
+    } else if (name == "div") {
+      mod_text.innerText = "x / a";
+      mod_input.setAttribute("placeholder", txt + "def. 1");
+      mod_inputDataset.style = "";
+
     } else if (name == "pow") {
       mod_text.innerText = "xᵃ";
       mod_input.setAttribute("placeholder", txt + "def. 2");
@@ -852,6 +892,9 @@ function selected_Module(element, depth = false) {
 
     } else if (operation == "mul") {
       returned = Mul(element, data, nDigits, n, datasetData);
+
+    } else if (operation == "div") {
+      returned = Div(element, data, nDigits, n, datasetData);
 
     } else if (operation == "pow") {
       returned = Pow(element, data, nDigits, n, datasetData);
