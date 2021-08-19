@@ -161,7 +161,7 @@ class Chart {
     this.data = data;
   }
 
-  setData(y, x = "", mod = "") {
+  setData(y, x = "", mod = undefined) {
     this.data = new google.visualization.DataTable();
 
     if (x != "") {
@@ -182,7 +182,7 @@ class Chart {
       }
     }
 
-    if (mod != "") {
+    if (mod != undefined) {
       this.data.addColumn(mod.type, mod.name);
       for (let i = 0; i < values.length; i++) {
         values[i].push(mod.values[i]);
@@ -660,6 +660,16 @@ function dropdownChange(element, isDropdown = true) {
     var yAxis = document.getElementById("yAxis_dropdown" + id);
     var yAxis_value = yAxis.options[yAxis.selectedIndex].text;
 
+    var modAxis = document.getElementById("modAxis_dropdown" + id);
+    var modAxis_value = modAxis.options[modAxis.selectedIndex].text;
+
+    var modSet;
+    datasets.dataSet_list.forEach(set => {
+      if (set.name == modAxis_value) {
+        modSet = set;
+      }
+    });
+
     var setX = datasets.dataSet_list[datasets.dataSet_names.indexOf(xAxis_value)];
     var setY = datasets.dataSet_list[datasets.dataSet_names.indexOf(yAxis_value)];
     var setValue = datasets.dataSet_list[datasets.dataSet_names.indexOf(value)];
@@ -693,29 +703,23 @@ function dropdownChange(element, isDropdown = true) {
 
   } else if (name == "yAxis_dropdown" && element.selectedIndex != 0) {
     if (xAxis.selectedIndex == 0) {
-      charts[id].setData(setValue);
+      charts[id].setData(setValue, "", modSet);
     } else {
-      charts[id].setData(setValue, setX);
+      charts[id].setData(setValue, setX, modSet);
     }
 
   } else if (name == "xAxis_dropdown") {
     if (yAxis.selectedIndex != 0) {
       if (element.selectedIndex == 0) {
-        charts[id].setData(setY);
+        charts[id].setData(setY, "", modSet);
       } else {
-        charts[id].setData(setY, setValue);
+        charts[id].setData(setY, setValue, modSet);
       }
     }
 
   } else if (name == "modAxis_dropdown") {
     if (yAxis.selectedIndex != 0) {
-      var tmp;
-      datasets.dataSet_list.forEach(set => {
-        if (set.name == value) {
-          tmp = set;
-        }
-      });
-      charts[id].setData(setY, setX, tmp);
+      charts[id].setData(setY, setX, modSet);
     }
 
   } else if (name.substring(0, name.length - 1) == "column_dropdown") {
