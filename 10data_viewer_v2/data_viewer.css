@@ -270,6 +270,7 @@ input:checked + .slider:before {
   height: 100%;
   width: 100%;
   background-color: var(--prompt-background);
+  z-index: 4;
 }
 .promptPopup {
   overflow: hidden;
@@ -329,6 +330,7 @@ input:checked + .slider:before {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 3;
 }
 .popup_header {
   padding: 5px;
