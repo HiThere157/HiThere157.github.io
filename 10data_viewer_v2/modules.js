@@ -64,6 +64,14 @@ function Cut(element, data) {
       end = parseInt(end);
     }
 
+    let xOffset = 0;
+    if (start < 0) {
+      for (let i = start; i < 0; i++) {
+        tmp.push(NaN);
+        xOffset = -1 * start;
+      }
+    }
+
     for (let i = 0; i < data.len; i++) {
       if (i < start) {
         if (replaceNaN == true) {
@@ -74,12 +82,8 @@ function Cut(element, data) {
       }
     }
 
-    for (let i = 0; i < data.len; i++) {
-      if (tmp[i] == undefined) {
-        cutTable.push([i, data.values[i], ""]);
-      } else {
-        cutTable.push([i, data.values[i], tmp[i]]);
-      }
+    for (let i = 0; i < data.len + xOffset; i++) {
+      cutTable.push([i, data.values[i], tmp[i]]);
     }
 
     return [cutTable, tmp, data.name, start + "," + end];

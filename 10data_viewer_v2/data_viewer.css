@@ -57,6 +57,7 @@ table {
   width: 98%;
   border: solid 1px;
   margin: 1%;
+  margin-bottom: 30px;
 }
 tr {
   border: none; 
