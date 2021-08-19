@@ -163,7 +163,7 @@ input:checked + .slider:before {
   margin: .4%;
   border: solid 2px;
   border-radius: 3px;
-  min-height: 700px;
+  min-height: 800px;
 }
 
 /* top row layout */
@@ -208,6 +208,18 @@ input:checked + .slider:before {
   column-gap: 3px;
   padding: 3px;
   overflow: hidden;
+}
+.range_slider_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.range_slider {
+  width: 90%;
+}
+.slider_input {
+  width: 50px;
+  margin-top: 2px;
 }
 .graph_main {
   height: 95%;

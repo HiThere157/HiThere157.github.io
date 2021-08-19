@@ -6,6 +6,10 @@
   <link rel="stylesheet" href="data_viewer.css">
   <script src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.1"></script>
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 
 <body>
@@ -52,6 +56,14 @@
         <!--Graph Div-->
         <div class="top_item_main" name="top_item_main" id="top_item_main0">
           <div class="graph_header" name="graph_header" id="graph_header0"></div>
+          <div class="range_slider_container">
+            <div class="range_slider" id="slider-range0"></div>
+          </div>
+          <div>
+            <input class="slider_input" id="0xRange0" accept="number" onchange="updateSlider(0, [])">
+            <label> - </label>
+            <input class="slider_input" id="1xRange0" accept="number" onchange="updateSlider(0, [])">
+          </div>
           <div class="graph_main" name="graph_main" id="graph_main0"></div>
           <div class="graph_main" id="0graph_main0"></div>
           <div class="graph_main" id="1graph_main0"></div>
@@ -73,6 +85,14 @@
         <!--Graph Div-->
         <div class="top_item_main" name="top_item_main" id="top_item_main1">
           <div class="graph_header" name="graph_header" id="graph_header1"></div>
+          <div class="range_slider_container">
+            <div class="range_slider" id="slider-range1"></div>
+          </div>
+          <div>
+            <input class="slider_input" id="0xRange1" accept="number" onchange="updateSlider(1, [])">
+            <label> - </label>
+            <input class="slider_input" id="1xRange1" accept="number" onchange="updateSlider(1, [])">
+          </div>
           <div class="graph_main" name="graph_main" id="graph_main1"></div>
           <div class="graph_main" id="0graph_main1"></div>
           <div class="graph_main" id="1graph_main1"></div>
@@ -94,6 +114,14 @@
         <!--Graph Div-->
         <div class="top_item_main" name="top_item_main" id="top_item_main2">
           <div class="graph_header" name="graph_header" id="graph_header2"></div>
+          <div class="range_slider_container">
+            <div class="range_slider" id="slider-range2"></div>
+          </div>
+          <div>
+            <input class="slider_input" id="0xRange2" accept="number" onchange="updateSlider(2, [])">
+            <label> - </label>
+            <input class="slider_input" id="1xRange2" accept="number" onchange="updateSlider(2, [])">
+          </div>
           <div class="graph_main" name="graph_main" id="graph_main2"></div>
           <div class="graph_main" id="0graph_main2"></div>
           <div class="graph_main" id="1graph_main2"></div>
@@ -147,6 +175,14 @@
         <!--Graph Div-->
         <div class="top_item_main" name="top_item_main" id="top_item_main3">
           <div class="graph_header" name="graph_header" id="graph_header3"></div>
+          <div class="range_slider_container">
+            <div class="range_slider" id="slider-range3"></div>
+          </div>
+          <div>
+            <input class="slider_input" id="0xRange3" accept="number" onchange="updateSlider(3, [])">
+            <label> - </label>
+            <input class="slider_input" id="1xRange3" accept="number" onchange="updateSlider(3, [])">
+          </div>
           <div class="graph_main" name="graph_main" id="graph_main3"></div>
           <div class="graph_main" id="0graph_main3"></div>
           <div class="graph_main" id="1graph_main3"></div>

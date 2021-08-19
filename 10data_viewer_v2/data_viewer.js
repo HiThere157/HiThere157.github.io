@@ -57,8 +57,55 @@ function setupHTML() {
 
     element.appendChild(select);
   });
+
+  for (let i = 0; i < 4; i++) {
+    setSlider(i);
+  }
 }
 setupHTML();
+
+//sets slider value and updates input values
+var sliders = { 0: [0, 0], 1: [0, 0], 2: [0, 0], 3: [0, 0] };
+function setSlider(id) {
+  $(function () {
+    $("#slider-range" + id).slider({
+      range: true,
+      min: 0,
+      max: sliders[id][1],
+      values: sliders[id],
+      slide: function (event, ui) {
+        updateSlider(id, ui.values);
+      }
+    });
+
+    for (let i = 0; i < 2; i++) {
+      document.getElementById(i + "xRange" + id).value = sliders[id][i];
+    }
+
+  });
+}
+
+//on slider/input change; updates slider & simulates dropdown change
+function updateSlider(id, vals) {
+  var getVals = false;
+  if (vals.length == 0) {
+    getVals = true;
+  }
+
+  for (let i = 0; i < 2; i++) {
+    if (getVals == true) {
+      vals.push(Number(document.getElementById(i + "xRange" + id).value));
+    } else {
+      document.getElementById(i + "xRange" + id).value = vals[i];
+    }
+  }
+
+  sliders[id] = [vals[0], vals[1]];
+  if (getVals == true) {
+    setSlider(id);
+  }
+  dropdownChange(document.getElementById("yAxis_dropdown" + id), true, false);
+}
 
 var edits = [0, 0, 0, 0, 0]
 function makeTableHTML(Array, buttons = false) {
@@ -161,7 +208,7 @@ class Chart {
     this.data = data;
   }
 
-  setData(y, x = "", mod = undefined) {
+  setData(y, x = "", mod = undefined, sliderId, setSliderValue) {
     this.data = new google.visualization.DataTable();
 
     if (x != "") {
@@ -189,7 +236,16 @@ class Chart {
       }
     }
 
-    this.data.addRows(values);
+    if (setSliderValue == true) {
+      sliders[Number(sliderId)] = [0, y.values.length];
+      setSlider(Number(sliderId));
+
+      this.data.addRows(values);
+
+    } else {
+      this.data.addRows(values.slice(...sliders[sliderId]));
+    }
+
   }
 }
 
@@ -203,8 +259,8 @@ function initCharts() {
 
   function createCharts() {
     var data = new google.visualization.DataTable();
-    data.addColumn('number', 'x');
-    data.addColumn('number', 'y');
+    data.addColumn("number", "x");
+    data.addColumn("number", "y");
     data.addRows([[0, 0]]);
 
     document.getElementsByName("graph_main").forEach(element => {
@@ -221,13 +277,15 @@ function drawChart(id = null, hide = false, scale = "linear") {
   var options = {
     chartArea: {
       left: 40,
-      width: '90%'
+      top: 27,
+      width: "90%",
+      height: "70%"
     },
     legend: {
-      position: 'top'
+      position: "top"
     },
-    width: '100%',
-    backgroundColor: { fill: 'transparent' },
+    width: "100%",
+    backgroundColor: { fill: "transparent" },
     vAxis: { scaleType: scale }
   };
 
@@ -643,7 +701,7 @@ function showChart(chartId, id) {
 }
 
 //on change of every dropdown
-function dropdownChange(element, isDropdown = true) {
+function dropdownChange(element, isDropdown = true, setSliderValue = true) {
   if (isDropdown == true) {
     var value = element.options[element.selectedIndex].text;
   }
@@ -703,23 +761,23 @@ function dropdownChange(element, isDropdown = true) {
 
   } else if (name == "yAxis_dropdown" && element.selectedIndex != 0) {
     if (xAxis.selectedIndex == 0) {
-      charts[id].setData(setValue, "", modSet);
+      charts[id].setData(setValue, "", modSet, id, setSliderValue);
     } else {
-      charts[id].setData(setValue, setX, modSet);
+      charts[id].setData(setValue, setX, modSet, id, setSliderValue);
     }
 
   } else if (name == "xAxis_dropdown") {
     if (yAxis.selectedIndex != 0) {
       if (element.selectedIndex == 0) {
-        charts[id].setData(setY, "", modSet);
+        charts[id].setData(setY, "", modSet, id, setSliderValue);
       } else {
-        charts[id].setData(setY, setValue, modSet);
+        charts[id].setData(setY, setValue, modSet, id, setSliderValue);
       }
     }
 
   } else if (name == "modAxis_dropdown") {
     if (yAxis.selectedIndex != 0) {
-      charts[id].setData(setY, setX, modSet);
+      charts[id].setData(setY, setX, modSet, id, setSliderValue);
     }
 
   } else if (name.substring(0, name.length - 1) == "column_dropdown") {
