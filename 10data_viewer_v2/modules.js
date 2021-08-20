@@ -121,20 +121,13 @@ function Abs(data, nDigits) {
   return false;
 }
 
-function Log(data, nDigits, n, datasetData) {
+function Log(data, nDigits, n, datasetData, minLen) {
   var useDefault = false;
   if (n == "") {
     n = Math.E;
     useDefault = true;
   } else {
     n = Number(n);
-  }
-
-  var minLen = data.len;
-  if (datasetData != undefined) {
-    if (datasetData.len < minLen) {
-      minLen = datasetData.len;
-    }
   }
 
   var tmp = [];
@@ -162,20 +155,13 @@ function Log(data, nDigits, n, datasetData) {
   return false;
 }
 
-function Exp(data, nDigits, n, datasetData) {
+function Exp(data, nDigits, n, datasetData, minLen) {
   var useDefault = false;
   if (n == "") {
     n = Math.E;
     useDefault = true;
   } else {
     n = Number(n);
-  }
-
-  var minLen = data.len;
-  if (datasetData != undefined) {
-    if (datasetData.len < minLen) {
-      minLen = datasetData.len;
-    }
   }
 
   var tmp = [];
@@ -203,20 +189,13 @@ function Exp(data, nDigits, n, datasetData) {
   return false;
 }
 
-function Root(data, nDigits, n, datasetData) {
+function Root(data, nDigits, n, datasetData, minLen) {
   var useDefault = false;
   if (n == "") {
     n = 2;
     useDefault = true;
   } else {
     n = Number(n);
-  }
-
-  var minLen = data.len;
-  if (datasetData != undefined) {
-    if (datasetData.len < minLen) {
-      minLen = datasetData.len;
-    }
   }
 
   var tmp = [];
@@ -244,20 +223,13 @@ function Root(data, nDigits, n, datasetData) {
   return false;
 }
 
-function Add_Sub(data, nDigits, n, datasetData) {
+function Add_Sub(data, nDigits, n, datasetData, minLen) {
   var useDefault = false;
   if (n == "") {
     n = 1;
     useDefault = true;
   } else {
     n = Number(n);
-  }
-
-  var minLen = data.len;
-  if (datasetData != undefined) {
-    if (datasetData.len < minLen) {
-      minLen = datasetData.len;
-    }
   }
 
   var tmp = [];
@@ -285,20 +257,13 @@ function Add_Sub(data, nDigits, n, datasetData) {
   return false;
 }
 
-function Mul(data, nDigits, n, datasetData) {
+function Mul(data, nDigits, n, datasetData, minLen) {
   var useDefault = false;
   if (n == "") {
     n = -1;
     useDefault = true;
   } else {
     n = Number(n);
-  }
-
-  var minLen = data.len;
-  if (datasetData != undefined) {
-    if (datasetData.len < minLen) {
-      minLen = datasetData.len;
-    }
   }
 
   var tmp = [];
@@ -326,20 +291,13 @@ function Mul(data, nDigits, n, datasetData) {
   return false;
 }
 
-function Div(data, nDigits, n, datasetData) {
+function Div(data, nDigits, n, datasetData, minLen) {
   var useDefault = false;
   if (n == "") {
     n = 1;
     useDefault = true;
   } else {
     n = Number(n);
-  }
-
-  var minLen = data.len;
-  if (datasetData != undefined) {
-    if (datasetData.len < minLen) {
-      minLen = datasetData.len;
-    }
   }
 
   var tmp = [];
@@ -367,20 +325,13 @@ function Div(data, nDigits, n, datasetData) {
   return false;
 }
 
-function Pow(data, nDigits, n, datasetData) {
+function Pow(data, nDigits, n, datasetData, minLen) {
   var useDefault = false;
   if (n == "") {
     n = 2;
     useDefault = true;
   } else {
     n = Number(n);
-  }
-
-  var minLen = data.len;
-  if (datasetData != undefined) {
-    if (datasetData.len < minLen) {
-      minLen = datasetData.len;
-    }
   }
 
   var tmp = [];
@@ -921,11 +872,20 @@ function selected_Module(element, depth = false) {
   if (nDigits == "") {
     nDigits = 4;
   }
+
+  var minLen = data.len;
+  if (datasetData != undefined) {
+    if (datasetData.len < minLen) {
+      minLen = datasetData.len;
+    }
+  }
+
   //element => Module Input Dropdown HTML element
   //data => selected data with the Input Dropdown
   //nDigits => Round to n Digits
   //n => mod Parameter
   //datasetData => selected data with the Selcond Input Dropdown
+  //minLen => len of shortest dataset
   var returned = [];
   if (data != undefined || operation == "function_gen") {
     if (operation == "min_max") {
@@ -938,25 +898,25 @@ function selected_Module(element, depth = false) {
       returned = Abs(data, nDigits);
 
     } else if (operation == "log") {
-      returned = Log(data, nDigits, n, datasetData);
+      returned = Log(data, nDigits, n, datasetData, minLen);
 
     } else if (operation == "exp") {
-      returned = Exp(data, nDigits, n, datasetData);
+      returned = Exp(data, nDigits, n, datasetData, minLen);
 
     } else if (operation == "root") {
-      returned = Root(data, nDigits, n, datasetData);
+      returned = Root(data, nDigits, n, datasetData, minLen);
 
     } else if (operation == "add_sub") {
-      returned = Add_Sub(data, nDigits, n, datasetData);
+      returned = Add_Sub(data, nDigits, n, datasetData, minLen);
 
     } else if (operation == "mul") {
-      returned = Mul(data, nDigits, n, datasetData);
+      returned = Mul(data, nDigits, n, datasetData, minLen);
 
     } else if (operation == "div") {
-      returned = Div(data, nDigits, n, datasetData);
+      returned = Div(data, nDigits, n, datasetData, minLen);
 
     } else if (operation == "pow") {
-      returned = Pow(data, nDigits, n, datasetData);
+      returned = Pow(data, nDigits, n, datasetData, minLen);
 
     } else if (operation == "gaussian_average") {
       returned = Gaussian_Average(data, nDigits, n);
