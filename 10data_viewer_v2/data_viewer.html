@@ -249,40 +249,6 @@
     </div>
   </div>
 
-  <div class="module" name="module" id="min_max">
-    <div class="IO">
-      <label>Input:</label>
-      <select name="module_I" onchange="selected_Module(this)"></select>
-    </div>
-    <div class="IO_main">
-      <!--Placeholder-->
-      <div name="mod_main" style="display: none;">
-        <label class="mod_text" name="mod_text"></label>
-        <label name="mod_parent"></label>
-        <label name="mod_param"></label>
-        <input name="mod_input">
-      </div>
-
-      <div name="mod_out" style="display: none;"></div>
-      <p>
-        <label>Min:</label>
-        <label id="min_out"></label>
-        <label>Index:</label>
-        <label id="min_index_out"></label>
-      </p>
-      <p>
-        <label>Max:</label>
-        <label id="max_out"></label>
-        <label>Index:</label>
-        <label id="max_index_out"></label>
-      </p>
-    </div>
-    <div class="IO_footer" style="display: none;">
-      <button onclick="save_Set(this)">Save Set</button>
-      <input name="save_Input" placeholder="(optional) Name" style="width: 100px;">
-    </div>
-  </div>
-
   <div class="module" name="module" id="cut">
     <div class="IO">
       <label>Input:</label>
@@ -310,7 +276,7 @@
       </p>
       <div name="mod_out"></div>
     </div>
-    <div class="IO_footer">
+    <div class="IO_footer" name="IO_footer">
       <button onclick="save_Set(this)">Save Set</button>
       <input name="save_Input" placeholder="(optional) Name" style="width: 100px;">
     </div>
@@ -348,7 +314,7 @@
       </p>
       <div name="mod_out" style="display: none;"></div>
     </div>
-    <div class="IO_footer">
+    <div class="IO_footer" name="IO_footer">
       <button onclick="save_Set(this)">Save Set</button>
       <input name="save_Input" placeholder="(optional) Name" style="width: 100px;">
     </div>
@@ -397,7 +363,7 @@
       </p>
       <div name="mod_out"></div>
     </div>
-    <div class="IO_footer">
+    <div class="IO_footer" name="IO_footer">
       <button onclick="save_Set(this)">Save Set</button>
       <input name="save_Input" placeholder="(optional) Name" style="width: 100px;">
     </div>
@@ -451,7 +417,7 @@
         <div class="calc_button" id="calc_eq" onclick="Calc(this)">=</div>
       </div>
     </div>
-    <div class="IO_footer" style="display: none;">
+    <div class="IO_footer" name="IO_footer" style="display: none;">
     </div>
   </div>
 
@@ -486,7 +452,7 @@
 
       <div name="mod_out" style="display: none;"></div>
     </div>
-    <div class="IO_footer" style="display: none;">
+    <div class="IO_footer" name="IO_footer" style="display: none;">
     </div>
   </div>
 
@@ -506,7 +472,7 @@
       </div>
       <div name="mod_out"></div>
     </div>
-    <div class="IO_footer">
+    <div class="IO_footer" name="IO_footer">
       <button onclick="save_Set(this)">Save Set</button>
       <input name="save_Input" placeholder="(optional) Name" style="width: 100px;">
     </div>

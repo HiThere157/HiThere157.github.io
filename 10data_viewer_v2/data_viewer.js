@@ -196,7 +196,7 @@ function setupDropdown(name, options, append = 0, remove = false, mod = true) {
   }
 }
 setupDropdown("top_dropdown", ["-Select-", "Graph", "Scatter", "Pie Chart", "Table", "Overview"]);
-setupDropdown("bottom_dropdown", [["-Select-", "Min Max", "Delta", "Abs", "Gaussian Average"], ["-Select-", "Log", "Exp", "Root", "Add/Sub", "Mul", "Div", "Pow"], ["-Select-", "n-Fit", "xFlip", "Cut"], ["-Select-", "Calculator", "Function Gen", "Noise Gen", "Links"]]);
+setupDropdown("bottom_dropdown", [["-Select-", "Min Max", "Delta", "Abs", "Gaussian Average", "Index"], ["-Select-", "Log", "Exp", "Root", "Add/Sub", "Mul", "Div", "Pow"], ["-Select-", "n-Fit", "xFlip", "Cut"], ["-Select-", "Calculator", "Function Gen", "Noise Gen", "Links"]]);
 setupDropdown("fGen_types", ["-Select-", "Linear", "Poly", "Exp", "Log", "Sin", "Cos", "Tan"]);
 
 //contains 3 google Chart charts; sets data for chart
@@ -795,7 +795,7 @@ function dropdownChange(element, isDropdown = true, setSliderValue = true) {
     });
 
     var simple_mod = true;
-    if (["Min Max", "Cut", "n-Fit", "Calculator", "Function Gen", "Links"].includes(value)) {
+    if (["Cut", "n-Fit", "Calculator", "Function Gen", "Links"].includes(value)) {
       //^ Those Modules dont support simple_mod; requires own Div
       simple_mod = false;
     }

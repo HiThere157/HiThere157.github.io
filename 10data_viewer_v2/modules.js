@@ -1,461 +1,449 @@
 var tempSet = {};
 var slot_offset = { 0: 0, 1: 0, 2: 0, 3: 0 };
 
-function Min_Max(element) {
-  let data = datasets.dataSet_list[element.selectedIndex - 1]
-  if (element.selectedIndex == 0 || data.type != "number") {
-    document.getElementById("min_out").innerText = "";
-    document.getElementById("min_index_out").innerText = "";
+function Min_Max(data, nDigits) {
+  if (data.type == "number") {
+    let min = Math.min(...data.values);
+    let max = Math.max(...data.values);
 
-    document.getElementById("max_out").innerText = "";
-    document.getElementById("max_index_out").innerText = "";
+    var min_maxTable = [["Min", "Value"], [min, Number(data.values.indexOf(min).toFixed(nDigits))], ["<hr>", "<hr>"], ["Max", "Value"], [max, Number(data.values.indexOf(max).toFixed(nDigits))]]
 
-  } else if (element.selectedIndex != 0) {
-    if (data.type == "number") {
-      let min = Math.min(...data.values);
-      let max = Math.max(...data.values);
+    return [min_maxTable, null, data.name, ""];
+  }
+  return false;
+}
 
-      document.getElementById("min_out").innerText = min.toString();
-      document.getElementById("min_index_out").innerText = data.values.indexOf(min).toString();
+function xFlip(data) {
+  var xflipTable = [["Index", "Value", "xFlip"]];
+  var tmp = [];
 
-      document.getElementById("max_out").innerText = max.toString();
-      document.getElementById("max_index_out").innerText = data.values.indexOf(max).toString();
+  for (let i = 0; i < data.len; i++) {
+    tmp.push(data.values[data.len - 1 - i]);
+  }
+
+  for (let i = 0; i < tmp.length; i++) {
+    xflipTable.push([i, data.values[i], tmp[i]]);
+  }
+
+  return [xflipTable, tmp, data.name, ""];
+}
+
+function Cut(data) {
+  var start = document.getElementById("cut_start").value;
+  var end = document.getElementById("cut_end").value;
+  var replaceNaN = document.getElementById("cut_nan").checked;
+
+  var cutTable = [["Index", "Value", "Cut"]];
+  var tmp = [];
+
+  if (start == "") {
+    start = 0;
+  } else {
+    start = parseInt(start);
+  }
+
+  if (end == "") {
+    end = data.len - 1;
+  } else {
+    end = parseInt(end);
+  }
+
+  let xOffset = 0;
+  if (start < 0) {
+    for (let i = start; i < 0; i++) {
+      tmp.push(NaN);
+      xOffset = -1 * start;
     }
   }
 
-  return [];
+  for (let i = 0; i < data.len; i++) {
+    if (i < start) {
+      if (replaceNaN == true) {
+        tmp.push(NaN);
+      }
+    } else if (i >= start && i <= end) {
+      tmp.push(data.values[i]);
+    }
+  }
+
+  for (let i = 0; i < data.len + xOffset; i++) {
+    cutTable.push([i, data.values[i], tmp[i]]);
+  }
+
+  return [cutTable, tmp, data.name, start + "," + end];
 }
 
-function xFlip(element, data) {
-  if (element.selectedIndex != 0) {
-    var xflipTable = [["Index", "Value", "xFlip"]];
-    var tmp = [];
+function Delta(data, nDigits) {
+  var tmp = [];
+  var deltaTable = [["Index", "Value", "Delta"]];
 
+  if (data.type == "number") {
     for (let i = 0; i < data.len; i++) {
-      tmp.push(data.values[data.len - 1 - i]);
+      if (i == 0) {
+        tmp.push(NaN);
+      } else {
+        tmp.push(Number((data.values[i] - data.values[i - 1]).toFixed(nDigits)));
+      }
     }
 
     for (let i = 0; i < tmp.length; i++) {
-      xflipTable.push([i, data.values[i], tmp[i]]);
+      deltaTable.push([i, data.values[i], tmp[i]]);
     }
 
-    return [xflipTable, tmp, data.name, ""];
+    return [deltaTable, tmp, data.name, ""];
   }
+  return false;
 }
 
-function Cut(element, data) {
-  if (element.selectedIndex != 0) {
-    var start = document.getElementById("cut_start").value;
-    var end = document.getElementById("cut_end").value;
-    var replaceNaN = document.getElementById("cut_nan").checked;
+function Abs(data, nDigits) {
+  var tmp = [];
+  var absTable = [["Index", "Value", "Abs"]];
 
-    var cutTable = [["Index", "Value", "Cut"]];
-    var tmp = [];
-
-    if (start == "") {
-      start = 0;
-    } else {
-      start = parseInt(start);
-    }
-
-    if (end == "") {
-      end = data.len - 1;
-    } else {
-      end = parseInt(end);
-    }
-
-    let xOffset = 0;
-    if (start < 0) {
-      for (let i = start; i < 0; i++) {
-        tmp.push(NaN);
-        xOffset = -1 * start;
-      }
-    }
-
+  if (data.type == "number") {
     for (let i = 0; i < data.len; i++) {
-      if (i < start) {
-        if (replaceNaN == true) {
-          tmp.push(NaN);
-        }
-      } else if (i >= start && i <= end) {
-        tmp.push(data.values[i]);
-      }
+      tmp.push(Number(Math.abs(data.values[i]).toFixed(nDigits)));
     }
 
-    for (let i = 0; i < data.len + xOffset; i++) {
-      cutTable.push([i, data.values[i], tmp[i]]);
+    for (let i = 0; i < tmp.length; i++) {
+      absTable.push([i, data.values[i], tmp[i]]);
     }
 
-    return [cutTable, tmp, data.name, start + "," + end];
+    return [absTable, tmp, data.name, ""];
   }
+  return false;
 }
 
-function Delta(element, data, nDigits) {
-  if (element.selectedIndex != 0) {
-    var tmp = [];
-    var deltaTable = [["Index", "Value", "Delta"]];
+function Log(data, nDigits, n, datasetData) {
+  var useDefault = false;
+  if (n == "") {
+    n = Math.E;
+    useDefault = true;
+  } else {
+    n = Number(n);
+  }
 
-    if (data.type == "number") {
+  var tmp = [];
+  var logTable = [["Index", "Value", "Log"]];
+
+  if (data.type == "number") {
+    if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
       for (let i = 0; i < data.len; i++) {
-        if (i == 0) {
-          tmp.push(NaN);
-        } else {
-          tmp.push(Number((data.values[i] - data.values[i - 1]).toFixed(nDigits)));
-        }
+        tmp.push(Number((Math.log(data.values[i]) / Math.log(n)).toFixed(nDigits)));
       }
 
-      for (let i = 0; i < tmp.length; i++) {
-        deltaTable.push([i, data.values[i], tmp[i]]);
-      }
-
-      return [deltaTable, tmp, data.name, ""];
-    }
-  }
-}
-
-function Abs(element, data, nDigits) {
-  if (element.selectedIndex != 0) {
-    var tmp = [];
-    var absTable = [["Index", "Value", "Abs"]];
-
-    if (data.type == "number") {
+    } else if (datasetData != undefined && datasetData.type == "number") {
       for (let i = 0; i < data.len; i++) {
-        tmp.push(Number(Math.abs(data.values[i]).toFixed(nDigits)));
+        tmp.push(Number(Math.log(data.values[i] / Math.log(datasetData.values[i])).toFixed(nDigits)));
       }
-
-      for (let i = 0; i < tmp.length; i++) {
-        absTable.push([i, data.values[i], tmp[i]]);
-      }
-
-      return [absTable, tmp, data.name, ""];
+      n = datasetData.name;
     }
+
+    for (let i = 0; i < tmp.length; i++) {
+      logTable.push([i, data.values[i], tmp[i]]);
+    }
+
+    return [logTable, tmp, data.name, n];
   }
+  return false;
 }
 
-function Log(element, data, nDigits, n, datasetData) {
-  if (element.selectedIndex != 0) {
-    var useDefault = false;
-    if (n == "") {
-      n = Math.E;
-      useDefault = true;
-    } else {
-      n = Number(n);
-    }
-
-    var tmp = [];
-    var logTable = [["Index", "Value", "Log"]];
-
-    if (data.type == "number") {
-      if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
-        for (let i = 0; i < data.len; i++) {
-          tmp.push(Number((Math.log(data.values[i]) / Math.log(n)).toFixed(nDigits)));
-        }
-
-      } else if (datasetData != undefined && datasetData.type == "number") {
-        for (let i = 0; i < data.len; i++) {
-          tmp.push(Number(Math.log(data.values[i] / Math.log(datasetData.values[i])).toFixed(nDigits)));
-        }
-        n = datasetData.name;
-      }
-
-      for (let i = 0; i < tmp.length; i++) {
-        logTable.push([i, data.values[i], tmp[i]]);
-      }
-
-      return [logTable, tmp, data.name, n];
-    }
+function Exp(data, nDigits, n, datasetData) {
+  var useDefault = false;
+  if (n == "") {
+    n = Math.E;
+    useDefault = true;
+  } else {
+    n = Number(n);
   }
-}
 
-function Exp(element, data, nDigits, n, datasetData) {
-  if (element.selectedIndex != 0) {
-    var useDefault = false;
-    if (n == "") {
-      n = Math.E;
-      useDefault = true;
-    } else {
-      n = Number(n);
-    }
+  var tmp = [];
+  var expTable = [["Index", "Value", "Exp"]];
 
-    var tmp = [];
-    var expTable = [["Index", "Value", "Exp"]];
-
-    if (data.type == "number") {
-      if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
-        for (let i = 0; i < data.len; i++) {
-          tmp.push(Number(Math.pow(n, data.values[i]).toFixed(nDigits)));
-        }
-
-      } else if (datasetData != undefined && datasetData.type == "number") {
-        for (let i = 0; i < data.len; i++) {
-          tmp.push(Number(Math.pow(datasetData.values[i], data.values[i]).toFixed(nDigits)));
-        }
-        n = datasetData.name;
-      }
-
-      for (let i = 0; i < tmp.length; i++) {
-        expTable.push([i, data.values[i], tmp[i]]);
-      }
-
-      return [expTable, tmp, data.name, n];
-    }
-  }
-}
-
-function Root(element, data, nDigits, n, datasetData) {
-  if (element.selectedIndex != 0) {
-    var useDefault = false;
-    if (n == "") {
-      n = 2;
-      useDefault = true;
-    } else {
-      n = Number(n);
-    }
-
-    var tmp = [];
-    var rootTable = [["Index", "Value", "Root"]];
-
-    if (data.type == "number") {
-      if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
-        for (let i = 0; i < data.len; i++) {
-          tmp.push(Number(Math.pow(data.values[i], 1 / parseInt(n)).toFixed(nDigits)));
-        }
-
-      } else if (datasetData != undefined && datasetData.type == "number") {
-        for (let i = 0; i < data.len; i++) {
-          tmp.push(Number(Math.pow(data.values[i], 1 / parseInt(datasetData.values[i])).toFixed(nDigits)));
-        }
-        n = datasetData.name;
-      }
-
-      for (let i = 0; i < tmp.length; i++) {
-        rootTable.push([i, data.values[i], tmp[i]]);
-      }
-
-      return [rootTable, tmp, data.name, n];
-    }
-  }
-}
-
-function Add_Sub(element, data, nDigits, n, datasetData) {
-  if (element.selectedIndex != 0) {
-    var useDefault = false;
-    if (n == "") {
-      n = 1;
-      useDefault = true;
-    } else {
-      n = Number(n);
-    }
-
-    var tmp = [];
-    var add_subTable = [["Index", "Value", "Add/Sub"]];
-
-    if (data.type == "number") {
-      if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
-        for (let i = 0; i < data.len; i++) {
-          tmp.push(Number((data.values[i] + n).toFixed(nDigits)));
-        }
-
-      } else if (datasetData != undefined && datasetData.type == "number") {
-        for (let i = 0; i < data.len; i++) {
-          tmp.push(Number((data.values[i] + datasetData.values[i]).toFixed(nDigits)));
-        }
-        n = datasetData.name;
-      }
-
-      for (let i = 0; i < tmp.length; i++) {
-        add_subTable.push([i, data.values[i], tmp[i]]);
-      }
-
-      return [add_subTable, tmp, data.name, n];
-    }
-  }
-}
-
-function Mul(element, data, nDigits, n, datasetData) {
-  if (element.selectedIndex != 0) {
-    var useDefault = false;
-    if (n == "") {
-      n = -1;
-      useDefault = true;
-    } else {
-      n = Number(n);
-    }
-
-    var tmp = [];
-    var mulTable = [["Index", "Value", "Mul"]];
-
-    if (data.type == "number") {
-      if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
-        for (let i = 0; i < data.len; i++) {
-          tmp.push(Number((data.values[i] * n).toFixed(nDigits)));
-        }
-
-      } else if (datasetData != undefined && datasetData.type == "number") {
-        for (let i = 0; i < data.len; i++) {
-          tmp.push(Number((data.values[i] * datasetData.values[i]).toFixed(nDigits)));
-        }
-        n = datasetData.name;
-      }
-
-      for (let i = 0; i < tmp.length; i++) {
-        mulTable.push([i, data.values[i], tmp[i]]);
-      }
-
-      return [mulTable, tmp, data.name, n];
-    }
-  }
-}
-
-function Div(element, data, nDigits, n, datasetData) {
-  if (element.selectedIndex != 0) {
-    var useDefault = false;
-    if (n == "") {
-      n = 1;
-      useDefault = true;
-    } else {
-      n = Number(n);
-    }
-
-    var tmp = [];
-    var divTable = [["Index", "Value", "Div"]];
-
-    if (data.type == "number") {
-      if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
-        for (let i = 0; i < data.len; i++) {
-          tmp.push(Number((data.values[i] / n).toFixed(nDigits)));
-        }
-
-      } else if (datasetData != undefined && datasetData.type == "number") {
-        for (let i = 0; i < data.len; i++) {
-          tmp.push(Number((data.values[i] / datasetData.values[i]).toFixed(nDigits)));
-        }
-        n = datasetData.name;
-      }
-
-      for (let i = 0; i < tmp.length; i++) {
-        divTable.push([i, data.values[i], tmp[i]]);
-      }
-
-      return [divTable, tmp, data.name, n];
-    }
-  }
-}
-
-function Pow(element, data, nDigits, n, datasetData) {
-  if (element.selectedIndex != 0) {
-    var useDefault = false;
-    if (n == "") {
-      n = 2;
-      useDefault = true;
-    } else {
-      n = Number(n);
-    }
-
-    var tmp = [];
-    var powTable = [["Index", "Value", "Pow"]];
-
-    if (data.type == "number") {
-      if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
-        for (let i = 0; i < data.len; i++) {
-          tmp.push(Number(Math.pow(data.values[i], n).toFixed(nDigits)));
-        }
-
-      } else if (datasetData != undefined && datasetData.type == "number") {
-        for (let i = 0; i < data.len; i++) {
-          tmp.push(Number(Math.pow(data.values[i], datasetData.values[i]).toFixed(nDigits)));
-        }
-        n = datasetData.name;
-      }
-
-      for (let i = 0; i < tmp.length; i++) {
-        powTable.push([i, data.values[i], tmp[i]]);
-      }
-
-      return [powTable, tmp, data.name, n];
-    }
-  }
-}
-
-function Gaussian_Average(element, data, nDigits, n) {
-  if (element.selectedIndex != 0) {
-    var index = [-2, 3];
-    function mk(a, i) {
-      var tmpKernel = [];
-      var kernel = [];
-      var s = 0;
-
-      for (let x = i[0]; x < i[1]; x++) {
-        let tmp = 1 / (Math.sqrt(Math.PI) * a) * Math.exp(-Math.pow(x / 2, 2) / Math.pow(a, 2));
-        tmpKernel.push(tmp);
-        s += tmp;
-      }
-
-      tmpKernel.forEach(value => {
-        kernel.push(value * 1 / s);
-      });
-
-      return kernel;
-    }
-
-    if (n == "") {
-      n = 1;
-    } else {
-      n = parseInt(n);
-    }
-
-    var Kernel = mk(n, index);
-
-    var tmp = [];
-    var g_aTable = [["Index", "Value", "GA"]];
-
-    if (data.type == "number") {
+  if (data.type == "number") {
+    if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
       for (let i = 0; i < data.len; i++) {
-        if (i > 1 && i < data.len - 2) {
-          var tmpValue = 0;
-          for (let j = index[0]; j < index[1]; j++) {
-            tmpValue += data.values[i + j] * Kernel[j + 2]
-          }
-          tmp.push(Number(tmpValue.toFixed(nDigits)));
-        } else {
-          tmp.push(NaN);
-        }
-
+        tmp.push(Number(Math.pow(n, data.values[i]).toFixed(nDigits)));
       }
 
-      for (let i = 0; i < tmp.length; i++) {
-        g_aTable.push([i, data.values[i], tmp[i]]);
+    } else if (datasetData != undefined && datasetData.type == "number") {
+      for (let i = 0; i < data.len; i++) {
+        tmp.push(Number(Math.pow(datasetData.values[i], data.values[i]).toFixed(nDigits)));
       }
-
-      return [g_aTable, tmp, data.name, n];
+      n = datasetData.name;
     }
+
+    for (let i = 0; i < tmp.length; i++) {
+      expTable.push([i, data.values[i], tmp[i]]);
+    }
+
+    return [expTable, tmp, data.name, n];
   }
+  return false;
+}
+
+function Root(data, nDigits, n, datasetData) {
+  var useDefault = false;
+  if (n == "") {
+    n = 2;
+    useDefault = true;
+  } else {
+    n = Number(n);
+  }
+
+  var tmp = [];
+  var rootTable = [["Index", "Value", "Root"]];
+
+  if (data.type == "number") {
+    if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
+      for (let i = 0; i < data.len; i++) {
+        tmp.push(Number(Math.pow(data.values[i], 1 / parseInt(n)).toFixed(nDigits)));
+      }
+
+    } else if (datasetData != undefined && datasetData.type == "number") {
+      for (let i = 0; i < data.len; i++) {
+        tmp.push(Number(Math.pow(data.values[i], 1 / parseInt(datasetData.values[i])).toFixed(nDigits)));
+      }
+      n = datasetData.name;
+    }
+
+    for (let i = 0; i < tmp.length; i++) {
+      rootTable.push([i, data.values[i], tmp[i]]);
+    }
+
+    return [rootTable, tmp, data.name, n];
+  }
+  return false;
+}
+
+function Add_Sub(data, nDigits, n, datasetData) {
+  var useDefault = false;
+  if (n == "") {
+    n = 1;
+    useDefault = true;
+  } else {
+    n = Number(n);
+  }
+
+  var tmp = [];
+  var add_subTable = [["Index", "Value", "Add/Sub"]];
+
+  if (data.type == "number") {
+    if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
+      for (let i = 0; i < data.len; i++) {
+        tmp.push(Number((data.values[i] + n).toFixed(nDigits)));
+      }
+
+    } else if (datasetData != undefined && datasetData.type == "number") {
+      for (let i = 0; i < data.len; i++) {
+        tmp.push(Number((data.values[i] + datasetData.values[i]).toFixed(nDigits)));
+      }
+      n = datasetData.name;
+    }
+
+    for (let i = 0; i < tmp.length; i++) {
+      add_subTable.push([i, data.values[i], tmp[i]]);
+    }
+
+    return [add_subTable, tmp, data.name, n];
+  }
+  return false;
+}
+
+function Mul(data, nDigits, n, datasetData) {
+  var useDefault = false;
+  if (n == "") {
+    n = -1;
+    useDefault = true;
+  } else {
+    n = Number(n);
+  }
+
+  var tmp = [];
+  var mulTable = [["Index", "Value", "Mul"]];
+
+  if (data.type == "number") {
+    if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
+      for (let i = 0; i < data.len; i++) {
+        tmp.push(Number((data.values[i] * n).toFixed(nDigits)));
+      }
+
+    } else if (datasetData != undefined && datasetData.type == "number") {
+      for (let i = 0; i < data.len; i++) {
+        tmp.push(Number((data.values[i] * datasetData.values[i]).toFixed(nDigits)));
+      }
+      n = datasetData.name;
+    }
+
+    for (let i = 0; i < tmp.length; i++) {
+      mulTable.push([i, data.values[i], tmp[i]]);
+    }
+
+    return [mulTable, tmp, data.name, n];
+  }
+  return false;
+}
+
+function Div(data, nDigits, n, datasetData) {
+  var useDefault = false;
+  if (n == "") {
+    n = 1;
+    useDefault = true;
+  } else {
+    n = Number(n);
+  }
+
+  var tmp = [];
+  var divTable = [["Index", "Value", "Div"]];
+
+  if (data.type == "number") {
+    if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
+      for (let i = 0; i < data.len; i++) {
+        tmp.push(Number((data.values[i] / n).toFixed(nDigits)));
+      }
+
+    } else if (datasetData != undefined && datasetData.type == "number") {
+      for (let i = 0; i < data.len; i++) {
+        tmp.push(Number((data.values[i] / datasetData.values[i]).toFixed(nDigits)));
+      }
+      n = datasetData.name;
+    }
+
+    for (let i = 0; i < tmp.length; i++) {
+      divTable.push([i, data.values[i], tmp[i]]);
+    }
+
+    return [divTable, tmp, data.name, n];
+  }
+  return false;
+}
+
+function Pow(data, nDigits, n, datasetData) {
+  var useDefault = false;
+  if (n == "") {
+    n = 2;
+    useDefault = true;
+  } else {
+    n = Number(n);
+  }
+
+  var tmp = [];
+  var powTable = [["Index", "Value", "Pow"]];
+
+  if (data.type == "number") {
+    if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
+      for (let i = 0; i < data.len; i++) {
+        tmp.push(Number(Math.pow(data.values[i], n).toFixed(nDigits)));
+      }
+
+    } else if (datasetData != undefined && datasetData.type == "number") {
+      for (let i = 0; i < data.len; i++) {
+        tmp.push(Number(Math.pow(data.values[i], datasetData.values[i]).toFixed(nDigits)));
+      }
+      n = datasetData.name;
+    }
+
+    for (let i = 0; i < tmp.length; i++) {
+      powTable.push([i, data.values[i], tmp[i]]);
+    }
+
+    return [powTable, tmp, data.name, n];
+  }
+  return false;
+}
+
+function Gaussian_Average(data, nDigits, n) {
+  var index = [-2, 3];
+  function mk(a, i) {
+    var tmpKernel = [];
+    var kernel = [];
+    var s = 0;
+
+    for (let x = i[0]; x < i[1]; x++) {
+      let tmp = 1 / (Math.sqrt(Math.PI) * a) * Math.exp(-Math.pow(x / 2, 2) / Math.pow(a, 2));
+      tmpKernel.push(tmp);
+      s += tmp;
+    }
+
+    tmpKernel.forEach(value => {
+      kernel.push(value * 1 / s);
+    });
+
+    return kernel;
+  }
+
+  if (n == "") {
+    n = 1;
+  } else {
+    n = parseInt(n);
+  }
+
+  var Kernel = mk(n, index);
+
+  var tmp = [];
+  var g_aTable = [["Index", "Value", "GA"]];
+
+  if (data.type == "number") {
+    for (let i = 0; i < data.len; i++) {
+      if (i > 1 && i < data.len - 2) {
+        var tmpValue = 0;
+        for (let j = index[0]; j < index[1]; j++) {
+          tmpValue += data.values[i + j] * Kernel[j + 2]
+        }
+        tmp.push(Number(tmpValue.toFixed(nDigits)));
+      } else {
+        tmp.push(NaN);
+      }
+
+    }
+
+    for (let i = 0; i < tmp.length; i++) {
+      g_aTable.push([i, data.values[i], tmp[i]]);
+    }
+
+    return [g_aTable, tmp, data.name, n];
+  }
+  return false;
+}
+
+function GetIndex(data, nDigits, n) {
+  if (n == "") {
+    n = 0;
+  } else {
+    n = Number(n);
+  }
+
+  if(data.type == "number"){
+    var indexTable = [["Index", "Value"], [n, Number(data.values[n].toFixed(nDigits))]];
+  }else{
+    var indexTable = [["Index", "Value"], [n, data.values[n]]];
+  }
+
+  return [indexTable, null, data.name, n];
 }
 
 //Noise Generator
-function Ngen(element, data, nDigits, n) {
-  if (element.selectedIndex != 0) {
-    if (n == "") {
-      n = 1;
-    } else {
-      n = Number(n);
-    }
-
-    var tmp = [];
-    var noiseTable = [["Index", "Value", "Noise"]];
-
-    if (data.type == "number") {
-      for (let i = 0; i < data.len; i++) {
-        tmp.push(Number((data.values[i] + Math.random() * n * 2 - n).toFixed(nDigits)));
-      }
-
-      for (let i = 0; i < tmp.length; i++) {
-        noiseTable.push([i, data.values[i], tmp[i]]);
-      }
-
-      return [noiseTable, tmp, data.name, n];
-    }
+function Ngen(data, nDigits, n) {
+  if (n == "") {
+    n = 1;
+  } else {
+    n = Number(n);
   }
+
+  var tmp = [];
+  var noiseTable = [["Index", "Value", "Noise"]];
+
+  if (data.type == "number") {
+    for (let i = 0; i < data.len; i++) {
+      tmp.push(Number((data.values[i] + Math.random() * n * 2 - n).toFixed(nDigits)));
+    }
+
+    for (let i = 0; i < tmp.length; i++) {
+      noiseTable.push([i, data.values[i], tmp[i]]);
+    }
+
+    return [noiseTable, tmp, data.name, n];
+  }
+  return false;
 }
 
 //Function Generator
@@ -762,10 +750,16 @@ function show_Module(name, id, simple_mod = false) {
     let mod_main = document.getElementsByName("mod_main")[id - slot_offset[id]];
     let mod_input = document.getElementsByName("mod_input")[id - slot_offset[id]];
     let mod_inputDataset = document.getElementsByName("molule_Idataset")[id - slot_offset[id]];
+    let saveSet = document.getElementsByName("IO_footer")[id - slot_offset[id]];
     let txt = "Input a; ";
 
-    if (["delta", "xflip", "abs"].includes(name)) {
-      //Hide Input Bar For ^ Modules
+    if(["min_max", "index"].includes(name)){
+      //Hide Footer For ^ Modules
+      saveSet.style.display = "none";
+    }
+
+    if (["delta", "xflip", "abs", "min_max"].includes(name)) {
+      //Hide Mod Input For ^ Modules
       mod_main.style = "display: none;";
 
     } else if (name == "log") {
@@ -804,12 +798,16 @@ function show_Module(name, id, simple_mod = false) {
       mod_inputDataset.style = "";
 
     } else if (name == "gaussian_average") {
-      mod_text.innerText = "a =";
+      mod_text.innerText = "a";
       mod_input.setAttribute("placeholder", txt + "def. 1");
 
     } else if (name == "noise_gen") {
       mod_text.innerText = "+-a";
       mod_input.setAttribute("placeholder", txt + "def. 1");
+
+    } else if (name == "index") {
+      mod_text.innerText = "Values[a]";
+      mod_input.setAttribute("placeholder", txt + "def. 0");
     }
   }
 }
@@ -874,66 +872,73 @@ function selected_Module(element, depth = false) {
   var returned = [];
   if (data != undefined || operation == "function_gen") {
     if (operation == "min_max") {
-      returned = Min_Max(element);
+      returned = Min_Max(data, nDigits);
 
     } else if (operation == "delta") {
-      returned = Delta(element, data, nDigits);
+      returned = Delta(data, nDigits);
 
     } else if (operation == "abs") {
-      returned = Abs(element, data, nDigits);
+      returned = Abs(data, nDigits);
 
     } else if (operation == "log") {
-      returned = Log(element, data, nDigits, n, datasetData);
+      returned = Log(data, nDigits, n, datasetData);
 
     } else if (operation == "exp") {
-      returned = Exp(element, data, nDigits, n, datasetData);
+      returned = Exp(data, nDigits, n, datasetData);
 
     } else if (operation == "root") {
-      returned = Root(element, data, nDigits, n, datasetData);
+      returned = Root(data, nDigits, n, datasetData);
 
     } else if (operation == "add_sub") {
-      returned = Add_Sub(element, data, nDigits, n, datasetData);
+      returned = Add_Sub(data, nDigits, n, datasetData);
 
     } else if (operation == "mul") {
-      returned = Mul(element, data, nDigits, n, datasetData);
+      returned = Mul(data, nDigits, n, datasetData);
 
     } else if (operation == "div") {
-      returned = Div(element, data, nDigits, n, datasetData);
+      returned = Div(data, nDigits, n, datasetData);
 
     } else if (operation == "pow") {
-      returned = Pow(element, data, nDigits, n, datasetData);
+      returned = Pow(data, nDigits, n, datasetData);
 
     } else if (operation == "gaussian_average") {
-      returned = Gaussian_Average(element, data, nDigits, n);
+      returned = Gaussian_Average(data, nDigits, n);
 
     } else if (operation == "cut") {
-      returned = Cut(element, data);
+      returned = Cut(data);
 
     } else if (operation == "n-fit") {
       returned = Fit();
 
     } else if (operation == "xflip") {
-      returned = xFlip(element, data);
+      returned = xFlip(data);
 
     } else if (operation == "function_gen") {
       returned = Fgen(nDigits);
 
     } else if (operation == "noise_gen") {
-      returned = Ngen(element, data, nDigits, n);
+      returned = Ngen(data, nDigits, n);
+
+    } else if (operation == "index") {
+      returned = GetIndex(data, nDigits, n);
 
     } else {
       console.log(operation);
     }
 
-    if (returned != []) {
+    if (returned.length != 0 && returned != false) {
       document.getElementsByName("mod_out")[id - slot_offset[id]].innerHTML = makeTableHTML(returned[0]);
       document.getElementsByName("mod_parent")[id - slot_offset[id]].innerText = returned[2];
       document.getElementsByName("mod_param")[id - slot_offset[id]].innerText = returned[3];
-      tempSet[operation] = returned[1];
+      if (returned[1] != null) {
+        tempSet[operation] = returned[1];
+      }
 
       if (returned[4] != undefined) {
         tempSet["xValues"] = returned[4];
       }
+    } else if (returned == false) {
+      document.getElementsByName("mod_out")[id - slot_offset[id]].innerHTML = "<label style='font-size: larger; color: red;'>Dataset is not type = number!</label>";
     }
   }
 }

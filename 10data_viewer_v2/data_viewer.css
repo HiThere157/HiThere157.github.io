@@ -35,6 +35,9 @@ html, body {
 p {
   margin: 2px;
 }
+hr {
+  border: 1px solid black;
+}
 button, select, input[type=submit], input[type=file], input[type=checkbox], input[type=color] {
   cursor: pointer;
 }
