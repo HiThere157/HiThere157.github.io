@@ -42,10 +42,11 @@ button, select, input[type=submit], input[type=file], input[type=checkbox], inpu
   cursor: pointer;
 }
 select {
-  width: 75px;
+  max-width: 75px;
 }
 select:focus {
   width: auto;
+  max-width: 200px;
 }
 textarea {
   position: relative;

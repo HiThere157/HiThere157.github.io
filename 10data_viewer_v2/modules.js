@@ -130,17 +130,24 @@ function Log(data, nDigits, n, datasetData) {
     n = Number(n);
   }
 
+  var minLen = data.len;
+  if (datasetData != undefined) {
+    if (datasetData.len < minLen) {
+      minLen = datasetData.len;
+    }
+  }
+
   var tmp = [];
   var logTable = [["Index", "Value", "Log"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
-      for (let i = 0; i < data.len; i++) {
+      for (let i = 0; i < minLen; i++) {
         tmp.push(Number((Math.log(data.values[i]) / Math.log(n)).toFixed(nDigits)));
       }
 
     } else if (datasetData != undefined && datasetData.type == "number") {
-      for (let i = 0; i < data.len; i++) {
+      for (let i = 0; i < minLen; i++) {
         tmp.push(Number(Math.log(data.values[i] / Math.log(datasetData.values[i])).toFixed(nDigits)));
       }
       n = datasetData.name;
@@ -164,17 +171,24 @@ function Exp(data, nDigits, n, datasetData) {
     n = Number(n);
   }
 
+  var minLen = data.len;
+  if (datasetData != undefined) {
+    if (datasetData.len < minLen) {
+      minLen = datasetData.len;
+    }
+  }
+
   var tmp = [];
   var expTable = [["Index", "Value", "Exp"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
-      for (let i = 0; i < data.len; i++) {
+      for (let i = 0; i < minLen; i++) {
         tmp.push(Number(Math.pow(n, data.values[i]).toFixed(nDigits)));
       }
 
     } else if (datasetData != undefined && datasetData.type == "number") {
-      for (let i = 0; i < data.len; i++) {
+      for (let i = 0; i < minLen; i++) {
         tmp.push(Number(Math.pow(datasetData.values[i], data.values[i]).toFixed(nDigits)));
       }
       n = datasetData.name;
@@ -198,17 +212,24 @@ function Root(data, nDigits, n, datasetData) {
     n = Number(n);
   }
 
+  var minLen = data.len;
+  if (datasetData != undefined) {
+    if (datasetData.len < minLen) {
+      minLen = datasetData.len;
+    }
+  }
+
   var tmp = [];
   var rootTable = [["Index", "Value", "Root"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
-      for (let i = 0; i < data.len; i++) {
+      for (let i = 0; i < minLen; i++) {
         tmp.push(Number(Math.pow(data.values[i], 1 / parseInt(n)).toFixed(nDigits)));
       }
 
     } else if (datasetData != undefined && datasetData.type == "number") {
-      for (let i = 0; i < data.len; i++) {
+      for (let i = 0; i < minLen; i++) {
         tmp.push(Number(Math.pow(data.values[i], 1 / parseInt(datasetData.values[i])).toFixed(nDigits)));
       }
       n = datasetData.name;
@@ -232,17 +253,24 @@ function Add_Sub(data, nDigits, n, datasetData) {
     n = Number(n);
   }
 
+  var minLen = data.len;
+  if (datasetData != undefined) {
+    if (datasetData.len < minLen) {
+      minLen = datasetData.len;
+    }
+  }
+
   var tmp = [];
   var add_subTable = [["Index", "Value", "Add/Sub"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
-      for (let i = 0; i < data.len; i++) {
+      for (let i = 0; i < minLen; i++) {
         tmp.push(Number((data.values[i] + n).toFixed(nDigits)));
       }
 
     } else if (datasetData != undefined && datasetData.type == "number") {
-      for (let i = 0; i < data.len; i++) {
+      for (let i = 0; i < minLen; i++) {
         tmp.push(Number((data.values[i] + datasetData.values[i]).toFixed(nDigits)));
       }
       n = datasetData.name;
@@ -266,17 +294,24 @@ function Mul(data, nDigits, n, datasetData) {
     n = Number(n);
   }
 
+  var minLen = data.len;
+  if (datasetData != undefined) {
+    if (datasetData.len < minLen) {
+      minLen = datasetData.len;
+    }
+  }
+
   var tmp = [];
   var mulTable = [["Index", "Value", "Mul"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
-      for (let i = 0; i < data.len; i++) {
+      for (let i = 0; i < minLen; i++) {
         tmp.push(Number((data.values[i] * n).toFixed(nDigits)));
       }
 
     } else if (datasetData != undefined && datasetData.type == "number") {
-      for (let i = 0; i < data.len; i++) {
+      for (let i = 0; i < minLen; i++) {
         tmp.push(Number((data.values[i] * datasetData.values[i]).toFixed(nDigits)));
       }
       n = datasetData.name;
@@ -300,17 +335,24 @@ function Div(data, nDigits, n, datasetData) {
     n = Number(n);
   }
 
+  var minLen = data.len;
+  if (datasetData != undefined) {
+    if (datasetData.len < minLen) {
+      minLen = datasetData.len;
+    }
+  }
+
   var tmp = [];
   var divTable = [["Index", "Value", "Div"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
-      for (let i = 0; i < data.len; i++) {
+      for (let i = 0; i < minLen; i++) {
         tmp.push(Number((data.values[i] / n).toFixed(nDigits)));
       }
 
     } else if (datasetData != undefined && datasetData.type == "number") {
-      for (let i = 0; i < data.len; i++) {
+      for (let i = 0; i < minLen; i++) {
         tmp.push(Number((data.values[i] / datasetData.values[i]).toFixed(nDigits)));
       }
       n = datasetData.name;
@@ -334,17 +376,24 @@ function Pow(data, nDigits, n, datasetData) {
     n = Number(n);
   }
 
+  var minLen = data.len;
+  if (datasetData != undefined) {
+    if (datasetData.len < minLen) {
+      minLen = datasetData.len;
+    }
+  }
+
   var tmp = [];
   var powTable = [["Index", "Value", "Pow"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
-      for (let i = 0; i < data.len; i++) {
+      for (let i = 0; i < minLen; i++) {
         tmp.push(Number(Math.pow(data.values[i], n).toFixed(nDigits)));
       }
 
     } else if (datasetData != undefined && datasetData.type == "number") {
-      for (let i = 0; i < data.len; i++) {
+      for (let i = 0; i < minLen; i++) {
         tmp.push(Number(Math.pow(data.values[i], datasetData.values[i]).toFixed(nDigits)));
       }
       n = datasetData.name;
