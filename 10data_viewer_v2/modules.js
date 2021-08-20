@@ -6,19 +6,23 @@ function Min_Max(data, nDigits) {
     let min = Math.min(...data.values);
     let max = Math.max(...data.values);
 
-    var min_maxTable = [["Min", "Value"], [min, Number(data.values.indexOf(min).toFixed(nDigits))], ["<hr>", "<hr>"], ["Max", "Value"], [max, Number(data.values.indexOf(max).toFixed(nDigits))]]
+    var min_maxTable = [["Min", "Index"], [Number(min.toFixed(nDigits)), data.values.indexOf(min)], ["<hr>", "<hr>"], ["Max", "Index"], [Number(max.toFixed(nDigits)), data.values.indexOf(max)]]
 
     return [min_maxTable, null, data.name, ""];
   }
   return false;
 }
 
-function xFlip(data) {
+function xFlip(data, nDigits) {
   var xflipTable = [["Index", "Value", "xFlip"]];
   var tmp = [];
 
   for (let i = 0; i < data.len; i++) {
-    tmp.push(data.values[data.len - 1 - i]);
+    if (data.type == "number") {
+      tmp.push(Number(data.values[data.len - 1 - i].toFixed(nDigits)));
+    } else {
+      tmp.push(data.values[data.len - 1 - i]);
+    }
   }
 
   for (let i = 0; i < tmp.length; i++) {
@@ -28,7 +32,7 @@ function xFlip(data) {
   return [xflipTable, tmp, data.name, ""];
 }
 
-function Cut(data) {
+function Cut(data, nDigits) {
   var start = document.getElementById("cut_start").value;
   var end = document.getElementById("cut_end").value;
   var replaceNaN = document.getElementById("cut_nan").checked;
@@ -62,7 +66,11 @@ function Cut(data) {
         tmp.push(NaN);
       }
     } else if (i >= start && i <= end) {
-      tmp.push(data.values[i]);
+      if (data.type == "number") {
+        tmp.push(Number(data.values[i].toFixed(nDigits)));
+      } else {
+        tmp.push(data.values[i]);
+      }
     }
   }
 
@@ -412,9 +420,9 @@ function GetIndex(data, nDigits, n) {
     n = Number(n);
   }
 
-  if(data.type == "number"){
+  if (data.type == "number") {
     var indexTable = [["Index", "Value"], [n, Number(data.values[n].toFixed(nDigits))]];
-  }else{
+  } else {
     var indexTable = [["Index", "Value"], [n, data.values[n]]];
   }
 
@@ -753,7 +761,7 @@ function show_Module(name, id, simple_mod = false) {
     let saveSet = document.getElementsByName("IO_footer")[id - slot_offset[id]];
     let txt = "Input a; ";
 
-    if(["min_max", "index"].includes(name)){
+    if (["min_max", "index"].includes(name)) {
       //Hide Footer For ^ Modules
       saveSet.style.display = "none";
     }
@@ -905,13 +913,13 @@ function selected_Module(element, depth = false) {
       returned = Gaussian_Average(data, nDigits, n);
 
     } else if (operation == "cut") {
-      returned = Cut(data);
+      returned = Cut(data, nDigits);
 
     } else if (operation == "n-fit") {
-      returned = Fit();
+      returned = Fit(nDigits);
 
     } else if (operation == "xflip") {
-      returned = xFlip(data);
+      returned = xFlip(data, nDigits);
 
     } else if (operation == "function_gen") {
       returned = Fgen(nDigits);

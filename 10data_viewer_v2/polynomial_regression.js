@@ -1,4 +1,4 @@
-function Fit() {
+function Fit(nDigits) {
   var xAxis = document.getElementById("module_Ix_fit").selectedIndex;
   var yAxis = document.getElementById("module_I_fit").selectedIndex;
 
@@ -75,5 +75,16 @@ function Fit() {
     elements[i].innerText = Number(tmp).toFixed(2);
   }
 
-  return [null, curveY, name, n];
+  var fitTable = [["Index", "x", "y"]];
+  var tmp = [];
+
+  curveY.forEach(y => {
+    tmp.push(Number(y.toFixed(nDigits)));
+  });
+
+  for (let i = 0; i < curveY.length; i++) {
+    fitTable.push([i, x_vals[i], tmp[i]]);
+  }
+
+  return [fitTable, tmp, name, n];
 }
