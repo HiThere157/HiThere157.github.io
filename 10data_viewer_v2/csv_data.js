@@ -114,7 +114,6 @@ function exportField(override = false, csvFile = false) {
 function makeCSVBtn() {
   openPopup("promptPopup", "prompt_io", "Enter Filename", makeCSV, [])
 }
-
 function makeCSV(prompt) {
   if (prompt != null && prompt != "") {
     if (prompt.substring(0, 2) != "!h") {

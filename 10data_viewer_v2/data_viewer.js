@@ -273,7 +273,13 @@ function initCharts() {
 initCharts();
 
 //draws, updates charts; hide them when they are created
-function drawChart(id = null, hide = false, scale = "linear") {
+var scales = { 0: "linear", 1: "linear", 2: "linear", 3: "linear" }
+function drawChart(id = null, hide = false) {
+  let scale = "linear";
+  if (id != null) {
+    scale = scales[id];
+  }
+
   var options = {
     chartArea: {
       left: 40,
@@ -709,7 +715,6 @@ function dropdownChange(element, isDropdown = true, setSliderValue = true) {
   let name = element.getAttribute("name");
   let nameId = name[name.length - 1];
   let graph = true;
-  let scale = "linear";
 
   if (name.indexOf("Axis") != -1) {
     var xAxis = document.getElementById("xAxis_dropdown" + id);
@@ -803,12 +808,14 @@ function dropdownChange(element, isDropdown = true, setSliderValue = true) {
 
   } else if (name == "setScale") {
     if (document.getElementById("setScale" + id).checked == true) {
-      scale = "log";
+      scales[id] = "log";
+    } else {
+      scales[id] = "linear";
     }
   }
 
   if (graph == true) {
-    drawChart(id, false, scale);
+    drawChart(id, false);
   }
 }
 
