@@ -6,6 +6,7 @@ function setupHTML() {
       let select = document.createElement("select");
       select.setAttribute("name", "column_dropdown" + id.toString());
       select.onchange = function () { dropdownChange(this); };
+      select.className = "data_select";
 
       let label = document.createElement("label");
       label.innerText = "C" + n.toString() + ":";
@@ -37,6 +38,7 @@ function setupHTML() {
       select.setAttribute("name", axis + "Axis_dropdown");
       select.id = axis + "Axis_dropdown" + id.toString();
       select.onchange = function () { dropdownChange(this); };
+      select.className = "data_select";
 
       let label = document.createElement("label");
       label.id = axis + "-Axis" + id.toString();

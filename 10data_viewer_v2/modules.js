@@ -841,9 +841,8 @@ function save_Set(element) {
         delete tempSet["xValues"];
       }
     }
+    updateDropdown(n);
   }
-
-  updateDropdown(n);
 }
 
 //onchange of every input/dropdown inside a module
@@ -873,11 +872,15 @@ function selected_Module(element, depth = false) {
     nDigits = 4;
   }
 
-  var minLen = data.len;
-  if (datasetData != undefined) {
-    if (datasetData.len < minLen) {
-      minLen = datasetData.len;
+  if (data != undefined) {
+    var minLen = data.len;
+    if (datasetData != undefined) {
+      if (datasetData.len < minLen) {
+        minLen = datasetData.len;
+      }
     }
+  } else {
+    var minLen = 0;
   }
 
   //element => Module Input Dropdown HTML element

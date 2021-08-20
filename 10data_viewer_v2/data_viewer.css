@@ -41,10 +41,10 @@ hr {
 button, select, input[type=submit], input[type=file], input[type=checkbox], input[type=color] {
   cursor: pointer;
 }
-select {
+.data_select {
   max-width: 75px;
 }
-select:focus {
+.data_select:focus {
   width: auto;
   max-width: 200px;
 }
