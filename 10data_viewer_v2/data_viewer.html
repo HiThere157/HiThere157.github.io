@@ -7,7 +7,7 @@
   <script src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.1"></script>
 
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
@@ -258,11 +258,13 @@
     </div>
     <div class="IO_main" style="overflow-y: scroll;">
       <!--Placeholder-->
-      <div name="mod_main" style="display: none;">
+      <div name="mod_main" class="mod_main" style="display: none;">
         <label class="mod_text" name="mod_text"></label>
         <label name="mod_parent"></label>
         <label name="mod_param"></label>
         <input name="mod_input">
+        <input name="repeat_input">
+        <label name="repeat_label">Repeat</label>
       </div>
       <p>
         <label>Cut Start:</label>
@@ -300,11 +302,13 @@
     </div>
     <div class="IO_main" style="overflow-y: scroll;">
       <!--Placeholder-->
-      <div name="mod_main" style="display: none;">
+      <div name="mod_main" class="mod_main" style="display: none;">
         <label class="mod_text" name="mod_text"></label>
         <label name="mod_parent"></label>
         <label name="mod_param"></label>
         <input name="mod_input">
+        <input name="repeat_input">
+        <label name="repeat_label">Repeat</label>
       </div>
       <p>
         <label class="mod_text">n. Order:</label>
@@ -345,11 +349,13 @@
     </div>
     <div class="IO_main" style="overflow-y: scroll;">
       <!--Placeholder-->
-      <div name="mod_main" style="display: none;">
+      <div name="mod_main" class="mod_main" style="display: none;">
         <label class="mod_text" name="mod_text"></label>
         <label name="mod_parent"></label>
         <label name="mod_param"></label>
         <input name="mod_input">
+        <input name="repeat_input">
+        <label name="repeat_label">Repeat</label>
       </div>
       <p>
         <label>Max y:</label>
@@ -395,11 +401,13 @@
     </div>
     <div class="IO_main">
       <!--Placeholder-->
-      <div name="mod_main" style="display: none;">
+      <div name="mod_main" class="mod_main" style="display: none;">
         <label class="mod_text" name="mod_text"></label>
         <label name="mod_parent"></label>
         <label name="mod_param"></label>
         <input name="mod_input">
+        <input name="repeat_input">
+        <label name="repeat_label">Repeat</label>
       </div>
       <div name="mod_out" style="display: none;"></div>
 
@@ -450,11 +458,13 @@
     </div>
     <div class="IO_main">
       <!--Placeholder-->
-      <div name="mod_main" style="display: none;">
+      <div name="mod_main" class="mod_main" style="display: none;">
         <label class="mod_text" name="mod_text"></label>
         <label name="mod_parent"></label>
         <label name="mod_param"></label>
         <input name="mod_input">
+        <input name="repeat_input">
+        <label name="repeat_label">Repeat</label>
       </div>
       <p>
         <label style="font-size: larger;">Useful links</label>
@@ -486,11 +496,13 @@
       <input name="molule_IN" placeholder="Round to n" onchange="selected_Module(this)" style="width: 80px;">
     </div>
     <div class="IO_main" style="overflow-y: scroll;">
-      <div name="mod_main" style="padding-top: 2px;">
+      <div name="mod_main" class="mod_main">
         <label class="mod_text" name="mod_text"></label>
         <label name="mod_parent" style="display: none;"></label>
         <label name="mod_param" style="display: none;"></label>
         <input name="mod_input" placeholder="Input n" onchange="selected_Module(this, true)" style="width: 85px;">
+        <input name="repeat_input" type="checkbox" onchange="selected_Module(this, true)" style="display: none;">
+        <label name="repeat_label" style="display: none;">Repeat</label>
       </div>
       <div name="mod_out"></div>
     </div>

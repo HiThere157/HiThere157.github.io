@@ -36,7 +36,7 @@ p {
   margin: 2px;
 }
 hr {
-  border: 1px solid black;
+  border-top: 1px solid black;
 }
 button, select, input[type=submit], input[type=file], input[type=checkbox], input[type=color] {
   cursor: pointer;
@@ -414,6 +414,13 @@ input:checked + .slider:before {
   border: solid 1px;
   border-radius: 4px;
   padding: 3px;
+}
+.mod_main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 3px;
+  overflow: hidden;
 }
 
 .calc_out {

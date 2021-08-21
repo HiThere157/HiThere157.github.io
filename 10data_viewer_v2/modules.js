@@ -131,23 +131,26 @@ function Log(data, nDigits, n, datasetData, minLen) {
   }
 
   var tmp = [];
-  var logTable = [["Index", "Value", "Log"]];
+  var tmp_vals = [];
+  var logTable = [["Index", "Value(x, a)", "Log"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
       for (let i = 0; i < minLen; i++) {
         tmp.push(Number((Math.log(data.values[i]) / Math.log(n)).toFixed(nDigits)));
+        tmp_vals.push(Number(n.toFixed(nDigits)));
       }
 
     } else if (datasetData != undefined && datasetData.type == "number") {
       for (let i = 0; i < minLen; i++) {
-        tmp.push(Number(Math.log(data.values[i] / Math.log(datasetData.values[i])).toFixed(nDigits)));
+        tmp.push(Number(Math.log(data.values[i] / Math.log(datasetData.values[i % datasetData.len])).toFixed(nDigits)));
+        tmp_vals.push(Number(datasetData.values[i % datasetData.len].toFixed(nDigits)));
       }
       n = datasetData.name;
     }
 
     for (let i = 0; i < tmp.length; i++) {
-      logTable.push([i, data.values[i], tmp[i]]);
+      logTable.push([i, data.values[i].toString() + ", " + tmp_vals[i].toString(), tmp[i]]);
     }
 
     return [logTable, tmp, data.name, n];
@@ -165,23 +168,26 @@ function Exp(data, nDigits, n, datasetData, minLen) {
   }
 
   var tmp = [];
-  var expTable = [["Index", "Value", "Exp"]];
+  var tmp_vals = [];
+  var expTable = [["Index", "Value(x, a)", "Exp"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
       for (let i = 0; i < minLen; i++) {
         tmp.push(Number(Math.pow(n, data.values[i]).toFixed(nDigits)));
+        tmp_vals.push(Number(n.toFixed(nDigits)));
       }
 
     } else if (datasetData != undefined && datasetData.type == "number") {
       for (let i = 0; i < minLen; i++) {
-        tmp.push(Number(Math.pow(datasetData.values[i], data.values[i]).toFixed(nDigits)));
+        tmp.push(Number(Math.pow(datasetData.values[i % datasetData.len], data.values[i]).toFixed(nDigits)));
+        tmp_vals.push(Number(datasetData.values[i % datasetData.len].toFixed(nDigits)));
       }
       n = datasetData.name;
     }
 
     for (let i = 0; i < tmp.length; i++) {
-      expTable.push([i, data.values[i], tmp[i]]);
+      expTable.push([i, data.values[i].toString() + ", " + tmp_vals[i].toString(), tmp[i]]);
     }
 
     return [expTable, tmp, data.name, n];
@@ -199,23 +205,26 @@ function Root(data, nDigits, n, datasetData, minLen) {
   }
 
   var tmp = [];
-  var rootTable = [["Index", "Value", "Root"]];
+  var tmp_vals = [];
+  var rootTable = [["Index", "Value(x, a)", "Root"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
       for (let i = 0; i < minLen; i++) {
         tmp.push(Number(Math.pow(data.values[i], 1 / parseInt(n)).toFixed(nDigits)));
+        tmp_vals.push(Number(n.toFixed(nDigits)));
       }
 
     } else if (datasetData != undefined && datasetData.type == "number") {
       for (let i = 0; i < minLen; i++) {
-        tmp.push(Number(Math.pow(data.values[i], 1 / parseInt(datasetData.values[i])).toFixed(nDigits)));
+        tmp.push(Number(Math.pow(data.values[i], 1 / datasetData.values[i % datasetData.len]).toFixed(nDigits)));
+        tmp_vals.push(Number(datasetData.values[i % datasetData.len].toFixed(nDigits)));
       }
       n = datasetData.name;
     }
 
     for (let i = 0; i < tmp.length; i++) {
-      rootTable.push([i, data.values[i], tmp[i]]);
+      rootTable.push([i, data.values[i].toString() + ", " + tmp_vals[i].toString(), tmp[i]]);
     }
 
     return [rootTable, tmp, data.name, n];
@@ -233,23 +242,27 @@ function Add_Sub(data, nDigits, n, datasetData, minLen) {
   }
 
   var tmp = [];
-  var add_subTable = [["Index", "Value", "Add/Sub"]];
+  var tmp_vals = [];
+  var add_subTable = [["Index", "Value(x, a)", "Add/Sub"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
       for (let i = 0; i < minLen; i++) {
         tmp.push(Number((data.values[i] + n).toFixed(nDigits)));
+        tmp_vals.push(Number(n.toFixed(nDigits)));
       }
 
     } else if (datasetData != undefined && datasetData.type == "number") {
       for (let i = 0; i < minLen; i++) {
-        tmp.push(Number((data.values[i] + datasetData.values[i]).toFixed(nDigits)));
+        console.log(data.values[i], datasetData.values[i % datasetData.len], i % minLen)
+        tmp.push(Number((data.values[i] + datasetData.values[i % datasetData.len]).toFixed(nDigits)));
+        tmp_vals.push(Number(datasetData.values[i % datasetData.len].toFixed(nDigits)));
       }
       n = datasetData.name;
     }
 
     for (let i = 0; i < tmp.length; i++) {
-      add_subTable.push([i, data.values[i], tmp[i]]);
+      add_subTable.push([i, data.values[i].toString() + ", " + tmp_vals[i].toString(), tmp[i]]);
     }
 
     return [add_subTable, tmp, data.name, n];
@@ -267,23 +280,26 @@ function Mul(data, nDigits, n, datasetData, minLen) {
   }
 
   var tmp = [];
-  var mulTable = [["Index", "Value", "Mul"]];
+  var tmp_vals = [];
+  var mulTable = [["Index", "Value(x, a)", "Mul"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
       for (let i = 0; i < minLen; i++) {
         tmp.push(Number((data.values[i] * n).toFixed(nDigits)));
+        tmp_vals.push(Number(n.toFixed(nDigits)));
       }
 
     } else if (datasetData != undefined && datasetData.type == "number") {
       for (let i = 0; i < minLen; i++) {
-        tmp.push(Number((data.values[i] * datasetData.values[i]).toFixed(nDigits)));
+        tmp.push(Number((data.values[i] * datasetData.values[i % datasetData.len]).toFixed(nDigits)));
+        tmp_vals.push(Number(datasetData.values[i % datasetData.len].toFixed(nDigits)));
       }
       n = datasetData.name;
     }
 
     for (let i = 0; i < tmp.length; i++) {
-      mulTable.push([i, data.values[i], tmp[i]]);
+      mulTable.push([i, data.values[i].toString() + ", " + tmp_vals[i].toString(), tmp[i]]);
     }
 
     return [mulTable, tmp, data.name, n];
@@ -301,23 +317,26 @@ function Div(data, nDigits, n, datasetData, minLen) {
   }
 
   var tmp = [];
-  var divTable = [["Index", "Value", "Div"]];
+  var tmp_vals = [];
+  var divTable = [["Index", "Value(x, a)", "Div"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
       for (let i = 0; i < minLen; i++) {
         tmp.push(Number((data.values[i] / n).toFixed(nDigits)));
+        tmp_vals.push(Number(n.toFixed(nDigits)));
       }
 
     } else if (datasetData != undefined && datasetData.type == "number") {
       for (let i = 0; i < minLen; i++) {
-        tmp.push(Number((data.values[i] / datasetData.values[i]).toFixed(nDigits)));
+        tmp.push(Number((data.values[i] / datasetData.values[i % datasetData.len]).toFixed(nDigits)));
+        tmp_vals.push(Number(datasetData.values[i % datasetData.len].toFixed(nDigits)));
       }
       n = datasetData.name;
     }
 
     for (let i = 0; i < tmp.length; i++) {
-      divTable.push([i, data.values[i], tmp[i]]);
+      divTable.push([i, data.values[i].toString() + ", " + tmp_vals[i].toString(), tmp[i]]);
     }
 
     return [divTable, tmp, data.name, n];
@@ -335,23 +354,26 @@ function Pow(data, nDigits, n, datasetData, minLen) {
   }
 
   var tmp = [];
-  var powTable = [["Index", "Value", "Pow"]];
+  var tmp_vals = [];
+  var powTable = [["Index", "Value(x, a)", "Pow"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
       for (let i = 0; i < minLen; i++) {
         tmp.push(Number(Math.pow(data.values[i], n).toFixed(nDigits)));
+        tmp_vals.push(Number(n.toFixed(nDigits)));
       }
 
     } else if (datasetData != undefined && datasetData.type == "number") {
       for (let i = 0; i < minLen; i++) {
-        tmp.push(Number(Math.pow(data.values[i], datasetData.values[i]).toFixed(nDigits)));
+        tmp.push(Number(Math.pow(data.values[i], datasetData.values[i % datasetData.len]).toFixed(nDigits)));
+        tmp_vals.push(Number(datasetData.values[i % datasetData.len].toFixed(nDigits)));
       }
       n = datasetData.name;
     }
 
     for (let i = 0; i < tmp.length; i++) {
-      powTable.push([i, data.values[i], tmp[i]]);
+      powTable.push([i, data.values[i].toString() + ", " + tmp_vals[i].toString(), tmp[i]]);
     }
 
     return [powTable, tmp, data.name, n];
@@ -524,7 +546,7 @@ function Fgen(nDigits) {
       x_interval.push(1);
     }
 
-    if (x_interval[2] < 0.001) {
+    if (x_interval[2] < 0.001 && x_interval[2] != 0) {
       x_interval[2] = 0.001;
     }
     x_interval_set = true;
@@ -532,20 +554,32 @@ function Fgen(nDigits) {
 
   x = [];
   if (x_data == null) {
-    for (let i = Number(x_interval[0]); i < Number(x_interval[1]); i += Number(x_interval[2])) {
-      x.push(Number(i.toFixed(nDigits)));
+    if (x_interval[2] != 0) {
+      for (let i = Number(x_interval[0]); i < Number(x_interval[1]); i += Number(x_interval[2])) {
+        x.push(Number(i.toFixed(nDigits)));
+      }
+    } else {
+      for (let i = 0; i < Number(x_interval[0]); i++) {
+        x.push(Number(Number(x_interval[1]).toFixed(nDigits)));
+      }
     }
 
   } else {
-    x_data.values.forEach(value => {
-      if (x_interval_set == true) {
-        if (value >= Number(x_interval[0]) && value <= Number(x_interval[1])) {
+    if (x_interval[2] != 0) {
+      x_data.values.forEach(value => {
+        if (x_interval_set == true) {
+          if (value >= Number(x_interval[0]) && value <= Number(x_interval[1])) {
+            x.push(value);
+          }
+        } else {
           x.push(value);
         }
-      } else {
-        x.push(value);
+      });
+    } else {
+      for (let i = 0; i < x_data.values.length; i++) {
+        x.push(Number(Number(x_interval[1]).toFixed(nDigits)));
       }
-    });
+    }
   }
 
   var tmp = [];
@@ -613,14 +647,17 @@ function Fgen(nDigits) {
 
     if (type == "Linear") {
       genTable.push([i, tmp[i]]);
+
+      var ret = [genTable, tmp, "Fgen(" + type + ")", x_interval[0] + "," + x_interval[1] + "," + x_interval[2]];
     } else {
       genTable.push([i, x[i], tmp[i]]);
+
+      var ret = [genTable, tmp, "Fgen(" + type + ")", a + "," + b + "," + c + "," + d + "," + e];
     }
   }
 
-  let ret = [genTable, tmp, "Fgen(" + type + ")", a + "," + b + "," + c + "," + d + "," + e];
 
-  if (Number(x_interval[2]) != 1) {
+  if (Number(x_interval[2]) != 1 && Number(x_interval[2] != 0)) {
     ret.push(x)
   }
 
@@ -758,12 +795,20 @@ function show_Module(name, id, simple_mod = false) {
     let mod_main = document.getElementsByName("mod_main")[id - slot_offset[id]];
     let mod_input = document.getElementsByName("mod_input")[id - slot_offset[id]];
     let mod_inputDataset = document.getElementsByName("molule_Idataset")[id - slot_offset[id]];
+    let repeat_elements = [document.getElementsByName("repeat_input")[id - slot_offset[id]], document.getElementsByName("repeat_label")[id - slot_offset[id]]];
     let saveSet = document.getElementsByName("IO_footer")[id - slot_offset[id]];
     let txt = "Input a; ";
 
     if (["min_max", "index"].includes(name)) {
       //Hide Footer For ^ Modules
       saveSet.style.display = "none";
+    }
+
+    if (["log", "exp", "root", "add_sub", "mul", "div", "pow"].includes(name)) {
+      mod_inputDataset.style = "";
+      repeat_elements.forEach(element => {
+        element.style.display = "";
+      });
     }
 
     if (["delta", "xflip", "abs", "min_max"].includes(name)) {
@@ -773,37 +818,30 @@ function show_Module(name, id, simple_mod = false) {
     } else if (name == "log") {
       mod_text.innerText = "Logₐ(x)";
       mod_input.setAttribute("placeholder", txt + "def. e");
-      mod_inputDataset.style = "";
 
     } else if (name == "exp") {
       mod_text.innerText = "aᵡ";
       mod_input.setAttribute("placeholder", txt + "def. e");
-      mod_inputDataset.style = "";
 
     } else if (name == "root") {
       mod_text.innerText = "ᵃ√x";
       mod_input.setAttribute("placeholder", txt + "def. 2");
-      mod_inputDataset.style = "";
 
     } else if (name == "add_sub") {
       mod_text.innerText = "x + a";
       mod_input.setAttribute("placeholder", txt + "def. 1");
-      mod_inputDataset.style = "";
 
     } else if (name == "mul") {
       mod_text.innerText = "x * a";
       mod_input.setAttribute("placeholder", txt + "def. -1");
-      mod_inputDataset.style = "";
 
     } else if (name == "div") {
       mod_text.innerText = "x / a";
       mod_input.setAttribute("placeholder", txt + "def. 1");
-      mod_inputDataset.style = "";
 
     } else if (name == "pow") {
       mod_text.innerText = "xᵃ";
       mod_input.setAttribute("placeholder", txt + "def. 2");
-      mod_inputDataset.style = "";
 
     } else if (name == "gaussian_average") {
       mod_text.innerText = "a";
@@ -868,13 +906,15 @@ function selected_Module(element, depth = false) {
   let datasetInput = document.getElementsByName("molule_Idataset")[id - slot_offset[id]];
   let datasetData = datasets.dataSet_list[datasetInput.selectedIndex - 1];
 
+  let repeat_input = document.getElementsByName("repeat_input")[id - slot_offset[id]].checked;
+
   if (nDigits == "") {
     nDigits = 4;
   }
 
   if (data != undefined) {
     var minLen = data.len;
-    if (datasetData != undefined) {
+    if (datasetData != undefined && repeat_input == false) {
       if (datasetData.len < minLen) {
         minLen = datasetData.len;
       }
@@ -882,6 +922,7 @@ function selected_Module(element, depth = false) {
   } else {
     var minLen = 0;
   }
+
 
   //element => Module Input Dropdown HTML element
   //data => selected data with the Input Dropdown
