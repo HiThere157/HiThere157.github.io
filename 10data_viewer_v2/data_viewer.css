@@ -56,7 +56,7 @@ textarea {
 }
 
 /* non selectable */
-button, input, label, strong, hr, select {
+button, input, label, strong, hr, select, kbd, a, .calc_button {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -451,6 +451,9 @@ input:checked + .slider:before {
   height: 20%;
 }
 .calc_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
   width: 25%;
   float: left;
@@ -458,13 +461,6 @@ input:checked + .slider:before {
   outline: 1px solid var(--secondary-background);
   border-radius: 4px;
   transition: 250ms;
-
-  /*Unselectable*/
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -o-user-select: none;
-  user-select: none;
 }
 .calc_button:hover {
   background-color: var(--pimary-background);
