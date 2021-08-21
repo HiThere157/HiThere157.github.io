@@ -198,7 +198,7 @@ function setupDropdown(name, options, append = 0, remove = false, mod = true) {
   }
 }
 setupDropdown("top_dropdown", ["-Select-", "Graph", "Scatter", "Pie Chart", "Table", "Overview"]);
-setupDropdown("bottom_dropdown", [["-Select-", "Min Max", "Delta", "Abs", "Gaussian Average", "Index"], ["-Select-", "Log", "Exp", "Root", "Add/Sub", "Mul", "Div", "Pow"], ["-Select-", "n-Fit", "xFlip", "Cut"], ["-Select-", "Calculator", "Function Gen", "Noise Gen", "Links"]]);
+setupDropdown("bottom_dropdown", [["-Select-", "Min Max", "Delta", "Abs", "Gaussian Average", "Index"], ["-Select-", "Log", "Exp", "Root", "Add/Sub", "Mul", "Div", "Pow"], ["-Select-", "n-Fit", "xFlip", "Cut"], ["-Select-", "Calculator", "Function Gen", "Noise Gen", "Misc"]]);
 setupDropdown("fGen_types", ["-Select-", "Linear", "Poly", "Exp", "Log", "Sin", "Cos", "Tan"]);
 
 //contains 3 google Chart charts; sets data for chart
@@ -270,6 +270,7 @@ function initCharts() {
     });
 
     drawChart(null, true);
+    setDropdown(layouts["defualtLayout"]);
   }
 }
 initCharts();
@@ -797,7 +798,7 @@ function dropdownChange(element, isDropdown = true, setSliderValue = true) {
     });
 
     var simple_mod = true;
-    if (["Cut", "n-Fit", "Calculator", "Function Gen", "Links"].includes(value)) {
+    if (["Cut", "n-Fit", "Calculator", "Function Gen", "Misc"].includes(value)) {
       //^ Those Modules dont support simple_mod; requires own Div
       simple_mod = false;
     }
@@ -860,6 +861,30 @@ function importData() {
   updateDropdown();
 }
 
+function setDropdown(array) {
+  array.forEach(element => {
+    let tmp = document.getElementById(element[0]);
+    tmp.selectedIndex = element[1];
+    dropdownChange(tmp);
+  });
+}
+
+var layouts = {
+  "defualtLayout": [["top_dropdown0", 1], ["top_dropdown1", 4], ["top_dropdown2", 5], ["bottom_dropdown3", 1]],
+  "newLayout": [["top_dropdown0", 0], ["top_dropdown1", 0], ["top_dropdown2", 0], ["top_dropdown3", 0], ["bottom_dropdown0", 0], ["bottom_dropdown1", 0], ["bottom_dropdown2", 0], ["bottom_dropdown3", 0]]
+};
+function keyPressed(event) {
+  //G, Ö, Ü, Ä, B, M, ,, ., #
+  console.log(event)
+  if (event.ctrlKey == true) {
+    if (event.code == "KeyQ") {
+      setDropdown(layouts["newLayout"]);
+    } else if (event.code == "KeyI") {
+      setDropdown(layouts["defualtLayout"]);
+    }
+  }
+}
+
 function importTestData() {
   let td = [
     [NaN, 0, 0.4307, 0.6826, 0.8614, 1, 1.1133, 1.2091, 1.292, 1.3652, 1.4307, 1.4899, 1.544, 1.5937, 1.6397, 1.6826, 1.7227, 1.7604, 1.7959, 1.8295, 1.8614, 1.8917, 1.9206, 1.9482, 1.9746, 2, 2.0244, 2.0478, 2.0704, 2.0922, 2.1133, 2.1337, 2.1534, 2.1725, 2.1911, 2.2091, 2.2266, 2.2436, 2.2602, 2.2763, 2.292, 2.3074, 2.3223, 2.337, 2.3512, 2.3652, 2.3789, 2.3922, 2.4053, 2.4181],
@@ -874,4 +899,12 @@ function importTestData() {
   updateDropdown();
 }
 
-window.onload = importData;
+window.addEventListener("keypress", keyPressed);
+window.onload = () => {
+  importData();
+};
+window.onresize = () => {
+  document.getElementsByName("yAxis_dropdown").forEach(element => {
+    dropdownChange(element);
+  });
+}

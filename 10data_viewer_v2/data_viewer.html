@@ -50,7 +50,6 @@
         <div class="top_item_header">
           <input type="color" style="height: 15px;" value="#256565" onchange="colorChange(this)">
           <select name="top_dropdown" id="top_dropdown0" onchange="dropdownChange(this)"></select>
-          <button onclick="updateAll()">Reload</button>
           <button onclick="openPopup('graph_popup')">Popup</button>
         </div>
         <!--Graph Div-->
@@ -80,7 +79,7 @@
       <div name="top_item" class="main_top_item">
         <div class="top_item_header">
           <select name="top_dropdown" id="top_dropdown1" onchange="dropdownChange(this)"></select>
-          <button onclick="updateAll()">Reload</button>
+          <button onclick="openPopup('graph_popup')">Popup</button>
         </div>
         <!--Graph Div-->
         <div class="top_item_main" name="top_item_main" id="top_item_main1">
@@ -109,7 +108,7 @@
       <div name="top_item" class="main_top_item">
         <div class="top_item_header">
           <select name="top_dropdown" id="top_dropdown2" onchange="dropdownChange(this)"></select>
-          <button onclick="updateAll()">Reload</button>
+          <button onclick="openPopup('graph_popup')">Popup</button>
         </div>
         <!--Graph Div-->
         <div class="top_item_main" name="top_item_main" id="top_item_main2">
@@ -170,7 +169,6 @@
       <div name="top_item" class="main_top_item" style="width: 100%;">
         <div class="top_item_header">
           <select name="top_dropdown" id="top_dropdown3" onchange="dropdownChange(this)"></select>
-          <button onclick="updateAll()">Reload</button>
         </div>
         <!--Graph Div-->
         <div class="top_item_main" name="top_item_main" id="top_item_main3">
@@ -358,16 +356,15 @@
         <label name="repeat_label">Repeat</label>
       </div>
       <p>
-        <label>Max y:</label>
+        <label>MaxY:</label>
         <input style="width: 80px;" id="max_y" placeholder="def. none" onchange="selected_Module(this, true)">
-      </p>
-      <p>
-        <label>x-Interval:</label>
+        <label>xInterval:</label>
         <input style="width: 80px;" id="x_interval" placeholder="def. 0,100,1" onchange="selected_Module(this, true)">
       </p>
+      <hr name="gen_ps">
       <p name="gen_ps">
         <label>Function: </label>
-        <label id="gen_function"></label>
+        <label id="gen_function">Select Function Type!</label>
       </p>
       <p name="gen_ps">
         <label>a = </label>
@@ -448,7 +445,7 @@
     </div>
   </div>
 
-  <div class="module" name="module" id="links">
+  <div class="module" name="module" id="misc">
     <!--Placeholder-->
     <div class="IO" style="display: none;">
       <label>Input:</label>
@@ -467,21 +464,35 @@
         <label name="repeat_label">Repeat</label>
       </div>
       <p>
-        <label style="font-size: larger;">Useful links</label>
+        <strong style="font-size: larger;">Useful links</strong>
       </p>
-      <div class="link_container">
+      <div class="misc_container">
         <a href="https://www.geogebra.org/">GeoGebra</a>
         <div class="link_icon"></div>
       </div>
-      <div class="link_container">
+      <div class="misc_container">
         <a href="https://www.desmos.com/scientific">Desmos</a>
         <div class="link_icon"></div>
       </div>
-      <div class="link_container">
+      <div class="misc_container">
         <a href="https://www.wolframalpha.com/">Wolfram Alpha</a>
         <div class="link_icon"></div>
       </div>
-
+      <p style="padding-top: 10px;">
+        <strong style="font-size: larger;">Keybinds</strong>
+      </p>
+      <div class="misc_container">
+        <label>Reset Layout:</label>
+        <kbd>CTRL</kbd>
+        <label>+</label>
+        <kbd>Q</kbd>
+      </div>
+      <div class="misc_container">
+        <label>Standart Layout:</label>
+        <kbd>CTRL</kbd>
+        <label>+</label>
+        <kbd>I</kbd>
+      </div>
       <div name="mod_out" style="display: none;"></div>
     </div>
     <div class="IO_footer" name="IO_footer" style="display: none;">

@@ -338,6 +338,10 @@ input:checked + .slider:before {
   z-index: 3;
 }
 .popup_header {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  column-gap: 5px;
   padding: 5px;
   padding-bottom: 0;
   height: 4%;
@@ -461,7 +465,7 @@ input:checked + .slider:before {
   width: 50px;
 }
 
-/* links */
+/* misc */
 .link_icon {
   height: 15px;
   width: 15px;
@@ -477,9 +481,22 @@ a {
 a:hover {
   opacity: 1;
 }
-.link_container {
+.misc_container {
   display: flex;
   align-items: center;
   justify-content: center;
   column-gap: 3px;
+  margin: 2px;
 }
+kbd {
+  background-color: #eee;
+  border-radius: 3px;
+  border: 1px solid #b4b4b4;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset;
+  color: #444;
+  display: inline-block;
+  font-weight: 700;
+  line-height: 1;
+  padding: 2px 4px;
+  white-space: nowrap;
+ }
