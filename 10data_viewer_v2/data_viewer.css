@@ -55,6 +55,14 @@ textarea {
   min-width: 100px;
 }
 
+/* non selectable */
+button, input, label, strong, hr, select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 /* custom table */
 table {
   border-collapse: collapse;

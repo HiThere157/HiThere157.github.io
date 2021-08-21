@@ -875,7 +875,6 @@ var layouts = {
 };
 function keyPressed(event) {
   //G, Ö, Ü, Ä, B, M, ,, ., #
-  console.log(event)
   if (event.ctrlKey == true) {
     if (event.code == "KeyQ") {
       setDropdown(layouts["newLayout"]);
