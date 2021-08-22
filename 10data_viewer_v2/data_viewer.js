@@ -68,7 +68,7 @@ function setupHTML() {
 setupHTML();
 
 //sets slider value and updates input values
-var sliders = { 0: [0, 0], 1: [0, 0], 2: [0, 0], 3: [0, 0] };
+var sliders = { 0: [0, 1], 1: [0, 1], 2: [0, 1], 3: [0, 1] };
 function setSlider(id) {
   $(function () {
     $("#slider-range" + id).slider({
@@ -211,40 +211,46 @@ class Chart {
     this.data = data;
   }
 
-  setData(y, x = "", mod = undefined, sliderId, setSliderValue) {
+  setData(y, x = undefined, mod = undefined, sliderId, setSliderValue) {
     this.data = new google.visualization.DataTable();
 
-    if (x != "") {
-      this.data.addColumn(x.type, x.name);
-      this.data.addColumn(y.type, y.name);
-      var values = [];
-      for (var i = 0; i < y.values.length; i++) {
-        values.push([x.values[i], y.values[i]]);
+    if (y != undefined) {
+      if (x != undefined) {
+        this.data.addColumn(x.type, x.name);
+        this.data.addColumn(y.type, y.name);
+        var values = [];
+        for (var i = 0; i < y.values.length; i++) {
+          values.push([x.values[i], y.values[i]]);
+        }
+
+      } else {
+        this.data.addColumn("number", "x");
+        this.data.addColumn(y.type, y.name);
+
+        var values = [];
+        for (var i = 0; i < y.values.length; i++) {
+          values.push([i, y.values[i]]);
+        }
+      }
+
+      if (mod != undefined) {
+        this.data.addColumn(mod.type, mod.name);
+        for (let i = 0; i < values.length; i++) {
+          values[i].push(mod.values[i]);
+        }
       }
 
     } else {
       this.data.addColumn("number", "x");
-      this.data.addColumn(y.type, y.name);
-
-      var values = [];
-      for (var i = 0; i < y.values.length; i++) {
-        values.push([i, y.values[i]]);
-      }
-    }
-
-    if (mod != undefined) {
-      this.data.addColumn(mod.type, mod.name);
-      for (let i = 0; i < values.length; i++) {
-        values[i].push(mod.values[i]);
-      }
+      this.data.addColumn("number", "y");
+      var values = [[0, 0]];
     }
 
     if (setSliderValue == true) {
-      sliders[Number(sliderId)] = [0, y.values.length];
+      sliders[Number(sliderId)] = [0, values.length];
       setSlider(Number(sliderId));
 
       this.data.addRows(values);
-
     } else {
       this.data.addRows(values.slice(...sliders[sliderId]));
     }
@@ -336,22 +342,24 @@ function overviewTable() {
 }
 
 //simulates dropdown changes to update charts, tables, overview and the export textfield
-function updateAll() {
-  overviewTable();
-  exportField();
+function updateAll(graphUpdate = false) {
+  if (graphUpdate == false) {
+    overviewTable();
+    exportField();
+
+    for (let i = 0; i < 4; i++) {
+      table(i);
+    }
+
+    document.getElementsByName("module_I").forEach(element => {
+      if (element.parentElement.style.display != "none" && element.parentElement.parentElement.style.display != "") {
+        selected_Module(element);
+      }
+    });
+  }
 
   document.getElementsByName("yAxis_dropdown").forEach(element => {
     dropdownChange(element);
-  });
-
-  for (let i = 0; i < 4; i++) {
-    table(i);
-  }
-
-  document.getElementsByName("module_I").forEach(element => {
-    if (element.parentElement.style.display != "none" && element.parentElement.parentElement.style.display != "") {
-      selected_Module(element);
-    }
   });
 }
 
@@ -678,6 +686,10 @@ function openPopup(id, type = undefined, spanText = "", callback = undefined, ar
 
     if (id != null) {
       document.getElementById(id).style = "display: block;";
+
+      if (id == "graph_popup") {
+        updateAll(true);
+      }
     }
 
     if (type != undefined && type != "close_prompt") {
@@ -768,9 +780,9 @@ function dropdownChange(element, isDropdown = true, setSliderValue = true) {
       overviewTable();
     }
 
-  } else if (name == "yAxis_dropdown" && element.selectedIndex != 0) {
+  } else if (name == "yAxis_dropdown") {
     if (xAxis.selectedIndex == 0) {
-      charts[id].setData(setValue, "", modSet, id, setSliderValue);
+      charts[id].setData(setValue, undefined, modSet, id, setSliderValue);
     } else {
       charts[id].setData(setValue, setX, modSet, id, setSliderValue);
     }
@@ -778,7 +790,7 @@ function dropdownChange(element, isDropdown = true, setSliderValue = true) {
   } else if (name == "xAxis_dropdown") {
     if (yAxis.selectedIndex != 0) {
       if (element.selectedIndex == 0) {
-        charts[id].setData(setY, "", modSet, id, setSliderValue);
+        charts[id].setData(setY, undefined, modSet, id, setSliderValue);
       } else {
         charts[id].setData(setY, setValue, modSet, id, setSliderValue);
       }
@@ -905,7 +917,5 @@ window.onload = () => {
   importData();
 };
 window.onresize = () => {
-  document.getElementsByName("yAxis_dropdown").forEach(element => {
-    dropdownChange(element);
-  });
+  updateAll(true);
 }

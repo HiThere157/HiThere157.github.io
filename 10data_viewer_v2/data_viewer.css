@@ -357,6 +357,7 @@ input:checked + .slider:before {
   min-height: 35px;
 }
 .popup_main {
+  text-align: center;
   height: 96%;
   width: 100%;
 }
