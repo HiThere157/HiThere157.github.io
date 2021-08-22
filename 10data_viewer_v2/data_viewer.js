@@ -857,6 +857,15 @@ function colorChange(element) {
   document.documentElement.style.setProperty("--header", element.value);
 }
 
+//changes Theme to Dark/Light mode
+function changeTheme(element) {
+  if(element.checked == true){
+    document.getElementsByTagName("html")[0].className = "darkTheme";
+  }else{
+    document.getElementsByTagName("html")[0].className = "";
+  }
+}
+
 //import default datasets
 function importData() {
   let r = [];

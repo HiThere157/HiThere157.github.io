@@ -9,7 +9,12 @@
   --okBtn-background: #8AB4F8;
 }
 
+.darkTheme {
+  filter: brightness(0.7);
+}
+
 html, body {
+  background-color: var(--popup-background);
   min-width: 1650px;
   height: 98%;
   padding: 0;

@@ -48,6 +48,8 @@
 
       <div name="top_item" class="main_top_item">
         <div class="top_item_header">
+          <label for="theme_input">Dark Mode</label>
+          <input id="theme_input" type="checkbox" onchange="changeTheme(this)">
           <input type="color" style="height: 15px;" value="#256565" onchange="colorChange(this)">
           <select name="top_dropdown" id="top_dropdown0" onchange="dropdownChange(this)"></select>
           <button onclick="openPopup('graph_popup')">Popup</button>
