@@ -486,7 +486,7 @@ function Fgen(nDigits) {
   }
 
   let type = document.getElementById("molule_fGen_types").value;
-  let type_label = document.getElementById("gen_function");
+  let type_span = document.getElementById("gen_function");
 
   let max_y = document.getElementById("max_y").value;
   let x_interval = document.getElementById("x_interval").value;
@@ -603,37 +603,37 @@ function Fgen(nDigits) {
   }
 
   if (type == "Poly") {
-    type_label.innerText = "y = ax^4 + bx^3 + cx^2 + dx + e";
+    type_span.innerText = "y = ax^4 + bx^3 + cx^2 + dx + e";
     x.forEach(n => {
       tmp.push(Number((a * Math.pow(n, 4) + b * Math.pow(n, 3) + c * Math.pow(n, 2) + d * n + e).toFixed(nDigits)));
     });
 
   } else if (type == "Exp") {
-    type_label.innerText = "y= a * b^[c * (x - d)] + e";
+    type_span.innerText = "y= a * b^[c * (x - d)] + e";
     x.forEach(n => {
       tmp.push(Number((a * Math.pow(b, (c * (n - d))) + e).toFixed(nDigits)));
     });
 
   } else if (type == "Log") {
-    type_label.innerText = "y= a * log(b, [c * (x - d)]) + e";
+    type_span.innerText = "y= a * log(b, [c * (x - d)]) + e";
     x.forEach(n => {
       tmp.push(Number((a * Math.log(c * (n - d)) / Math.log(b) + e).toFixed(nDigits)));
     });
 
   } else if (type == "Sin") {
-    type_label.innerText = "y= a * sin[b * (x - c)] + d";
+    type_span.innerText = "y= a * sin[b * (x - c)] + d";
     x.forEach(n => {
       tmp.push(Number((a * Math.sin(b * (n - c)) + d).toFixed(nDigits)));
     });
 
   } else if (type == "Cos") {
-    type_label.innerText = "y= a * cos[b * (x - c)] + d";
+    type_span.innerText = "y= a * cos[b * (x - c)] + d";
     x.forEach(n => {
       tmp.push(Number((a * Math.cos(b * (n - c)) + d).toFixed(nDigits)));
     });
 
   } else if (type == "Tan") {
-    type_label.innerText = "y= a * tan[b * (x - c)] + d";
+    type_span.innerText = "y= a * tan[b * (x - c)] + d";
     x.forEach(n => {
       tmp.push(Number((a * Math.tan(b * (n - c)) + d).toFixed(nDigits)));
     });
@@ -673,6 +673,8 @@ function Calc(element) {
 
   if (element != false) {
     pressed = element.id.split("_")[1];
+  } else {
+    calcs[calcs.length - 1] = document.getElementById("calc_out").value;
   }
 
   if (isNaN(Number(pressed)) == false) {
@@ -741,7 +743,7 @@ function Calc(element) {
   if (tmp == NaN) {
     tmp = 0;
   }
-  document.getElementById("calc_out").value = tmp;
+  document.getElementById("calc_out").value = Number(tmp.toString().replace(",", "."));
 }
 
 //updates slot offset; otherwise wrong match of document.getElementsByName(), if no module is present in the slot to the left
@@ -999,7 +1001,7 @@ function selected_Module(element, depth = false) {
         tempSet["xValues"] = returned[4];
       }
     } else if (returned == false) {
-      document.getElementsByName("mod_out")[id - slot_offset[id]].innerHTML = "<label style='font-size: larger; color: red;'>Dataset is not type = number!</label>";
+      document.getElementsByName("mod_out")[id - slot_offset[id]].innerHTML = "<span style='font-size: larger; color: red;'>Dataset is not type = number!</span>";
     }
   }
 }

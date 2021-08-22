@@ -8,10 +8,10 @@ function setupHTML() {
       select.onchange = function () { dropdownChange(this); };
       select.className = "data_select";
 
-      let label = document.createElement("label");
-      label.innerText = "C" + n.toString() + ":";
+      let span = document.createElement("span");
+      span.innerText = "C" + n.toString() + ":";
 
-      element.appendChild(label);
+      element.appendChild(span);
       element.appendChild(select);
     }
   });
@@ -22,6 +22,7 @@ function setupHTML() {
     let scaleLabel = document.createElement("label");
     scaleLabel.id = "setScaleLabel" + id.toString();
     scaleLabel.innerText = "Log Scale";
+    scaleLabel.setAttribute("for", "setScale" + id.toString());
 
     let scaleInput = document.createElement("input");
     scaleInput.type = "checkbox";
@@ -40,11 +41,11 @@ function setupHTML() {
       select.onchange = function () { dropdownChange(this); };
       select.className = "data_select";
 
-      let label = document.createElement("label");
-      label.id = axis + "-Axis" + id.toString();
-      label.innerText = axis + "-Axis";
+      let span = document.createElement("span");
+      span.id = axis + "-Axis" + id.toString();
+      span.innerText = axis + "-Axis:";
 
-      element.appendChild(label);
+      element.appendChild(span);
       element.appendChild(select);
     });
   });
@@ -404,7 +405,7 @@ function table(id, editV = undefined, param = undefined, prompt = undefined) {
         add_ = "checked";
       }
 
-      tmpArray.push(datasets.dataSet_names[element.selectedIndex - 1] + "<label> - edit</label><input id='editEnable" + tmpArray.length + "' onchange='enableEdit(this)' type='checkbox' " + add_ + ">");
+      tmpArray.push(datasets.dataSet_names[element.selectedIndex - 1] + "<label for='editEnable" + tmpArray.length + "'> - edit</label><input id='editEnable" + tmpArray.length + "' onchange='enableEdit(this)' type='checkbox' " + add_ + ">");
     } else {
       tmpArray.push("None");
     }
@@ -654,7 +655,7 @@ function promptSubmit(element) {
 //Opens a Popup, hides every other
 var awaitButton = {};
 var dontShow = [];
-function openPopup(id, type = undefined, labelText = "", callback = undefined, args = undefined, event = undefined) {
+function openPopup(id, type = undefined, spanText = "", callback = undefined, args = undefined, event = undefined) {
   awaitButton = {};
 
   if (callback != undefined) {
@@ -681,11 +682,11 @@ function openPopup(id, type = undefined, labelText = "", callback = undefined, a
 
     if (type != undefined && type != "close_prompt") {
       if (type != "prompt_ios") {
-        document.getElementById("promptLabel").innerText = labelText;
+        document.getElementById("promptSpan").innerText = spanText;
       } else {
-        document.getElementById("promptLabel").innerText = labelText[0];
-        document.getElementById("slider_before").innerText = labelText[1];
-        document.getElementById("slider_after").innerText = labelText[2];
+        document.getElementById("promptSpan").innerText = spanText[0];
+        document.getElementById("slider_before").innerText = spanText[1];
+        document.getElementById("slider_after").innerText = spanText[2];
       }
 
       document.getElementsByName("prompt_option").forEach(element => {
@@ -705,8 +706,8 @@ function showChart(chartId, id) {
 
   document.getElementById(chartId + "graph_main" + id).style = "display: block;";
 
-  document.getElementById("x-Axis" + id).innerText = "x-Axis";
-  document.getElementById("y-Axis" + id).innerText = "y-Axis";
+  document.getElementById("x-Axis" + id).innerText = "x-Axis:";
+  document.getElementById("y-Axis" + id).innerText = "y-Axis:";
 }
 
 //on change of every dropdown
@@ -861,6 +862,7 @@ function importData() {
   updateDropdown();
 }
 
+//set the selected option of a dropdown
 function setDropdown(array) {
   array.forEach(element => {
     let tmp = document.getElementById(element[0]);
@@ -874,11 +876,11 @@ var layouts = {
   "newLayout": [["top_dropdown0", 0], ["top_dropdown1", 0], ["top_dropdown2", 0], ["top_dropdown3", 0], ["bottom_dropdown0", 0], ["bottom_dropdown1", 0], ["bottom_dropdown2", 0], ["bottom_dropdown3", 0]]
 };
 function keyPressed(event) {
-  //G, Ö, Ü, Ä, B, M, ,, ., #
+  //Ö, Ü, Ä, B, M, ,, ., #
   if (event.ctrlKey == true) {
     if (event.code == "KeyQ") {
       setDropdown(layouts["newLayout"]);
-    } else if (event.code == "KeyI") {
+    } else if (event.code == "KeyB") {
       setDropdown(layouts["defualtLayout"]);
     }
   }

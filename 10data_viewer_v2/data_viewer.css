@@ -56,7 +56,7 @@ textarea {
 }
 
 /* non selectable */
-button, input, label, strong, hr, select, kbd, a, .calc_button {
+button, input, label, span, strong, hr, select, kbd, a, .calc_button {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -372,7 +372,7 @@ input:checked + .slider:before {
   overflow: scroll;
   float: right;
 }
-.table_label {
+.table_span {
   border: solid 1px;
   border-radius: 4px;
   padding: 1px;
@@ -441,7 +441,7 @@ input:checked + .slider:before {
   background-color: var(--pimary-background);
   border-radius: 4px;
 }
-.calc_label_out {
+.calc_input_out {
   width: 97%;
   height: 85%;
   font-size: xx-large;
@@ -467,6 +467,11 @@ input:checked + .slider:before {
 }
 .gen_input {
   width: 50px;
+}
+.flexClass {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* misc */

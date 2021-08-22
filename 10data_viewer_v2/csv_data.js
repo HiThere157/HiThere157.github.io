@@ -238,10 +238,10 @@ function setButtonData() {
     var row = [];
     for (let j = 0; j < updateLen() + 1; j++) {
       if (i == 0 && j != 0) {
-        header.push("<button name='sCs' id='sC" + j + "' onclick='saveData(this)'>Save Column</button><br><label class='table_label' id='lC" + j + "'></label>");
+        header.push("<button name='sCs' id='sC" + j + "' onclick='saveData(this)'>Save Column</button><br><span class='table_span' id='lC" + j + "'></span>");
       }
       if (j == 0) {
-        row.push("<button id='sR" + i + "' onclick='saveData(this)'>Save Row</button><label id='lR'" + i + "></label>");
+        row.push("<button id='sR" + i + "' onclick='saveData(this)'>Save Row</button><span id='lR'" + i + "></span>");
       } else {
         row.push("");
       }
