@@ -9,20 +9,6 @@
   --okBtn-background: #8AB4F8;
 }
 
-/* custom scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1; 
-}
-::-webkit-scrollbar-thumb {
-  background: #888; 
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #555; 
-}
-
 html, body {
   min-width: 1650px;
   height: 98%;
@@ -61,6 +47,20 @@ button, input, label, span, strong, hr, select, kbd, a, .calc_button {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }
 
 /* custom table */
@@ -209,10 +209,10 @@ input:checked + .slider:before {
   height: 95%;
   display: none;
 }
-.top_item_main_overview{
+.top_item_main_overview {
   height: 95%;
   display: none;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .graph_header {
   display: flex;
@@ -248,7 +248,7 @@ input:checked + .slider:before {
 }
 .table_main {
   height: 95%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 /* bottom row layout */
@@ -363,13 +363,13 @@ input:checked + .slider:before {
 .table_popup_table {
   height: 100%;
   width: 50%;
-  overflow: scroll;
+  overflow: auto;
   display: inline-block;
 }
 .table_popup_side {
   height: 100%;
   width: 50%;
-  overflow: scroll;
+  overflow-y: auto;
   float: right;
 }
 .table_span {
@@ -409,6 +409,7 @@ input:checked + .slider:before {
 }
 .IO_main {
   height: 80%;
+  overflow-y: auto;
 }
 .IO_footer {
   display: flex;

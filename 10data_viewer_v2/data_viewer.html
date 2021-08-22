@@ -38,7 +38,7 @@
           <input id="formatOutput" type="checkbox" onchange="exportField(true)">
           <textarea id="dataExport" rows="3" onchange="parseData(this)" spellcheck="false"></textarea>
         </div>
-        <div id="dataExportTable" class="export_item" style="overflow-y: scroll;"></div>
+        <div id="dataExportTable" class="export_item" style="overflow-y: auto;"></div>
       </div>
     </div>
   </div>
@@ -165,7 +165,7 @@
       <span style="font-size: x-large;">Popup</span>
       <div class="close_button" onclick="openPopup(null)"></div>
     </div>
-    <div class="popup_main" style="text-align: center;">
+    <div class="popup_main">
       <div name="top_item" class="main_top_item" style="width: 100%;">
         <div class="top_item_header">
           <select name="top_dropdown" id="top_dropdown3" onchange="dropdownChange(this)"></select>
@@ -254,7 +254,7 @@
       <select class="data_select" name="molule_Idataset" onchange="selected_Module(this)" style="display: none;"></select>
       <input name="molule_IN" placeholder="Round to n" onchange="selected_Module(this)" style="width: 80px;">
     </div>
-    <div class="IO_main" style="overflow-y: scroll;">
+    <div class="IO_main">
       <!--Placeholder-->
       <div name="mod_main" class="mod_main" style="display: none;">
         <span class="mod_text" name="mod_text"></span>
@@ -298,7 +298,7 @@
       <select name="module_I" onchange="selected_Module(this)"></select>
       <select name="molule_Idataset" onchange="selected_Module(this)" style="display: none;"></select>
     </div>
-    <div class="IO_main" style="overflow-y: scroll;">
+    <div class="IO_main">
       <!--Placeholder-->
       <div name="mod_main" class="mod_main" style="display: none;">
         <span class="mod_text" name="mod_text"></span>
@@ -345,7 +345,7 @@
       <select name="module_I" onchange="selected_Module(this)"></select>
       <select name="molule_Idataset" onchange="selected_Module(this)" style="display: none;"></select>
     </div>
-    <div class="IO_main" style="overflow-y: scroll;">
+    <div class="IO_main">
       <!--Placeholder-->
       <div name="mod_main" class="mod_main" style="display: none;">
         <span class="mod_text" name="mod_text"></span>
@@ -396,7 +396,7 @@
       <select name="molule_Idataset" onchange="selected_Module(this)" style="display: none;"></select>
       <input name="molule_IN" placeholder="Round to n" onchange="selected_Module(this)" style="width: 80px;">
     </div>
-    <div class="IO_main">
+    <div class="IO_main" style="overflow-y: visible;">
       <!--Placeholder-->
       <div name="mod_main" class="mod_main" style="display: none;">
         <span class="mod_text" name="mod_text"></span>
@@ -506,7 +506,7 @@
       <select class="data_select" name="molule_Idataset" onchange="selected_Module(this)" style="display: none;"></select>
       <input name="molule_IN" placeholder="Round to n" onchange="selected_Module(this)" style="width: 80px;">
     </div>
-    <div class="IO_main" style="overflow-y: scroll;">
+    <div class="IO_main">
       <div name="mod_main" class="mod_main">
         <span class="mod_text" name="mod_text"></span>
         <span name="mod_parent" style="display: none;"></span>
