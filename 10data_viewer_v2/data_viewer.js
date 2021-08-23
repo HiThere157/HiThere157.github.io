@@ -859,9 +859,9 @@ function colorChange(element) {
 
 //changes Theme to Dark/Light mode
 function changeTheme(element) {
-  if(element.checked == true){
+  if (element.checked == true) {
     document.getElementsByTagName("html")[0].className = "darkTheme";
-  }else{
+  } else {
     document.getElementsByTagName("html")[0].className = "";
   }
 }
@@ -896,15 +896,49 @@ var layouts = {
   "defualtLayout": [["top_dropdown0", 1], ["top_dropdown1", 4], ["top_dropdown2", 5], ["bottom_dropdown3", 1]],
   "newLayout": [["top_dropdown0", 0], ["top_dropdown1", 0], ["top_dropdown2", 0], ["top_dropdown3", 0], ["bottom_dropdown0", 0], ["bottom_dropdown1", 0], ["bottom_dropdown2", 0], ["bottom_dropdown3", 0]]
 };
-function keyPressed(event) {
-  //Ö, Ü, Ä, B, M, ,, ., #
-  if (event.ctrlKey == true) {
-    if (event.code == "KeyQ") {
-      setDropdown(layouts["newLayout"]);
-    } else if (event.code == "KeyB") {
-      setDropdown(layouts["defualtLayout"]);
+
+var keyDowns = {};
+var CalcAlias = { "c": "ac", "p": "pm", "-": "min", "+": "plus", "/": "div", "%": "perc", ",": "k", "Enter": "eq", "=": "eq" }
+function keyDown(event) {
+  if (event.key != "Shift") {
+    keyDowns[event.key] = true;
+  }
+
+  let focused = false;
+  let tmp = [...document.getElementsByTagName("input")];
+  tmp.push(...document.getElementsByTagName("textarea"));
+
+  tmp.forEach(element => {
+    console.log(element, element === document.activeElement)
+    if (element === document.activeElement) {
+      focused = true;
+    }
+  });
+
+  let keys = Object.keys(keyDowns);
+
+  if (focused == false) {
+    if (keyDowns["l"] == true) {
+      if (keyDowns["1"] == true) {
+        setDropdown(layouts["defualtLayout"]);
+      } else if (keyDowns["0"] == true) {
+        setDropdown(layouts["newLayout"]);
+      }
+
+    } else if (keys.length == 1 && document.getElementById("bottom_dropdown3").selectedIndex == 1) {
+      var key = keys[0];
+
+      if (isNaN(key) == false) {
+        document.getElementById("calc_" + key).click();
+      } else if (CalcAlias[key] != undefined) {
+        document.getElementById("calc_" + CalcAlias[key]).click();
+      }
     }
   }
+}
+
+function keyUp(event) {
+  delete keyDowns[event.key];
 }
 
 function importTestData() {
@@ -921,7 +955,8 @@ function importTestData() {
   updateDropdown();
 }
 
-window.addEventListener("keypress", keyPressed);
+window.addEventListener("keydown", keyDown);
+window.addEventListener("keyup", keyUp);
 window.onload = () => {
   importData();
 };

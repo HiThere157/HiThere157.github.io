@@ -743,7 +743,7 @@ function Calc(element) {
   if (tmp == NaN) {
     tmp = 0;
   }
-  document.getElementById("calc_out").value = Number(tmp.toString().replace(",", "."));
+  document.getElementById("calc_out").value = Number(Number(tmp.toString().replace(",", ".")).toFixed(15));
 }
 
 //updates slot offset; otherwise wrong match of document.getElementsByName(), if no module is present in the slot to the left
