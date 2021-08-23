@@ -773,6 +773,7 @@ function dropdownChange(element, isDropdown = true, setSliderValue = true) {
 
     } else if (value == "Table") {
       document.getElementById("top_item_main_table" + id).style = "display: block;";
+      table(id);
 
     } else if (value == "Overview") {
       let overviewElement = document.getElementById("top_item_main_overview" + id);
