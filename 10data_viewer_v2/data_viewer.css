@@ -5,7 +5,7 @@
   --popup-background: #fce8e8;
   --header: #256565;
   --button-pressed: #cccccc;
-  --prompt-background: #bbbbbbdd;
+  --prompt-background: #bbbbbbaa;
   --okBtn-background: #8AB4F8;
 }
 
@@ -45,6 +45,26 @@ textarea {
   width: 90%;
   min-height: 20px;
   min-width: 100px;
+}
+
+@keyframes rotate {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(360deg);}
+}
+
+.loading_icon {
+  display: inline-block;
+  margin-top: 20px;
+  height: 24px;
+  width: 24px;
+  background-image: url("icons/rotate_icon.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+
+  animation-name: rotate;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
 }
 
 /* non selectable */
@@ -289,6 +309,7 @@ input:checked + .slider:before {
   height: 100%;
   width: 100%;
   background-color: var(--prompt-background);
+  backdrop-filter: blur(1px);
   z-index: 4;
 }
 .promptPopup {

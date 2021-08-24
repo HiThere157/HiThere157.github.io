@@ -911,7 +911,7 @@ function selected_Module(element, depth = false) {
   let repeat_input = document.getElementsByName("repeat_input")[id - slot_offset[id]].checked;
 
   if (nDigits == "") {
-    nDigits = 4;
+    nDigits = 3;
   }
 
   if (data != undefined) {
@@ -932,7 +932,7 @@ function selected_Module(element, depth = false) {
   //n => mod Parameter
   //datasetData => selected data with the Selcond Input Dropdown
   //minLen => len of shortest dataset
-  var returned = [];
+  var returned = false;
   if (data != undefined || operation == "function_gen") {
     if (operation == "min_max") {
       returned = Min_Max(data, nDigits);
@@ -971,7 +971,9 @@ function selected_Module(element, depth = false) {
       returned = Cut(data, nDigits);
 
     } else if (operation == "n-fit") {
-      returned = Fit(nDigits);
+      document.getElementById("loading_icon").style.display = "inline-block";
+      setTimeout(Fit, 500, ...[id, operation, nDigits]);
+      returned = true;
 
     } else if (operation == "xflip") {
       returned = xFlip(data, nDigits);
@@ -989,19 +991,23 @@ function selected_Module(element, depth = false) {
       console.log(operation);
     }
 
-    if (returned.length != 0 && returned != false) {
-      document.getElementsByName("mod_out")[id - slot_offset[id]].innerHTML = makeTableHTML(returned[0]);
-      document.getElementsByName("mod_parent")[id - slot_offset[id]].innerText = returned[2];
-      document.getElementsByName("mod_param")[id - slot_offset[id]].innerText = returned[3];
-      if (returned[1] != null) {
-        tempSet[operation] = returned[1];
-      }
+    onReturn(id, operation, returned);
+  }
+}
 
-      if (returned[4] != undefined) {
-        tempSet["xValues"] = returned[4];
-      }
-    } else if (returned == false) {
-      document.getElementsByName("mod_out")[id - slot_offset[id]].innerHTML = "<span style='font-size: larger; color: red;'>Dataset is not type = number!</span>";
+function onReturn(id, operation, returned) {
+  if (returned.length != 0 && returned != false) {
+    document.getElementsByName("mod_out")[id - slot_offset[id]].innerHTML = makeTableHTML(returned[0]);
+    document.getElementsByName("mod_parent")[id - slot_offset[id]].innerText = returned[2];
+    document.getElementsByName("mod_param")[id - slot_offset[id]].innerText = returned[3];
+    if (returned[1] != null) {
+      tempSet[operation] = returned[1];
     }
+
+    if (returned[4] != undefined) {
+      tempSet["xValues"] = returned[4];
+    }
+  } else if (returned == false) {
+    document.getElementsByName("mod_out")[id - slot_offset[id]].innerHTML = "<span style='font-size: larger; color: red;'>Dataset is not type = number!</span>";
   }
 }
