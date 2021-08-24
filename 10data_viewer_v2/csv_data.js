@@ -187,10 +187,9 @@ function parseData(element) {
     if (tmp.length != 0) {
       data.push(tmp);
     }
-
   }
 
-  if(data.length <= 1 && data[0] != ""){
+  if (data.length >= 1 && data[0] != "") {
     csvData = data;
     showData();
   }
@@ -264,15 +263,15 @@ function showData(element = null) {
     if (element.checked == true) {
       skip_row = true;
     }
+    
   } else {
     if (csvData.length > 1) {
       if (isNaN(csvData[0][0]) != isNaN(csvData[1][0])) {
         skip_row = true;
       }
+
     } else {
-      if (isNaN(csvData[0][0]) != isNaN(csvData[0][1])) {
-        skip_row = true;
-      }
+      skip_row = false;
     }
   }
 

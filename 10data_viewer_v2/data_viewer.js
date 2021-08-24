@@ -333,8 +333,16 @@ function overviewTable() {
 
     datasets.dataSet_list.forEach(dataset => {
       if (dataset != null) {
-        overviewArray.push([dataset.name, dataset.id, dataset.type, dataset.len, dataset.operation, dataset.parent, dataset.param, "<button name='" + dataset.name + "' onclick='deleteSetBtn(this)'>Delete</button><button name='" + dataset.name + "' onclick='renameSetBtn(this)'>Rename</button>"]);
+        var tmp = [dataset.name, dataset.id, dataset.type, dataset.len, dataset.operation, dataset.parent, dataset.param];
       }
+
+      if(dataset.id <= 1){
+        tmp.push("");
+      }else{
+        tmp.push("<button name='" + dataset.name + "' onclick='deleteSetBtn(this)'>Delete</button><button name='" + dataset.name + "' onclick='renameSetBtn(this)'>Rename</button>");
+      }
+
+      overviewArray.push(tmp);
     });
 
     element.innerHTML = makeTableHTML(overviewArray);
@@ -904,7 +912,7 @@ function setDropdown(array) {
 }
 
 var layouts = {
-  "defualtLayout": [["top_dropdown0", 1], ["top_dropdown1", 4], ["top_dropdown2", 5], ["bottom_dropdown3", 1]],
+  "defualtLayout": [["top_dropdown0", 1], ["top_dropdown1", 4], ["top_dropdown2", 5], ["top_dropdown3", 0], ["bottom_dropdown0", 0], ["bottom_dropdown1", 0], ["bottom_dropdown2", 0], ["bottom_dropdown3", 1]],
   "newLayout": [["top_dropdown0", 0], ["top_dropdown1", 0], ["top_dropdown2", 0], ["top_dropdown3", 0], ["bottom_dropdown0", 0], ["bottom_dropdown1", 0], ["bottom_dropdown2", 0], ["bottom_dropdown3", 0]]
 };
 
