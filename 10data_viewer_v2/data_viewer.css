@@ -10,7 +10,7 @@
 }
 
 .darkTheme {
-  filter: brightness(0.7);
+  filter: brightness(0.75);
 }
 
 html, body {
@@ -45,6 +45,13 @@ textarea {
   width: 90%;
   min-height: 20px;
   min-width: 100px;
+}
+
+.pressedBtn {
+  background-color: var(--button-pressed);
+  border-radius: 3px;
+  border-width: 1px;
+  padding: 2px 7px 2px 7px;
 }
 
 @keyframes rotate {

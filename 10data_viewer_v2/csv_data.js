@@ -42,8 +42,8 @@ function exportTable() {
 //Updates the data export textfield TR; onchange checkboxes in the export Table and format checkbox
 function exportField(override = false, csvFile = false) {
   if (csvFile == false) {
-    document.getElementById("copyButton").style = "";
-    document.getElementById("exportButton").style = "";
+    document.getElementById("copyButton").className = "";
+    document.getElementById("exportButton").className = "";
   }
 
   var fieldElement = document.getElementById("dataExport");
@@ -133,7 +133,7 @@ function makeCSV(prompt) {
       document.body.appendChild(link); // Required for FF
 
       link.click();
-      document.getElementById("exportButton").style.backgroundColor = buttonColor;
+      document.getElementById("exportButton").className = "pressedBtn";
 
     } else {
       var links = document.getElementsByName("dl");
@@ -141,7 +141,7 @@ function makeCSV(prompt) {
 
       if (link != undefined) {
         link.click();
-        document.getElementById("exportButton").style.backgroundColor = buttonColor;
+        document.getElementById("exportButton").className = "pressedBtn";
       }
     }
   }
@@ -155,7 +155,7 @@ function copyToClip() {
   copyText.setSelectionRange(0, 99999);
 
   document.execCommand("copy");
-  document.getElementById("copyButton").style.backgroundColor = buttonColor;
+  document.getElementById("copyButton").className = "pressedBtn";
 }
 
 //Converts csv String to array
@@ -385,7 +385,7 @@ function saveData(element) {
   let tmpRet = getType(data);
 
   if (tmpRet[1].length != 0) {
-    element.style.backgroundColor = buttonColor;
+    element.className = "pressedBtn";
     datasets.add(new DataSet(tmpRet[1], true, "Import", name.replaceAll('"', '').trim(), "", "", tmpRet[0]));
     updateDropdown(true, false, true);
   }
