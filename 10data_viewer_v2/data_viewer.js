@@ -115,6 +115,12 @@ function makeTableHTML(Array, buttons = false) {
   if (Array != null) {
     var result = "<table>";
     for (var i = 0; i < Array.length; i++) {
+      if (i == 0) {
+        result += "<thead>";
+      } else if (i == 1) {
+        result += "<tbody>";
+      }
+
       result += "<tr>";
       for (var j = 0; j < Array[i].length; j++) {
         var tmp = Array[i][j];
@@ -131,10 +137,18 @@ function makeTableHTML(Array, buttons = false) {
         result += "</td>";
       }
       result += "</tr>";
+
+      if (i == 0) {
+        result += "</thead>";
+      } else if (i == Array.length - 1) {
+        result += "</tbody>";
+      }
+
     }
     result += "</table>";
 
     return result;
+
   } else {
     return "";
   }
@@ -336,9 +350,9 @@ function overviewTable() {
         var tmp = [dataset.name, dataset.id, dataset.type, dataset.len, dataset.operation, dataset.parent, dataset.param];
       }
 
-      if(dataset.id <= 1){
+      if (dataset.id <= 1) {
         tmp.push("");
-      }else{
+      } else {
         tmp.push("<button name='" + dataset.name + "' onclick='deleteSetBtn(this)'>Delete</button><button name='" + dataset.name + "' onclick='renameSetBtn(this)'>Rename</button>");
       }
 

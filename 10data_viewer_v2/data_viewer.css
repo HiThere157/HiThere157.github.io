@@ -75,7 +75,7 @@ textarea {
 }
 
 /* non selectable */
-button, input, label, span, strong, hr, select, kbd, a, .calc_button {
+button, input, label, span, strong, hr, select, kbd, a, thead, .calc_button {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
