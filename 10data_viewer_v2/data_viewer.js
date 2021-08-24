@@ -855,11 +855,21 @@ function updateDropdown(append = 0, remove = false, mod = true) {
 
 //on new overlay color
 function colorChange(element) {
+  //sync input value bewteen module template and actual module
+  document.getElementsByName("color_input").forEach(element => {
+    element.value = document.getElementById("color_input").value;
+  });
+
   document.documentElement.style.setProperty("--header", element.value);
 }
 
 //changes Theme to Dark/Light mode
 function changeTheme(element) {
+  //sync checkbox state bewteen module template and actual module
+  document.getElementsByName("theme_input").forEach(element => {
+    element.checked = document.getElementById("theme_input").checked;
+  });
+
   if (element.checked == true) {
     document.getElementsByTagName("html")[0].className = "darkTheme";
   } else {
@@ -964,10 +974,16 @@ window.onload = () => {
   let date = new Date;
   let hrs = date.getHours()
 
-  if(hrs >= 20 || hrs <= 8){
+  if (hrs >= 20 || hrs <= 8) {
     document.getElementById("theme_input").click();
   }
 };
 window.onresize = () => {
   updateAll(true);
 }
+window.addEventListener('beforeunload', function (e) {
+  if (datasets.dataSet_list.length > 2) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});

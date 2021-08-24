@@ -189,9 +189,11 @@ function parseData(element) {
     }
 
   }
-  csvData = data;
 
-  showData();
+  if(data.length <= 1 && data[0] != ""){
+    csvData = data;
+    showData();
+  }
 }
 
 //get the len of the longest row in csvData
