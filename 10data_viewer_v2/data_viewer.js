@@ -909,12 +909,12 @@ function keyDown(event) {
   let tmp = [...document.getElementsByTagName("input")];
   tmp.push(...document.getElementsByTagName("textarea"));
 
-  tmp.forEach(element => {
-    console.log(element, element === document.activeElement)
-    if (element === document.activeElement) {
+  for (let i = 0; i < tmp.length; i++) {
+    if (tmp[i] === document.activeElement) {
       focused = true;
+      break;
     }
-  });
+  }
 
   let keys = Object.keys(keyDowns);
 
@@ -960,6 +960,13 @@ window.addEventListener("keydown", keyDown);
 window.addEventListener("keyup", keyUp);
 window.onload = () => {
   importData();
+
+  let date = new Date;
+  let hrs = date.getHours()
+
+  if(hrs >= 20 || hrs <= 8){
+    document.getElementById("theme_input").click();
+  }
 };
 window.onresize = () => {
   updateAll(true);
