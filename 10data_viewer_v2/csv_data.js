@@ -154,9 +154,13 @@ function copyToClip() {
   document.getElementById("copyButton").className = "pressedBtn";
 }
 
+//filters user input
+function filterText(str){
+  return str.replaceAll("\r", "").replaceAll("<", "").replaceAll(">", "").replaceAll('"', "").trim();
+}
+
 //converts csv string to array
 function csvToArray(str, delimiter = ",") {
-  str = str.replaceAll("\r", "");
   let rows = str.split("\n");
   let array = [];
 
@@ -170,7 +174,7 @@ function csvToArray(str, delimiter = ",") {
 //parse string from data import textfield TL; on 'submit' button, if no file uploaded
 //open import popup 
 function parseData(element) {
-  var str = element.value;
+  var str = filterText(element.value);
   var tmpRows = str.split("]");
   var data = [];
 
@@ -218,7 +222,6 @@ function transpose() {
   }
 
   csvData = temp;
-
   showData();
 }
 
@@ -307,7 +310,7 @@ importForm.addEventListener("submit", function (e) {
 
   reader.onload = function (e) {
     var text = e.target.result;
-    csvData = csvToArray(text);
+    csvData = csvToArray(filterText(text));
     showData();
   };
 
@@ -382,7 +385,7 @@ function saveData(element) {
 
   if (tmpRet[1].length != 0) {
     element.className = "pressedBtn";
-    datasets.add(new DataSet(tmpRet[1], true, "Import", name.replaceAll('"', '').trim(), "", "", tmpRet[0]));
+    datasets.add(new DataSet(tmpRet[1], true, "Import", name, "", "", tmpRet[0]));
     updateDropdown(true, false, true);
   }
 }
