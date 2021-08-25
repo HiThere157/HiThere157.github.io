@@ -110,8 +110,8 @@ function updateSlider(id, vals) {
   dropdownChange(document.getElementById("yAxis_dropdown" + id), true, false);
 }
 
-var edits = [0, 0, 0, 0, 0]
-function makeTableHTML(Array, buttons = false) {
+var edits = { 0: [0, 0, 0, 0, 0], 1: [0, 0, 0, 0, 0], 2: [0, 0, 0, 0, 0], 3: [0, 0, 0, 0, 0] };
+function makeTableHTML(Array, buttons = false, id = "") {
   if (Array != null) {
     var result = "<table>";
     for (var i = 0; i < Array.length; i++) {
@@ -130,7 +130,7 @@ function makeTableHTML(Array, buttons = false) {
         }
         result += "<td>" + tmp.toString();
 
-        if (tmp.toString() != "" && i >= 1 && j >= 1 && buttons == true && edits[j - 1] == 1) {
+        if (tmp.toString() != "" && i >= 1 && j >= 1 && buttons == true && edits[id][j - 1] == 1) {
           result += htmlButton;
         }
 
@@ -388,17 +388,17 @@ function updateAll(graphUpdate = false) {
 //enables the edit buttons for a specific dataset
 function enableEdit(element) {
   let id = element;
-  for(let i = 0; i < 7; i++){
+  for (let i = 0; i < 7; i++) {
     id = id.parentElement;
   }
 
   id = id.id;
   id = id[id.length - 1]
   let index = element.id.substring(10) - 1;
-  if (edits[index] == 0) {
-    edits[index] = 1;
+  if (edits[id][index] == 0) {
+    edits[id][index] = 1;
   } else {
-    edits[index] = 0;
+    edits[id][index] = 0;
   }
   table(id);
 }
@@ -436,7 +436,7 @@ function table(id, editV = undefined, param = undefined, prompt = undefined) {
       var len = datasets.dataSet_list[element.selectedIndex - 1].len;
       let add_ = "";
 
-      if (edits[tmpArray.length - 1] == 1) {
+      if (edits[id][tmpArray.length - 1] == 1) {
         add_ = "checked";
       }
 
@@ -511,7 +511,7 @@ function table(id, editV = undefined, param = undefined, prompt = undefined) {
 
     tableArray.push(tmpArray);
   }
-  document.getElementById("table_main" + id.toString()).innerHTML = makeTableHTML(tableArray, true);
+  document.getElementById("table_main" + id.toString()).innerHTML = makeTableHTML(tableArray, true, id);
 }
 
 //holdes datasets; add new sets
@@ -634,7 +634,7 @@ function renameSet(element, prompt) {
 }
 
 //copy Dataset
-function copySet(element){
+function copySet(element) {
   let name = element.getAttribute("name");
   let index = datasets.dataSet_names.indexOf(name);
   let set = datasets.dataSet_list[index];
