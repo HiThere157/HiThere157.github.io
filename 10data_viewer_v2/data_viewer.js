@@ -598,8 +598,6 @@ function deleteSet(element, prompt) {
 
     updateDropdown(0, true);
     datasets.deletedSets += 1;
-
-    updateAll();
   }
 }
 
@@ -629,7 +627,6 @@ function renameSet(element, prompt) {
     }
 
     updateDropdown();
-    updateAll();
   }
 }
 
@@ -809,8 +806,8 @@ function dropdownChange(element, isDropdown = true, setSliderValue = true) {
         showChart("0", id);
       } else if (value == "Pie Chart") {
         showChart("1", id);
-        document.getElementById("y-Axis" + id).innerText = "Values";
-        document.getElementById("x-Axis" + id).innerText = "Index";
+        document.getElementById("y-Axis" + id).innerText = "Values:";
+        document.getElementById("x-Axis" + id).innerText = "Index:";
       }
 
     } else if (value == "Table") {
