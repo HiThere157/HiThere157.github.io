@@ -4,7 +4,7 @@ var csvData = [];
 var buttonData = [];
 var skip_row = false;
 
-//Show, Update the export table TR; on data change
+//show, update the export table TR; on data change
 function exportTable() {
   var exportArray = [["Name", "Export", "", "Name", "Export"]];
 
@@ -37,7 +37,7 @@ function exportTable() {
   document.getElementById("dataExportTable").innerHTML = makeTableHTML(exportArray);
 }
 
-//Updates the data export textfield TR; onchange checkboxes in the export Table and format checkbox
+//updates the data export textfield TR; onchange checkboxes in the export table and format checkbox
 function exportField(override = false, csvFile = false) {
   if (csvFile == false) {
     document.getElementById("copyButton").className = "";
@@ -128,7 +128,7 @@ function makeCSV(prompt) {
       link.setAttribute("href", encodedUri);
       link.setAttribute("name", "dl")
       link.setAttribute("download", prompt + ".csv");
-      document.body.appendChild(link); // Required for FF
+      document.body.appendChild(link);
 
       link.click();
       document.getElementById("exportButton").className = "pressedBtn";
@@ -145,7 +145,7 @@ function makeCSV(prompt) {
   }
 }
 
-//Copies the output string to the clipboard
+//copies the output string to the clipboard
 function copyToClip() {
   var copyText = document.getElementById("dataExport");
 
@@ -156,7 +156,7 @@ function copyToClip() {
   document.getElementById("copyButton").className = "pressedBtn";
 }
 
-//Converts csv String to array
+//converts csv string to array
 function csvToArray(str, delimiter = ",") {
   str = str.replaceAll("\r", "");
   let rows = str.split("\n");
@@ -169,8 +169,8 @@ function csvToArray(str, delimiter = ",") {
   return array;
 }
 
-//Parse String from data import textfield TL; on 'Submit' button, if no file uploaded
-//Open import popup 
+//parse string from data import textfield TL; on 'submit' button, if no file uploaded
+//open import popup 
 function parseData(element) {
   var str = element.value;
   var tmpRows = str.split("]");
@@ -224,7 +224,7 @@ function transpose() {
   showData();
 }
 
-//Adds the 'Import Data' Buttons to the import table in the popup
+//ddds the 'import data' buttons to the import table in the popup
 function setButtonData() {
   buttonData = [];
   var add_ = "";
@@ -251,8 +251,8 @@ function setButtonData() {
   buttonData.unshift(header);
 }
 
-//Shows import popup & displays tables
-//Detects, if data header available (name)
+//shows import popup & displays tables
+//detects, if data header available (name)
 function showData(element = null) {
   openPopup("table_popup")
   skip_row = false;
@@ -301,7 +301,7 @@ function showData(element = null) {
   overviewTable(document.getElementById("table_popup_side"));
 }
 
-//on 'Submit' button
+//on 'submit' button
 importForm.addEventListener("submit", function (e) {
   e.preventDefault();
   var input = csvFile.files[0];
@@ -342,7 +342,7 @@ function getType(array) {
   return [ret, array];
 }
 
-//save all Columns as datasets
+//save all columns as datasets
 function importAll() {
   document.getElementsByName("sCs").forEach(element => {
     saveData(element);

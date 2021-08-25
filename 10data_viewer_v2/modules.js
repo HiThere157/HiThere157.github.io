@@ -451,7 +451,7 @@ function GetIndex(data, nDigits, n) {
   return [indexTable, null, data.name, n];
 }
 
-//Noise Generator
+//noise Generator
 function Ngen(data, nDigits, n) {
   if (n == "") {
     n = 1;
@@ -476,7 +476,7 @@ function Ngen(data, nDigits, n) {
   return false;
 }
 
-//Function Generator
+//function Generator
 function Fgen(nDigits) {
   let x_data_index = document.getElementById("molule_Ix_gen").selectedIndex;
   var x_data = null;
@@ -664,7 +664,7 @@ function Fgen(nDigits) {
   return ret;
 }
 
-//Calculator
+//calculator
 var calcs = [""];
 function Calc(element) {
   var solution = undefined;
@@ -802,7 +802,7 @@ function show_Module(name, id, simple_mod = false) {
     let txt = "Input a; ";
 
     if (["min_max", "index"].includes(name)) {
-      //Hide Footer For ^ Modules
+      //hide footer for ^ modules
       saveSet.style.display = "none";
     }
 
@@ -814,7 +814,7 @@ function show_Module(name, id, simple_mod = false) {
     }
 
     if (["delta", "xflip", "abs", "min_max"].includes(name)) {
-      //Hide Mod Input For ^ Modules
+      //hide mod input for ^ modules
       mod_main.style = "display: none;";
 
     } else if (name == "log") {
@@ -860,7 +860,7 @@ function show_Module(name, id, simple_mod = false) {
   }
 }
 
-//saves Values from tempSet to a new Dataset
+//saves values from tempSet to a new Dataset
 function save_Set(element) {
   update_slot_offset();
   let parent = element.parentElement.parentElement;
@@ -926,11 +926,11 @@ function selected_Module(element, depth = false) {
   }
 
 
-  //element => Module Input Dropdown HTML element
-  //data => selected data with the Input Dropdown
-  //nDigits => Round to n Digits
-  //n => mod Parameter
-  //datasetData => selected data with the Selcond Input Dropdown
+  //element => module input dropdown HTML element
+  //data => selected data with the input dropdown
+  //nDigits => round to n digits
+  //n => mod parameter
+  //datasetData => selected data with the selcond input dropdown
   //minLen => len of shortest dataset
   var returned = false;
   if (data != undefined || operation == "function_gen") {

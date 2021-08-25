@@ -387,7 +387,12 @@ function updateAll(graphUpdate = false) {
 
 //enables the edit buttons for a specific dataset
 function enableEdit(element) {
-  let id = element.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+  let id = element;
+  for(let i = 0; i < 7; i++){
+    id = id.parentElement;
+  }
+
+  id = id.id;
   id = id[id.length - 1]
   let index = element.id.substring(10) - 1;
   if (edits[index] == 0) {
@@ -572,7 +577,7 @@ class DataSet {
   }
 }
 
-//Delete Dataset
+//delete Dataset
 function deleteSetBtn(element) {
   openPopup("promptPopup", "prompt_co", "Are you Sure?", deleteSet, [element], "deleteSet");
 }
@@ -598,7 +603,7 @@ function deleteSet(element, prompt) {
   }
 }
 
-//Rename Dataset
+//rename Dataset
 function renameSetBtn(element) {
   openPopup("promptPopup", "prompt_io", "Enter new name", renameSet, [element]);
 }
@@ -628,7 +633,7 @@ function renameSet(element, prompt) {
   }
 }
 
-//Copy Dataset
+//copy Dataset
 function copySet(element){
   let name = element.getAttribute("name");
   let index = datasets.dataSet_names.indexOf(name);
@@ -697,7 +702,7 @@ function promptSubmit(element) {
   openPopup(null, "close_prompt");
 }
 
-//Opens a Popup, hides every other
+//open a Popup, hides every other
 var awaitButton = {};
 var dontShow = [];
 function openPopup(id, type = undefined, spanText = "", callback = undefined, args = undefined, event = undefined) {
@@ -850,7 +855,7 @@ function dropdownChange(element, isDropdown = true, setSliderValue = true) {
 
     var simple_mod = true;
     if (["Cut", "n-Fit", "Calculator", "Function Gen", "Misc"].includes(value)) {
-      //^ Those Modules dont support simple_mod; requires own Div
+      //^ those modules dont support simple_mod; requires own Div
       simple_mod = false;
     }
 
@@ -944,7 +949,6 @@ var layouts = {
   "defualtLayout": [["top_dropdown0", 1], ["top_dropdown1", 4], ["top_dropdown2", 5], ["top_dropdown3", 0], ["bottom_dropdown0", 0], ["bottom_dropdown1", 0], ["bottom_dropdown2", 0], ["bottom_dropdown3", 1]],
   "newLayout": [["top_dropdown0", 0], ["top_dropdown1", 0], ["top_dropdown2", 0], ["top_dropdown3", 0], ["bottom_dropdown0", 0], ["bottom_dropdown1", 0], ["bottom_dropdown2", 0], ["bottom_dropdown3", 0]]
 };
-
 var keyDowns = {};
 var CalcAlias = { "c": "ac", "p": "pm", "-": "min", "+": "plus", "/": "div", "%": "perc", ",": "k", "Enter": "eq", "=": "eq" }
 function keyDown(event) {
