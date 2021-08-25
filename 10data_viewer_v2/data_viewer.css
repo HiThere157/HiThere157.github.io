@@ -519,6 +519,7 @@ input:checked + .slider:before {
   display: flex;
   align-items: center;
   justify-content: center;
+  column-gap: 3px;
 }
 
 /* misc */

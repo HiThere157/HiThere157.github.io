@@ -351,9 +351,9 @@ function overviewTable() {
       }
 
       if (dataset.id <= 1) {
-        tmp.push("<button name='" + dataset.name + "' onclick='copySet(this)'>Copy</button>");
+        tmp.push("<div class='flexClass'><button name='" + dataset.name + "' onclick='copySet(this)'>Copy</button></div>");
       } else {
-        tmp.push("<button name='" + dataset.name + "' onclick='deleteSetBtn(this)'>Delete</button><button name='" + dataset.name + "' onclick='renameSetBtn(this)'>Rename</button><button name='" + dataset.name + "' onclick='copySet(this)'>Copy</button>");
+        tmp.push("<div class='flexClass'><button name='" + dataset.name + "' onclick='deleteSetBtn(this)'>Delete</button><button name='" + dataset.name + "' onclick='renameSetBtn(this)'>Rename</button><button name='" + dataset.name + "' onclick='copySet(this)'>Copy</button></div>");
       }
 
       overviewArray.push(tmp);
