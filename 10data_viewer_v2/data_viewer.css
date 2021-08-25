@@ -82,6 +82,14 @@ button, input, label, span, strong, hr, select, kbd, a, thead, .calc_button {
   user-select: none;
 }
 
+/* custom options */
+select option:checked {
+  background: var(--header);
+}
+option {
+  background-color: var(--popup-background);
+}
+
 /* custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
