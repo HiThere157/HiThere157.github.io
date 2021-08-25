@@ -83,9 +83,6 @@ button, input, label, span, strong, hr, select, kbd, a, thead, .calc_button {
 }
 
 /* custom options */
-select option:checked {
-  background: var(--header);
-}
 option {
   background-color: var(--popup-background);
 }
