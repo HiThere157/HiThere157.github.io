@@ -351,9 +351,9 @@ function overviewTable() {
       }
 
       if (dataset.id <= 1) {
-        tmp.push("");
+        tmp.push("<button name='" + dataset.name + "' onclick='copySet(this)'>Copy</button>");
       } else {
-        tmp.push("<button name='" + dataset.name + "' onclick='deleteSetBtn(this)'>Delete</button><button name='" + dataset.name + "' onclick='renameSetBtn(this)'>Rename</button>");
+        tmp.push("<button name='" + dataset.name + "' onclick='deleteSetBtn(this)'>Delete</button><button name='" + dataset.name + "' onclick='renameSetBtn(this)'>Rename</button><button name='" + dataset.name + "' onclick='copySet(this)'>Copy</button>");
       }
 
       overviewArray.push(tmp);
@@ -435,7 +435,7 @@ function table(id, editV = undefined, param = undefined, prompt = undefined) {
         add_ = "checked";
       }
 
-      tmpArray.push(datasets.dataSet_names[element.selectedIndex - 1] + "<label for='editEnable" + tmpArray.length + "'> - edit</label><input id='editEnable" + tmpArray.length + "' onchange='enableEdit(this)' type='checkbox' " + add_ + ">");
+      tmpArray.push("<div class='flexClass'>" + datasets.dataSet_names[element.selectedIndex - 1] + "<label for='editEnable" + tmpArray.length + "'> - edit</label><input id='editEnable" + tmpArray.length + "' onchange='enableEdit(this)' type='checkbox' " + add_ + "></div>");
     } else {
       tmpArray.push("None");
     }
@@ -593,6 +593,8 @@ function deleteSet(element, prompt) {
 
     updateDropdown(0, true);
     datasets.deletedSets += 1;
+
+    updateAll();
   }
 }
 
@@ -622,7 +624,20 @@ function renameSet(element, prompt) {
     }
 
     updateDropdown();
+    updateAll();
   }
+}
+
+//Copy Dataset
+function copySet(element){
+  let name = element.getAttribute("name");
+  let index = datasets.dataSet_names.indexOf(name);
+  let set = datasets.dataSet_list[index];
+
+  datasets.add(new DataSet(set.values, false, "copy", "", set.name));
+
+  updateDropdown(1);
+  updateAll();
 }
 
 //on input in the custom prompt

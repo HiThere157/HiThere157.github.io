@@ -6,7 +6,7 @@ function Min_Max(data, nDigits) {
     let min = Math.min(...data.values);
     let max = Math.max(...data.values);
 
-    var min_maxTable = [["Min", "Index"], [Number(min.toFixed(nDigits)), data.values.indexOf(min)], ["<hr>", "<hr>"], ["Max", "Index"], [Number(max.toFixed(nDigits)), data.values.indexOf(max)]]
+    var min_maxTable = [["Min", "Index"], [Number(min.toFixed(nDigits)), data.values.indexOf(min)], ["<hr>", "<hr>"], ["<span>Max</span>", "<span>Index</span>"], [Number(max.toFixed(nDigits)), data.values.indexOf(max)]]
 
     return [min_maxTable, null, data.name, ""];
   }

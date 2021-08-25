@@ -4,8 +4,6 @@ var csvData = [];
 var buttonData = [];
 var skip_row = false;
 
-var buttonColor = getComputedStyle(document.body).getPropertyValue("--button-pressed")
-
 //Show, Update the export table TR; on data change
 function exportTable() {
   var exportArray = [["Name", "Export", "", "Name", "Export"]];
@@ -233,7 +231,7 @@ function setButtonData() {
   if (skip_row == true) {
     add_ = "checked";
   }
-  var header = ["<button onclick='transpose()'>T</button><input type='checkbox' id='hR' onchange='showData(this)' " + add_ + "><label for='hR'>1. Row Header</label>"];
+  var header = ["<div class='flexClass'><button onclick='transpose()'>T</button><input type='checkbox' id='hR' onchange='showData(this)' " + add_ + "><label for='hR'>1. Row Header</label></div>"];
 
   for (let i = 0; i < csvData.length; i++) {
     var row = [];
