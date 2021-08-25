@@ -203,6 +203,12 @@ input:checked + .slider:before {
   height: 100%;
   float: left;
 }
+.exportButtons {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  column-gap: 3px;
+}
 .main {
   background-color: var(--pimary-background);
   height: 90%;

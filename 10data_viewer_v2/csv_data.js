@@ -6,7 +6,7 @@ var skip_row = false;
 
 //show, update the export table TR; on data change
 function exportTable() {
-  var exportArray = [["Name", "Export", "", "Name", "Export"]];
+  var exportArray = [["Name", "Show", "", "Name", "Show"]];
 
   var tmp = [];
   var add_ = "checked";
@@ -22,9 +22,7 @@ function exportTable() {
     tmp.push("");
 
     if (i == datasets.dataSet_names.length - 1 && tmp.length == 3) {
-      tmp.push("");
-      tmp.push("");
-      tmp.push("");
+      tmp.push(...["","",""]);
     }
 
     if (tmp.length == 6) {
