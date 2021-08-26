@@ -439,7 +439,7 @@ function GetIndex(data, nDigits, n) {
   if (n == "") {
     n = 0;
   } else {
-    n = Number(n);
+    n = parseInt(n);
   }
 
   if (data.type == "number") {

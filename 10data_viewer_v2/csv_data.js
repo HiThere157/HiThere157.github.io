@@ -310,7 +310,6 @@ function showData(element = null, skip_transpose = false) {
       if (skip_transpose == false) {
         transpose(true);
       }
-      skip_row = false;
     }
   }
 
