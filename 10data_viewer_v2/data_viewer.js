@@ -927,15 +927,14 @@ function colorChange(element) {
   document.getElementsByName("color_input").forEach(element => {
     element.value = document.getElementById("color_input").value;
   });
-  
+
   document.documentElement.style.setProperty("--header", element.value);
 
-  if(lightOrDark(element.value) == 1){
+  if (lightOrDark(element.value) == 1) {
     document.documentElement.style.setProperty("--header-color", "#000");
-  }else{
+  } else {
     document.documentElement.style.setProperty("--header-color", "#fff");
   }
-
 }
 
 //changes Theme to Dark/Light mode
@@ -953,13 +952,13 @@ function changeTheme(element) {
 }
 
 //import GET parameter
-function getGET(remove = false){
-  if(remove == false){
+function getGET(remove = false) {
+  if (remove == false) {
     let dataStr = window.location.search.substr(1);
-    if(dataStr.substring(0,2) == "d="){
+    if (dataStr.substring(0, 2) == "d=") {
       openPopup("promptPopup", "prompt_co", "GET parameter detected. Allow import?", parseDataGET, [filterText(dataStr.substr(2))], "GETImport");
     }
-  }else{
+  } else {
     window.history.replaceState(null, null, "?");
   }
 }
@@ -1020,6 +1019,17 @@ function keyDown(event) {
         setDropdown(layouts["defualtLayout"]);
       } else if (keyDowns["0"] == true) {
         setDropdown(layouts["newLayout"]);
+      }
+
+    } else if (keys.length == 1 && document.getElementById("promptPopup").style.display == "block") {
+      var key = keys[0];
+
+      if (key == "Escape") {
+        openPopup(null, "close_prompt");
+      } else if (key == "Enter") {
+        if (document.getElementById("prompt_co").style.display != "none" || document.getElementById("prompt_o").style.display != "none") {
+          promptSubmit(null)
+        }
       }
 
     } else if (keys.length == 1 && document.getElementById("bottom_dropdown3").selectedIndex == 1) {
