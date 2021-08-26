@@ -34,13 +34,13 @@ function exportTable() {
 }
 
 //adds current dataField value as GET param
-function addGetParam(){
+function addGetParam() {
   let dataString = encodeURI(document.getElementById("dataExport").value);
 
-  if(dataString != "%5B%5D"){
-    if(dataString.length <= 1800){
+  if (dataString != "%5B%5D") {
+    if (dataString.length <= 1800) {
       window.history.replaceState(null, null, "?d=" + dataString);
-    }else{
+    } else {
       openPopup("promptPopup", "prompt_o", "GET parameter is too long!  length: " + dataString.length + " > 1800!");
     }
   }
@@ -191,8 +191,8 @@ function csvToArray(str, delimiter = ",") {
 
 //parse string from data import textfield TL; on 'submit' button, if no file uploaded
 //open import popup 
-function parseDataGET(str, prompt){
-  if(prompt == true){
+function parseDataGET(str, prompt) {
+  if (prompt == true) {
     parseData(str);
   }
 }
@@ -230,7 +230,7 @@ function updateLen() {
 }
 
 //i.e. shape (2,5) -> (5,2)
-function transpose() {
+function transpose(button_click = false) {
   let shape = [updateLen(), csvData.length];
   let tmp = [];
 
@@ -243,7 +243,7 @@ function transpose() {
   }
 
   csvData = tmp;
-  showData();
+  showData(null, button_click);
 }
 
 //ddds the 'import data' buttons to the import table in the popup
@@ -253,7 +253,7 @@ function setButtonData() {
   if (skip_row == true) {
     add_ = "checked";
   }
-  let header = ["<div class='flexClass'><button onclick='transpose()'>T</button><input type='checkbox' id='hR' onchange='showData(this)' " + add_ + "><label for='hR'>1. Row Header</label></div>"];
+  let header = ["<div class='flexClass'><button onclick='transpose(true)'>T</button><input type='checkbox' id='hR' onchange='showData(this)' " + add_ + "><label for='hR'>1. Row Header</label></div>"];
 
   for (let i = 0; i < csvData.length; i++) {
     let row = [];
@@ -275,7 +275,7 @@ function setButtonData() {
 
 //shows import popup & displays tables
 //detects, if data header available (name)
-function showData(element = null) {
+function showData(element = null, skip_transpose = false) {
   openPopup("table_popup")
   skip_row = false;
 
@@ -285,13 +285,15 @@ function showData(element = null) {
     }
 
   } else {
-    if (csvData.length > 4) {
+    if (csvData.length > 5) {
       if (isNaN(csvData[0][0]) != isNaN(csvData[1][0])) {
         skip_row = true;
       }
 
     } else {
-      transpose();
+      if (skip_transpose == false) {
+        transpose();
+      }
       skip_row = false;
     }
   }
@@ -308,7 +310,7 @@ function showData(element = null) {
         row.push(buttonData[i][j]);
       }
     }
-    if (i == 0 || i > 1 || skip_row == false){
+    if (i == 0 || i > 1 || skip_row == false) {
       combinedData.push(row);
     }
   }

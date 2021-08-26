@@ -131,7 +131,7 @@ function makeTableHTML(Array, buttons = false, id = "") {
 
         if (tmp.toString() != "" && i >= 1 && j >= 1 && buttons == true && edits[id][j - 1] == 1) {
           result += "<td><div class='flexClass'>" + tmp.toString() + htmlButton + "</div>";
-        }else{
+        } else {
           result += "<td>" + tmp.toString();
         }
 
@@ -936,7 +936,6 @@ function colorChange(element) {
   } else {
     document.documentElement.style.setProperty("--header-color", "#fff");
   }
-
 }
 
 //changes Theme to Dark/Light mode
