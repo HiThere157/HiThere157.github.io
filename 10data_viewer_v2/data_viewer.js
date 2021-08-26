@@ -897,14 +897,45 @@ function updateDropdown(append = 0, remove = false, mod = true) {
   setupDropdown("modAxis_dropdown", datasets.dataSetMods_names, append, remove, mod);
 }
 
+//determine if color is dark or light
+function lightOrDark(color) {
+  if (color.match(/^rgb/)) {
+    color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
+
+    r = color[1];
+    g = color[2];
+    b = color[3];
+  }
+  else {
+    //convert it to HEX
+    color = + ("0x" + color.slice(1).replace(color.length < 5 && /./g, '$&$&'));
+
+    r = color >> 16;
+    g = color >> 8 & 255;
+    b = color & 255;
+  }
+
+  // HSP (Highly Sensitive Poo)
+  hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
+
+  return hsp > 127.5 ? 1 : 0;
+}
+
 //on new overlay color
 function colorChange(element) {
   //sync input value bewteen module template and actual module
   document.getElementsByName("color_input").forEach(element => {
     element.value = document.getElementById("color_input").value;
   });
-
+  
   document.documentElement.style.setProperty("--header", element.value);
+
+  if(lightOrDark(element.value) == 1){
+    document.documentElement.style.setProperty("--header-color", "#000");
+  }else{
+    document.documentElement.style.setProperty("--header-color", "#fff");
+  }
+
 }
 
 //changes Theme to Dark/Light mode
@@ -1011,6 +1042,7 @@ function importTestData() {
 
 window.addEventListener("keydown", keyDown);
 window.addEventListener("keyup", keyUp);
+
 window.onload = () => {
   importData();
 
@@ -1021,9 +1053,8 @@ window.onload = () => {
     document.getElementById("theme_input").click();
   }
 };
-window.onresize = () => {
-  updateAll(true);
-}
+window.onresize = () => { updateAll(true); }
+
 window.addEventListener('beforeunload', function (e) {
   if (datasets.dataSet_list.length > 2) {
     e.preventDefault();

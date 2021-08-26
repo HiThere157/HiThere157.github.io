@@ -4,6 +4,7 @@
   --item-background: #e2e2e2;
   --popup-background: #fce8e8;
   --header: #256565;
+  --header-color: #000;
   --button-pressed: #cccccc;
   --prompt-background: #bbbbbbaa;
   --okBtn-background: #8AB4F8;
@@ -195,6 +196,7 @@ input:checked + .slider:before {
 }
 .header_item_header {
   background-color: var(--header);
+  color: var(--header-color);
   text-align: center;
   font-size: medium;
 }
