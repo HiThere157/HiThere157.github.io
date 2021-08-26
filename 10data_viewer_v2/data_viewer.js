@@ -952,6 +952,18 @@ function changeTheme(element) {
   }
 }
 
+//import GET parameter
+function getGET(remove = false){
+  if(remove == false){
+    let dataStr = window.location.search.substr(1);
+    if(dataStr.substring(0,2) == "d="){
+      openPopup("promptPopup", "prompt_co", "GET parameter detected. Allow import?", parseDataGET, [filterText(dataStr.substr(2))], "GETImport");
+    }
+  }else{
+    window.history.replaceState(null, null, "?");
+  }
+}
+
 //import default datasets
 function importData() {
   let r = [];
@@ -1043,6 +1055,7 @@ function importTestData() {
 window.addEventListener("keydown", keyDown);
 window.addEventListener("keyup", keyUp);
 
+window.onresize = () => { updateAll(true); }
 window.onload = () => {
   importData();
 
@@ -1052,8 +1065,9 @@ window.onload = () => {
   if (hrs >= 20 || hrs <= 8) {
     document.getElementById("theme_input").click();
   }
+
+  getGET();
 };
-window.onresize = () => { updateAll(true); }
 
 window.addEventListener('beforeunload', function (e) {
   if (datasets.dataSet_list.length > 2) {

@@ -1,5 +1,3 @@
-var importForm = document.getElementById("importForm");
-var csvFile = document.getElementById("csvFile");
 var csvData = [];
 var buttonData = [];
 var skip_row = false;
@@ -22,7 +20,7 @@ function exportTable() {
     tmp.push("");
 
     if (i == datasets.dataSet_names.length - 1 && tmp.length == 3) {
-      tmp.push(...["","",""]);
+      tmp.push(...["", "", ""]);
     }
 
     if (tmp.length == 6) {
@@ -33,6 +31,17 @@ function exportTable() {
   }
 
   document.getElementById("dataExportTable").innerHTML = makeTableHTML(exportArray);
+}
+
+//adds current dataField value as GET param
+function addGetParam(){
+  let dataString = encodeURI(document.getElementById("dataExport").value);
+
+  if(dataString.length <= 1800){
+    window.history.replaceState(null, null, "?d=" + dataString);
+  }else{
+    openPopup("promptPopup", "prompt_o", "GET parameter is too long!  length: " + dataString.length + " > 1800!");
+  }
 }
 
 //updates the data export textfield TR; onchange checkboxes in the export table and format checkbox
@@ -114,7 +123,7 @@ function makeCSV(prompt) {
   if (prompt != null && prompt != "") {
     if (prompt.substring(0, 2) != "!h") {
       var rows = exportField(false, true);
-      let csvContent = "data:text/csv;charset=utf-8,";
+      let csvContent = "data:text/csv; charset=utf-8,";
 
       rows.forEach(function (rowArray) {
         let row = rowArray.join(",");
@@ -155,8 +164,15 @@ function copyToClip() {
 }
 
 //filters user input
-function filterText(str){
-  return str.replaceAll("\r", "").replaceAll("<", "").replaceAll(">", "").replaceAll('"', "").trim();
+function filterText(str) {
+  let ret = decodeURI(str).trim();
+  let filter = [["\r", ""], ["<", ""], [">", ""], ['"', ""]];
+
+  filter.forEach(val => {
+    ret = ret.replaceAll(val[0], val[1]);
+  });
+
+  return ret;
 }
 
 //converts csv string to array
@@ -173,8 +189,12 @@ function csvToArray(str, delimiter = ",") {
 
 //parse string from data import textfield TL; on 'submit' button, if no file uploaded
 //open import popup 
-function parseData(element) {
-  var str = filterText(element.value);
+function parseDataGET(str, prompt){
+  if(prompt == true){
+    parseData(str)
+  }
+}
+function parseData(str) {
   var tmpRows = str.split("]");
   var data = [];
 
@@ -262,14 +282,15 @@ function showData(element = null) {
     if (element.checked == true) {
       skip_row = true;
     }
-    
+
   } else {
-    if (csvData.length > 1) {
+    if (csvData.length > 4) {
       if (isNaN(csvData[0][0]) != isNaN(csvData[1][0])) {
         skip_row = true;
       }
 
     } else {
+      transpose();
       skip_row = false;
     }
   }
@@ -294,8 +315,8 @@ function showData(element = null) {
 
   if (skip_row == true) {
     for (let i = 0; i < csvData[0].length; i++) {
-      document.getElementById("lC" + (i + 1)).innerText = "Name: " + csvData[0][i];
-      document.getElementById("lC" + (i + 1)).style = "display: block";
+      document.getElementById("lC" + (i + 1)).innerText = "Name:" + csvData[0][i];
+      document.getElementById("lC" + (i + 1)).style = "display:block";
     }
   }
 
@@ -303,9 +324,9 @@ function showData(element = null) {
 }
 
 //on 'submit' button
-importForm.addEventListener("submit", function (e) {
+document.getElementById("importForm").addEventListener("submit", function (e) {
   e.preventDefault();
-  var input = csvFile.files[0];
+  var input = document.getElementById("csvFile").files[0];
   var reader = new FileReader();
 
   reader.onload = function (e) {
@@ -317,7 +338,7 @@ importForm.addEventListener("submit", function (e) {
   try {
     reader.readAsText(input);
   } catch {
-    parseData(document.getElementById("dataInput"));
+    parseData(filterText(document.getElementById("dataInput").value));
   }
 });
 

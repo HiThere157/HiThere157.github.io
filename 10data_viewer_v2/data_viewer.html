@@ -19,10 +19,14 @@
         <span>Import Data</span>
       </div>
       <div class="header_item_main">
-        <form id="importForm">
-          <input type="file" id="csvFile" accept=".csv" />
-          <input type="submit" value="Submit" />
-        </form>
+        <div class="exportButtons">
+          <button onclick="getGET()">Get GET</button>
+          <button onclick="getGET(true)" style="margin-right: 4px;">Remove GET</button>
+          <form id="importForm">
+            <input type="file" id="csvFile" accept=".csv" />
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
         <textarea id="dataInput" rows="3" onchange="parseData(this)" spellcheck="false"></textarea>
       </div>
     </div>
@@ -33,12 +37,13 @@
       <div class="header_item_main">
         <div class="export_item">
           <div class="exportButtons">
-            <button id="exportButton" onclick="makeCSVBtn()">Download csv File</button>
-            <button id="copyButton" onclick="copyToClip()">Copy to Clipboard</button>
+            <button onclick="addGetParam()" style="margin-right: 4px;">Add GET</button>
+            <button id="exportButton" onclick="makeCSVBtn()">Download CSV</button>
+            <button id="copyButton" onclick="copyToClip()">Clipboard</button>
             <label for="formatOutput">CSV Format</label>
             <input id="formatOutput" type="checkbox" onchange="exportField(true)">
           </div>
-          <textarea id="dataExport" rows="3" onchange="parseData(this)" spellcheck="false"></textarea>
+          <textarea id="dataExport" rows="3" onchange="parseData(this)" spellcheck="false" readonly></textarea>
         </div>
         <div id="dataExportTable" class="export_item" style="overflow-y: auto; text-align: center;"></div>
       </div>
