@@ -90,7 +90,7 @@ function setSlider(id) {
 
 //on slider/input change; updates slider & simulates dropdown change
 function updateSlider(id, vals) {
-  var getVals = false;
+  let getVals = false;
   if (vals.length == 0) {
     getVals = true;
   }
@@ -113,8 +113,8 @@ function updateSlider(id, vals) {
 var edits = { 0: [0, 0, 0, 0, 0], 1: [0, 0, 0, 0, 0], 2: [0, 0, 0, 0, 0], 3: [0, 0, 0, 0, 0] };
 function makeTableHTML(Array, buttons = false, id = "") {
   if (Array != null) {
-    var result = "<table>";
-    for (var i = 0; i < Array.length; i++) {
+    let result = "<table>";
+    for (let i = 0; i < Array.length; i++) {
       if (i == 0) {
         result += "<thead>";
       } else if (i == 1) {
@@ -122,16 +122,17 @@ function makeTableHTML(Array, buttons = false, id = "") {
       }
 
       result += "<tr>";
-      for (var j = 0; j < Array[i].length; j++) {
-        var tmp = Array[i][j];
-        var htmlButton = " <button id='e" + i + "," + j + "' onclick='editValue(this)'>E</button><button id='d" + i + "," + j + "' onclick='editValue(this)'>D</button><button id='i" + i + "," + j + "' onclick='editValue(this)'>I</button>"
+      for (let j = 0; j < Array[i].length; j++) {
+        let tmp = Array[i][j];
+        let htmlButton = " <div><button id='e" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div edit_div'></div></button><button id='d" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div cross_div'></div></button><button id='i" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div arrow_div'></div></button></div>"
         if (tmp == undefined) {
           tmp = "";
         }
-        result += "<td>" + tmp.toString();
 
         if (tmp.toString() != "" && i >= 1 && j >= 1 && buttons == true && edits[id][j - 1] == 1) {
-          result += htmlButton;
+          result += "<td><div class='flexClass'>" + tmp.toString() + htmlButton + "</div>";
+        }else{
+          result += "<td>" + tmp.toString();
         }
 
         result += "</td>";
@@ -163,7 +164,7 @@ function removeAllOptions(element) {
 
 //sets dropdown options for an 'select' element
 function setupDropdown(name, options, append = 0, remove = false, mod = true) {
-  var s = false;
+  let s = false;
   if (name == "yAxis_dropdown" || name.substring(0, name.length - 1) == "column_dropdown" || name == "module_I" || name == "modAxis_dropdown" || name == "molule_Idataset") {
     options.unshift("-Select-");
     s = true;
@@ -174,7 +175,7 @@ function setupDropdown(name, options, append = 0, remove = false, mod = true) {
 
   let elements = document.getElementsByName(name);
   elements.forEach(element => {
-    var options_;
+    let options_;
 
     if (append != 0 && name != "top_dropdown" && name != "bottom_dropdown") {
       options_ = options.slice(options.length - append);
@@ -233,7 +234,7 @@ class Chart {
         this.data.addColumn(x.type, x.name);
         this.data.addColumn(y.type, y.name);
         var values = [];
-        for (var i = 0; i < y.values.length; i++) {
+        for (let i = 0; i < y.values.length; i++) {
           values.push([x.values[i], y.values[i]]);
         }
 
@@ -242,7 +243,7 @@ class Chart {
         this.data.addColumn(y.type, y.name);
 
         var values = [];
-        for (var i = 0; i < y.values.length; i++) {
+        for (let i = 0; i < y.values.length; i++) {
           values.push([i, y.values[i]]);
         }
       }
@@ -281,7 +282,7 @@ function initCharts() {
   });
 
   function createCharts() {
-    var data = new google.visualization.DataTable();
+    let data = new google.visualization.DataTable();
     data.addColumn("number", "x");
     data.addColumn("number", "y");
     data.addRows([[0, 0]]);
@@ -304,7 +305,7 @@ function drawChart(id = null, hide = false) {
     scale = scales[id];
   }
 
-  var options = {
+  let options = {
     chartArea: {
       left: 40,
       top: 27,
@@ -340,9 +341,9 @@ function drawChart(id = null, hide = false) {
 
 //updates all overview tables
 function overviewTable() {
-  var names = ["table_popup_side", "top_item_main_overview0", "top_item_main_overview1", "top_item_main_overview2", "top_item_main_overview3"];
+  let names = ["table_popup_side", "top_item_main_overview0", "top_item_main_overview1", "top_item_main_overview2", "top_item_main_overview3"];
   names.forEach(name => {
-    var element = document.getElementById(name);
+    let element = document.getElementById(name);
     var overviewArray = [["Name", "ID", "Type", "Length", "Operation", "Parent", "Param", "Action"]];
 
     datasets.dataSet_list.forEach(dataset => {
@@ -428,17 +429,17 @@ function editValue(element) {
 
 //creates custom table for data
 function table(id, editV = undefined, param = undefined, prompt = undefined) {
-  var index = [];
-  var tableArray = [];
+  let index = [];
+  let tableArray = [];
   var tmpArray = ["Index"];
-  var maxLen = 0;
+  let maxLen = 0;
 
   document.getElementsByName("column_dropdown" + id.toString()).forEach(element => {
-    var len = 0;
+    let len = 0;
 
     index.push(element.selectedIndex);
     if (element.selectedIndex != 0) {
-      var len = datasets.dataSet_list[element.selectedIndex - 1].len;
+      len = datasets.dataSet_list[element.selectedIndex - 1].len;
       let add_ = "";
 
       if (edits[id][tmpArray.length - 1] == 1) {
@@ -500,7 +501,7 @@ function table(id, editV = undefined, param = undefined, prompt = undefined) {
     tmpArray.push(i);
 
     for (let j = 0; j < index.length; j++) {
-      var tmp = "";
+      let tmp = "";
       if (index[j] != 0) {
         tmp = datasets.dataSet_list[index[j] - 1].values[i];
       }
@@ -855,7 +856,7 @@ function dropdownChange(element, isDropdown = true, setSliderValue = true) {
       element.remove();
     });
 
-    var simple_mod = true;
+    let simple_mod = true;
     if (["Cut", "n-Fit", "Calculator", "Function Gen", "Misc"].includes(value)) {
       //^ those modules dont support simple_mod; requires own Div
       simple_mod = false;
@@ -935,6 +936,7 @@ function colorChange(element) {
   } else {
     document.documentElement.style.setProperty("--header-color", "#fff");
   }
+
 }
 
 //changes Theme to Dark/Light mode
@@ -1022,7 +1024,7 @@ function keyDown(event) {
       }
 
     } else if (keys.length == 1 && document.getElementById("promptPopup").style.display == "block") {
-      var key = keys[0];
+      let key = keys[0];
 
       if (key == "Escape") {
         openPopup(null, "close_prompt");
@@ -1033,7 +1035,7 @@ function keyDown(event) {
       }
 
     } else if (keys.length == 1 && document.getElementById("bottom_dropdown3").selectedIndex == 1) {
-      var key = keys[0];
+      let key = keys[0];
 
       if (isNaN(key) == false) {
         document.getElementById("calc_" + key).click();

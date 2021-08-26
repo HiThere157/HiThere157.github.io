@@ -4,10 +4,10 @@ var skip_row = false;
 
 //show, update the export table TR; on data change
 function exportTable() {
-  var exportArray = [["Name", "Show", "", "Name", "Show"]];
+  let exportArray = [["Name", "Show", "", "Name", "Show"]];
 
-  var tmp = [];
-  var add_ = "checked";
+  let tmp = [];
+  let add_ = "checked";
   for (let i = 0; i < datasets.dataSet_names.length; i++) {
     if (["R", "R+"].includes(datasets.dataSet_names[i]) == true) {
       add_ = "";
@@ -37,10 +37,12 @@ function exportTable() {
 function addGetParam(){
   let dataString = encodeURI(document.getElementById("dataExport").value);
 
-  if(dataString.length <= 1800){
-    window.history.replaceState(null, null, "?d=" + dataString);
-  }else{
-    openPopup("promptPopup", "prompt_o", "GET parameter is too long!  length: " + dataString.length + " > 1800!");
+  if(dataString != "%5B%5D"){
+    if(dataString.length <= 1800){
+      window.history.replaceState(null, null, "?d=" + dataString);
+    }else{
+      openPopup("promptPopup", "prompt_o", "GET parameter is too long!  length: " + dataString.length + " > 1800!");
+    }
   }
 }
 
@@ -51,17 +53,17 @@ function exportField(override = false, csvFile = false) {
     document.getElementById("exportButton").className = "";
   }
 
-  var fieldElement = document.getElementById("dataExport");
-  var dataString = [];
-  var indexes = [];
+  let fieldElement = document.getElementById("dataExport");
+  let dataString = [];
+  let indexes = [];
 
-  var tmp = [];
-  var maxLen = 0;
+  let tmp = [];
+  let maxLen = 0;
   for (let i = 0; i < datasets.dataSet_names.length; i++) {
     if (document.getElementById("E" + i).checked == true) {
       tmp.push(datasets.dataSet_names[i]);
       indexes.push(i);
-      var len = datasets.dataSet_list[i].len;
+      let len = datasets.dataSet_list[i].len;
 
       if (len > maxLen) {
         maxLen = len;
@@ -79,7 +81,7 @@ function exportField(override = false, csvFile = false) {
     if (document.getElementById("formatOutput").checked == true || csvFile == true) {
       dataString.push(tmp);
       for (let i = 0; i < maxLen; i++) {
-        var tmp = [];
+        let tmp = [];
         indexes.forEach(index => {
           if (datasets.dataSet_list[index].values[i] == undefined) {
             tmp.push("");
@@ -101,7 +103,7 @@ function exportField(override = false, csvFile = false) {
     return dataString;
   }
 
-  var output = [];
+  let output = [];
 
   dataString.forEach(set => {
     output.push("[" + set.toString() + "]");
@@ -122,7 +124,7 @@ function makeCSVBtn() {
 function makeCSV(prompt) {
   if (prompt != null && prompt != "") {
     if (prompt.substring(0, 2) != "!h") {
-      var rows = exportField(false, true);
+      let rows = exportField(false, true);
       let csvContent = "data:text/csv; charset=utf-8,";
 
       rows.forEach(function (rowArray) {
@@ -130,8 +132,8 @@ function makeCSV(prompt) {
         csvContent += row + "\r\n";
       });
 
-      var encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a");
+      let encodedUri = encodeURI(csvContent);
+      let link = document.createElement("a");
       link.setAttribute("href", encodedUri);
       link.setAttribute("name", "dl")
       link.setAttribute("download", prompt + ".csv");
@@ -141,8 +143,8 @@ function makeCSV(prompt) {
       document.getElementById("exportButton").className = "pressedBtn";
 
     } else {
-      var links = document.getElementsByName("dl");
-      var link = links[links.length - 1 - prompt.substring(2, prompt.length)];
+      let links = document.getElementsByName("dl");
+      let link = links[links.length - 1 - prompt.substring(2, prompt.length)];
 
       if (link != undefined) {
         link.click();
@@ -154,7 +156,7 @@ function makeCSV(prompt) {
 
 //copies the output string to the clipboard
 function copyToClip() {
-  var copyText = document.getElementById("dataExport");
+  let copyText = document.getElementById("dataExport");
 
   copyText.select();
   copyText.setSelectionRange(0, 99999);
@@ -191,12 +193,12 @@ function csvToArray(str, delimiter = ",") {
 //open import popup 
 function parseDataGET(str, prompt){
   if(prompt == true){
-    parseData(str)
+    parseData(str);
   }
 }
 function parseData(str) {
-  var tmpRows = str.split("]");
-  var data = [];
+  let tmpRows = str.split("]");
+  let data = [];
 
   for (let i = 0; i < tmpRows.length; i++) {
     let tmp = tmpRows[i].replaceAll("[", "").replaceAll('\"', "").split(",");
@@ -217,7 +219,7 @@ function parseData(str) {
 
 //get the len of the longest row in csvData
 function updateLen() {
-  var maxLen = 0;
+  let maxLen = 0;
   csvData.forEach(row => {
     if (row.length > maxLen) {
       maxLen = row.length;
@@ -229,33 +231,32 @@ function updateLen() {
 
 //i.e. shape (2,5) -> (5,2)
 function transpose() {
-
   let shape = [updateLen(), csvData.length];
-  var temp = [];
+  let tmp = [];
 
   for (let j = 0; j < shape[0]; j++) {
-    var newRow = [];
+    let newRow = [];
     for (let i = 0; i < shape[1]; i++) {
       newRow.push(csvData[i][j]);
     }
-    temp.push(newRow);
+    tmp.push(newRow);
   }
 
-  csvData = temp;
+  csvData = tmp;
   showData();
 }
 
 //ddds the 'import data' buttons to the import table in the popup
 function setButtonData() {
   buttonData = [];
-  var add_ = "";
+  let add_ = "";
   if (skip_row == true) {
     add_ = "checked";
   }
-  var header = ["<div class='flexClass'><button onclick='transpose()'>T</button><input type='checkbox' id='hR' onchange='showData(this)' " + add_ + "><label for='hR'>1. Row Header</label></div>"];
+  let header = ["<div class='flexClass'><button onclick='transpose()'>T</button><input type='checkbox' id='hR' onchange='showData(this)' " + add_ + "><label for='hR'>1. Row Header</label></div>"];
 
   for (let i = 0; i < csvData.length; i++) {
-    var row = [];
+    let row = [];
     for (let j = 0; j < updateLen() + 1; j++) {
       if (i == 0 && j != 0) {
         header.push("<button name='sCs' id='sC" + j + "' onclick='saveData(this)'>Save Column</button><br><span class='table_span' id='lC" + j + "'></span>");
@@ -297,9 +298,9 @@ function showData(element = null) {
 
   setButtonData();
 
-  var combinedData = [];
+  let combinedData = [];
   for (let i = 0; i < buttonData.length; i++) {
-    var row = [];
+    let row = [];
     for (let j = 0; j < buttonData[0].length; j++) {
       if (i > 0 && j > 0) {
         row.push(csvData[i - 1][j - 1]);
@@ -307,8 +308,9 @@ function showData(element = null) {
         row.push(buttonData[i][j]);
       }
     }
-    if (i == 0 || i > 1 || skip_row == false)
+    if (i == 0 || i > 1 || skip_row == false){
       combinedData.push(row);
+    }
   }
 
   document.getElementById("table_popup_table").innerHTML = makeTableHTML(combinedData);
@@ -326,11 +328,11 @@ function showData(element = null) {
 //on 'submit' button
 document.getElementById("importForm").addEventListener("submit", function (e) {
   e.preventDefault();
-  var input = document.getElementById("csvFile").files[0];
-  var reader = new FileReader();
+  let input = document.getElementById("csvFile").files[0];
+  let reader = new FileReader();
 
   reader.onload = function (e) {
-    var text = e.target.result;
+    let text = e.target.result;
     csvData = csvToArray(filterText(text));
     showData();
   };
@@ -344,7 +346,7 @@ document.getElementById("importForm").addEventListener("submit", function (e) {
 
 //get datatype of an array
 function getType(array) {
-  var ret = "number";
+  let ret = "number";
   let retArray = [];
   array.forEach(value => {
     if (isNaN(Number(value)) == true && value != undefined) {
@@ -375,8 +377,8 @@ function importAll() {
 function saveData(element) {
   let id = element.id.substring(2, element.id.length);
   let type = element.id[1];
-  var start_index = 0;
-  var name = "";
+  let start_index = 0;
+  let name = "";
 
   if (skip_row == true) {
     start_index = 1;
@@ -385,7 +387,7 @@ function saveData(element) {
     }
   }
 
-  var data = [];
+  let data = [];
   if (type == "R") {
     csvData[id].forEach(element => {
       if (element != "" && element != undefined) {
@@ -395,7 +397,7 @@ function saveData(element) {
 
   } else if (type == "C") {
     for (let i = start_index; i < csvData.length; i++) {
-      var tmp = csvData[i][id - 1]
+      let tmp = csvData[i][id - 1]
       if (tmp != "" && tmp != undefined) {
         data.push(tmp);
       }

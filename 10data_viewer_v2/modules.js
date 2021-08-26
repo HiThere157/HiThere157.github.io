@@ -6,7 +6,7 @@ function Min_Max(data, nDigits) {
     let min = Math.min(...data.values);
     let max = Math.max(...data.values);
 
-    var min_maxTable = [["Min", "Index"], [Number(min.toFixed(nDigits)), data.values.indexOf(min)], ["<hr>", "<hr>"], ["<span>Max</span>", "<span>Index</span>"], [Number(max.toFixed(nDigits)), data.values.indexOf(max)]]
+    let min_maxTable = [["Min", "Index"], [Number(min.toFixed(nDigits)), data.values.indexOf(min)], ["<hr>", "<hr>"], ["<span>Max</span>", "<span>Index</span>"], [Number(max.toFixed(nDigits)), data.values.indexOf(max)]]
 
     return [min_maxTable, null, data.name, ""];
   }
@@ -14,8 +14,8 @@ function Min_Max(data, nDigits) {
 }
 
 function xFlip(data, nDigits) {
-  var xflipTable = [["Index", "Value", "xFlip"]];
-  var tmp = [];
+  let xflipTable = [["Index", "Value", "xFlip"]];
+  let tmp = [];
 
   for (let i = 0; i < data.len; i++) {
     if (data.type == "number") {
@@ -33,12 +33,12 @@ function xFlip(data, nDigits) {
 }
 
 function Cut(data, nDigits) {
-  var start = document.getElementById("cut_start").value;
-  var end = document.getElementById("cut_end").value;
-  var replaceNaN = document.getElementById("cut_nan").checked;
+  let start = document.getElementById("cut_start").value;
+  let end = document.getElementById("cut_end").value;
+  let replaceNaN = document.getElementById("cut_nan").checked;
 
-  var cutTable = [["Index", "Value", "Cut"]];
-  var tmp = [];
+  let cutTable = [["Index", "Value", "Cut"]];
+  let tmp = [];
 
   if (start == "") {
     start = 0;
@@ -82,8 +82,8 @@ function Cut(data, nDigits) {
 }
 
 function Delta(data, nDigits) {
-  var tmp = [];
-  var deltaTable = [["Index", "Value", "Delta"]];
+  let tmp = [];
+  let deltaTable = [["Index", "Value", "Delta"]];
 
   if (data.type == "number") {
     for (let i = 0; i < data.len; i++) {
@@ -104,8 +104,8 @@ function Delta(data, nDigits) {
 }
 
 function Abs(data, nDigits) {
-  var tmp = [];
-  var absTable = [["Index", "Value", "Abs"]];
+  let tmp = [];
+  let absTable = [["Index", "Value", "Abs"]];
 
   if (data.type == "number") {
     for (let i = 0; i < data.len; i++) {
@@ -122,7 +122,7 @@ function Abs(data, nDigits) {
 }
 
 function Log(data, nDigits, n, datasetData, minLen) {
-  var useDefault = false;
+  let useDefault = false;
   if (n == "") {
     n = Math.E;
     useDefault = true;
@@ -130,9 +130,9 @@ function Log(data, nDigits, n, datasetData, minLen) {
     n = Number(n);
   }
 
-  var tmp = [];
-  var tmp_vals = [];
-  var logTable = [["Index", "Value(x, a)", "Log"]];
+  let tmp = [];
+  let tmp_vals = [];
+  let logTable = [["Index", "Value(x, a)", "Log"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
@@ -159,7 +159,7 @@ function Log(data, nDigits, n, datasetData, minLen) {
 }
 
 function Exp(data, nDigits, n, datasetData, minLen) {
-  var useDefault = false;
+  let useDefault = false;
   if (n == "") {
     n = Math.E;
     useDefault = true;
@@ -167,9 +167,9 @@ function Exp(data, nDigits, n, datasetData, minLen) {
     n = Number(n);
   }
 
-  var tmp = [];
-  var tmp_vals = [];
-  var expTable = [["Index", "Value(x, a)", "Exp"]];
+  let tmp = [];
+  let tmp_vals = [];
+  let expTable = [["Index", "Value(x, a)", "Exp"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
@@ -196,7 +196,7 @@ function Exp(data, nDigits, n, datasetData, minLen) {
 }
 
 function Root(data, nDigits, n, datasetData, minLen) {
-  var useDefault = false;
+  let useDefault = false;
   if (n == "") {
     n = 2;
     useDefault = true;
@@ -204,9 +204,9 @@ function Root(data, nDigits, n, datasetData, minLen) {
     n = Number(n);
   }
 
-  var tmp = [];
-  var tmp_vals = [];
-  var rootTable = [["Index", "Value(x, a)", "Root"]];
+  let tmp = [];
+  let tmp_vals = [];
+  let rootTable = [["Index", "Value(x, a)", "Root"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
@@ -233,7 +233,7 @@ function Root(data, nDigits, n, datasetData, minLen) {
 }
 
 function Add_Sub(data, nDigits, n, datasetData, minLen) {
-  var useDefault = false;
+  let useDefault = false;
   if (n == "") {
     n = 1;
     useDefault = true;
@@ -241,9 +241,9 @@ function Add_Sub(data, nDigits, n, datasetData, minLen) {
     n = Number(n);
   }
 
-  var tmp = [];
-  var tmp_vals = [];
-  var add_subTable = [["Index", "Value(x, a)", "Add/Sub"]];
+  let tmp = [];
+  let tmp_vals = [];
+  let add_subTable = [["Index", "Value(x, a)", "Add/Sub"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
@@ -271,7 +271,7 @@ function Add_Sub(data, nDigits, n, datasetData, minLen) {
 }
 
 function Mul(data, nDigits, n, datasetData, minLen) {
-  var useDefault = false;
+  let useDefault = false;
   if (n == "") {
     n = -1;
     useDefault = true;
@@ -279,9 +279,9 @@ function Mul(data, nDigits, n, datasetData, minLen) {
     n = Number(n);
   }
 
-  var tmp = [];
-  var tmp_vals = [];
-  var mulTable = [["Index", "Value(x, a)", "Mul"]];
+  let tmp = [];
+  let tmp_vals = [];
+  let mulTable = [["Index", "Value(x, a)", "Mul"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
@@ -308,7 +308,7 @@ function Mul(data, nDigits, n, datasetData, minLen) {
 }
 
 function Div(data, nDigits, n, datasetData, minLen) {
-  var useDefault = false;
+  let useDefault = false;
   if (n == "") {
     n = 1;
     useDefault = true;
@@ -316,9 +316,9 @@ function Div(data, nDigits, n, datasetData, minLen) {
     n = Number(n);
   }
 
-  var tmp = [];
-  var tmp_vals = [];
-  var divTable = [["Index", "Value(x, a)", "Div"]];
+  let tmp = [];
+  let tmp_vals = [];
+  let divTable = [["Index", "Value(x, a)", "Div"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
@@ -345,7 +345,7 @@ function Div(data, nDigits, n, datasetData, minLen) {
 }
 
 function Pow(data, nDigits, n, datasetData, minLen) {
-  var useDefault = false;
+  let useDefault = false;
   if (n == "") {
     n = 2;
     useDefault = true;
@@ -353,9 +353,9 @@ function Pow(data, nDigits, n, datasetData, minLen) {
     n = Number(n);
   }
 
-  var tmp = [];
-  var tmp_vals = [];
-  var powTable = [["Index", "Value(x, a)", "Pow"]];
+  let tmp = [];
+  let tmp_vals = [];
+  let powTable = [["Index", "Value(x, a)", "Pow"]];
 
   if (data.type == "number") {
     if (useDefault == false || datasetData == undefined || datasetData.type != "number") {
@@ -382,11 +382,11 @@ function Pow(data, nDigits, n, datasetData, minLen) {
 }
 
 function Gaussian_Average(data, nDigits, n) {
-  var index = [-2, 3];
+  let index = [-2, 3];
   function mk(a, i) {
-    var tmpKernel = [];
-    var kernel = [];
-    var s = 0;
+    let tmpKernel = [];
+    let kernel = [];
+    let s = 0;
 
     for (let x = i[0]; x < i[1]; x++) {
       let tmp = 1 / (Math.sqrt(Math.PI) * a) * Math.exp(-Math.pow(x / 2, 2) / Math.pow(a, 2));
@@ -404,20 +404,20 @@ function Gaussian_Average(data, nDigits, n) {
   if (n == "") {
     n = 1;
   } else {
-    n = parseInt(n);
+    n = Number(n);
   }
 
-  var Kernel = mk(n, index);
+  let kernel = mk(n, index);
 
-  var tmp = [];
-  var g_aTable = [["Index", "Value", "GA"]];
+  let tmp = [];
+  let g_aTable = [["Index", "Value", "GA"]];
 
   if (data.type == "number") {
     for (let i = 0; i < data.len; i++) {
       if (i > 1 && i < data.len - 2) {
         var tmpValue = 0;
         for (let j = index[0]; j < index[1]; j++) {
-          tmpValue += data.values[i + j] * Kernel[j + 2]
+          tmpValue += data.values[i + j] * kernel[j + 2];
         }
         tmp.push(Number(tmpValue.toFixed(nDigits)));
       } else {
@@ -459,8 +459,8 @@ function Ngen(data, nDigits, n) {
     n = Number(n);
   }
 
-  var tmp = [];
-  var noiseTable = [["Index", "Value", "Noise"]];
+  let tmp = [];
+  let noiseTable = [["Index", "Value", "Noise"]];
 
   if (data.type == "number") {
     for (let i = 0; i < data.len; i++) {
@@ -479,7 +479,7 @@ function Ngen(data, nDigits, n) {
 //function Generator
 function Fgen(nDigits) {
   let x_data_index = document.getElementById("molule_Ix_gen").selectedIndex;
-  var x_data = null;
+  let x_data = null;
 
   if (x_data_index != 0) {
     x_data = datasets.dataSet_list[x_data_index - 1];
@@ -533,7 +533,7 @@ function Fgen(nDigits) {
     max_y = Number(max_y);
   }
 
-  var x_interval_set = false;
+  let x_interval_set = false;
   if (x_interval == "") {
     x_interval = [0, 100, 1];
   } else {
@@ -582,8 +582,8 @@ function Fgen(nDigits) {
     }
   }
 
-  var tmp = [];
-  var genTable = [["Index", "x", "y"]];
+  let tmp = [];
+  let genTable = [["Index", "x", "y"]];
 
   if (type == "Linear") {
     document.getElementsByName("gen_ps").forEach(element => {
@@ -667,9 +667,9 @@ function Fgen(nDigits) {
 //calculator
 var calcs = [""];
 function Calc(element) {
-  var solution = undefined;
-  var pressed = undefined;
-  var lastOp = undefined;
+  let solution = undefined;
+  let pressed = undefined;
+  let lastOp = undefined;
 
   if (element != false) {
     pressed = element.id.split("_")[1];
@@ -728,7 +728,7 @@ function Calc(element) {
     document.getElementById("calc_" + lastOp).style = "background-color: #A3A3A3;";
   }
 
-  var tmp = "";
+  let tmp = "";
   for (let i = 0; i < calcs.length; i++) {
     if (isNaN(Number(calcs[i])) == false) {
       tmp = calcs[i];
@@ -932,7 +932,7 @@ function selected_Module(element, depth = false) {
   //n => mod parameter
   //datasetData => selected data with the selcond input dropdown
   //minLen => len of shortest dataset
-  var returned = false;
+  let returned = false;
   if (data != undefined || operation == "function_gen") {
     if (operation == "min_max") {
       returned = Min_Max(data, nDigits);
@@ -999,7 +999,7 @@ function onReturn(id, operation, returned) {
   if (returned.length != 0 && returned != false) {
     document.getElementsByName("mod_out")[id - slot_offset[id]].innerHTML = makeTableHTML(returned[0]);
     document.getElementsByName("mod_parent")[id - slot_offset[id]].innerText = returned[2];
-    document.getElementsByName("mod_param")[id - slot_offset[id]].innerText = returned[3];
+    document.getElementsByName("mod_param")[id - slot_offset[id]].innerText = returned[3].toFixed(3);
     if (returned[1] != null) {
       tempSet[operation] = returned[1];
     }

@@ -1,15 +1,15 @@
 function Fit(id, operation, nDigits) {
-  var xAxis = document.getElementById("module_Ix_fit").selectedIndex;
-  var yAxis = document.getElementById("module_I_fit").selectedIndex;
+  let xAxis = document.getElementById("module_Ix_fit").selectedIndex;
+  let yAxis = document.getElementById("module_I_fit").selectedIndex;
 
-  var yData = datasets.dataSet_list[yAxis - 1];
-  var xData = datasets.dataSet_list[xAxis - 1];
+  let yData = datasets.dataSet_list[yAxis - 1];
+  let xData = datasets.dataSet_list[xAxis - 1];
 
-  var n = document.getElementById("fit_n").innerText;
-  var name = "";
+  let n = document.getElementById("fit_n").innerText;
+  let name = "";
 
-  var x_vals = [];
-  var y_vals = [];
+  let x_vals = [];
+  let y_vals = [];
 
   if (n == "") {
     n = 1;
@@ -37,7 +37,7 @@ function Fit(id, operation, nDigits) {
   }
 
   if(type[0] == "number" && type[1] == "number"){
-    var koeff = [];
+    let koeff = [];
 
     const learningRate = 0.4;
     const optimizer = tf.train.adam(learningRate);
@@ -75,15 +75,15 @@ function Fit(id, operation, nDigits) {
       ys.dispose();
     }
   
-    var elements = [document.getElementById("fit_c"), document.getElementById("fit_b"), document.getElementById("fit_a")];
+    let elements = [document.getElementById("fit_c"), document.getElementById("fit_b"), document.getElementById("fit_a")];
   
     for (let i = 0; i < koeff.length; i++) {
       let tmp = koeff[i].dataSync();
       elements[i].innerText = Number(tmp).toFixed(2);
     }
   
-    var fitTable = [["Index", "Input(x, y)", "y-Fit"]];
-    var tmp = [];
+    let fitTable = [["Index", "Input(x, y)", "y-Fit"]];
+    let tmp = [];
   
     curveY.forEach(y => {
       tmp.push(Number(y.toFixed(nDigits)));
