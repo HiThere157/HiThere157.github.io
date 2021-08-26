@@ -177,6 +177,23 @@ function filterText(str) {
   return ret;
 }
 
+//trim()s all elements in an array
+function trimArray(array){
+  let retArray = [];
+
+  array.forEach(arr => {
+    let tmp = [];
+    arr.forEach(element => {
+      tmp.push(element.trim());
+    });
+
+    retArray.push(tmp);
+  });
+
+  csvData = retArray;
+  showData();
+}
+
 //converts csv string to array
 function csvToArray(str, delimiter = ",") {
   let rows = str.split("\n");
@@ -186,7 +203,7 @@ function csvToArray(str, delimiter = ",") {
     array.push(rows[i].split(delimiter));
   }
 
-  return array;
+  trimArray(array);
 }
 
 //parse string from data import textfield TL; on 'submit' button, if no file uploaded
@@ -212,8 +229,7 @@ function parseData(str) {
   }
 
   if (data.length >= 1 && data[0] != "") {
-    csvData = data;
-    showData();
+    trimArray(data);
   }
 }
 
@@ -292,7 +308,7 @@ function showData(element = null, skip_transpose = false) {
 
     } else {
       if (skip_transpose == false) {
-        transpose();
+        transpose(true);
       }
       skip_row = false;
     }
@@ -335,8 +351,7 @@ document.getElementById("importForm").addEventListener("submit", function (e) {
 
   reader.onload = function (e) {
     let text = e.target.result;
-    csvData = csvToArray(filterText(text));
-    showData();
+    csvToArray(filterText(text));
   };
 
   try {
