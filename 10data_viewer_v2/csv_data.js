@@ -133,14 +133,7 @@ function makeCSV(prompt) {
       });
 
       let encodedUri = encodeURI(csvContent);
-      let link = document.createElement("a");
-      link.href = encodedUri;
-      link.setAttribute("name", "dl")
-      link.download = prompt + ".svg";
-      document.body.appendChild(link);
-
-      link.click();
-      document.getElementById("exportButton").className = "pressedBtn";
+      createLink(encodedUri, "dl", prompt + ".csv", "exportButton");
 
     } else {
       let links = document.getElementsByName("dl");
@@ -148,7 +141,6 @@ function makeCSV(prompt) {
 
       if (link != undefined) {
         link.click();
-        document.getElementById("exportButton").className = "pressedBtn";
       }
     }
   }
@@ -178,7 +170,7 @@ function filterText(str) {
 }
 
 //trim()s all elements in an array
-function trimArray(array){
+function trimArray(array) {
   let retArray = [];
 
   array.forEach(arr => {

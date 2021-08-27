@@ -664,6 +664,32 @@ function Fgen(nDigits) {
   return ret;
 }
 
+//on download of a file
+function listDownloads(element = null) {
+  let links = document.getElementsByName("dl");
+
+  if (element == null) {
+    let linkTable = [["Filename", "Action"]];
+
+    for (let i = 0; i < links.length; i++) {
+      let buttons = "<div class='flexClass'><button id='cLink" + i + "' onclick='listDownloads(this)'>Click</button><button id='dLink" + i + "' onclick='listDownloads(this)'>Delete</button></div>";
+      linkTable.push([filterText(links[i].download), buttons]);
+    }
+
+    document.getElementById("list_downloads").innerHTML = makeTableHTML(linkTable);
+  } else {
+    let index = element.id.substring(5);
+
+    if (element.id.substring(0, 1) == "c") {
+      links[index].click();
+      element.className = "pressedBtn";
+    } else {
+      links[index].remove();
+      listDownloads();
+    }
+  }
+}
+
 //calculator
 var calcs = [""];
 function Calc(element) {
@@ -790,6 +816,8 @@ function show_Module(name, id, simple_mod = false) {
 
   if (name == "calculator") {
     document.getElementById("calc_out").value = 0;
+  } else if (name == "downloads") {
+    listDownloads();
   }
 
   if (simple_mod == true) {
@@ -924,7 +952,6 @@ function selected_Module(element, depth = false) {
   } else {
     var minLen = 0;
   }
-
 
   //element => module input dropdown HTML element
   //data => selected data with the input dropdown

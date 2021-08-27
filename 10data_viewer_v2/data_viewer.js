@@ -220,7 +220,7 @@ function setupDropdown(name, options, append = 0, remove = false, mod = true) {
   }
 }
 setupDropdown("top_dropdown", ["-Select-", "Graph", "Scatter", "Pie Chart", "Table", "Overview"]);
-setupDropdown("bottom_dropdown", [["-Select-", "Min Max", "Delta", "Abs", "Gaussian Average", "Index"], ["-Select-", "Log", "Exp", "Root", "Add/Sub", "Mul", "Div", "Pow"], ["-Select-", "n-Fit", "xFlip", "Cut"], ["-Select-", "Calculator", "Function Gen", "Noise Gen", "Misc"]]);
+setupDropdown("bottom_dropdown", [["-Select-", "Min Max", "Delta", "Abs", "Gaussian Average", "Index"], ["-Select-", "Log", "Exp", "Root", "Add/Sub", "Mul", "Div", "Pow"], ["-Select-", "n-Fit", "xFlip", "Cut"], ["-Select-", "Calculator", "Function Gen", "Noise Gen", "Downloads", "Misc"]]);
 setupDropdown("fGen_types", ["-Select-", "Linear", "Poly", "Exp", "Log", "Sin", "Cos", "Tan"]);
 
 //contains 3 google Chart charts; sets data for chart
@@ -862,7 +862,7 @@ function dropdownChange(element, isDropdown = true, setSliderValue = true) {
     });
 
     let simple_mod = true;
-    if (["Cut", "n-Fit", "Calculator", "Function Gen", "Misc"].includes(value)) {
+    if (["Cut", "n-Fit", "Calculator", "Function Gen", "Misc", "Downloads"].includes(value)) {
       //^ those modules dont support simple_mod; requires own Div
       simple_mod = false;
     }
@@ -903,6 +903,18 @@ function updateDropdown(append = 0, remove = false, mod = true) {
   setupDropdown("modAxis_dropdown", datasets.dataSetMods_names, append, remove, mod);
 }
 
+function createLink(href, name, download, btnID) {
+  let link = document.createElement("a");
+  link.href = href;
+  link.setAttribute("name", name)
+  link.download = download;
+  document.body.appendChild(link);
+
+  link.click();
+  document.getElementById(btnID).className = "pressedBtn";
+  listDownloads();
+}
+
 //download chart as svg/png
 function downloadChartBtn(element) {
   openPopup("promptPopup", "prompt_ios", ["Enter Filename", "SVG", "PNG"], downloadChart, [element]);
@@ -939,14 +951,7 @@ function downloadChart(element, prompt) {
       let encodedUri = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
 
       if (prompt[1] == false) {
-        let link = document.createElement("a");
-        link.href = encodedUri;
-        link.setAttribute("name", "dl")
-        link.download = prompt[0] + ".svg";
-        document.body.appendChild(link);
-
-        link.click();
-        document.getElementById("dlBtn" + id).className = "pressedBtn";
+        createLink(encodedUri, "dl", prompt[0] + ".svg", "dlBtn" + id);
 
       } else {
         let canvas = document.querySelector("canvas");
@@ -959,15 +964,7 @@ function downloadChart(element, prompt) {
         image.src = encodedUri;
         image.onload = function () {
           context.drawImage(image, 0, 0);
-
-          let link = document.createElement("a");
-          link.href = canvas.toDataURL("image/png");
-          link.setAttribute("name", "dl")
-          link.download = prompt[0] + ".png";
-          document.body.appendChild(link);
-
-          link.click();
-          document.getElementById("dlBtn" + id).className = "pressedBtn";
+          createLink(canvas.toDataURL("image/png"), "dl", prompt[0] + ".png", "dlBtn" + id);
         };
       }
 
@@ -977,7 +974,6 @@ function downloadChart(element, prompt) {
 
       if (link != undefined) {
         link.click();
-        document.getElementById("dlBtn" + id).className = "pressedBtn";
       }
     }
   }
@@ -1105,6 +1101,11 @@ function keyDown(event) {
         setDropdown(layouts["defualtLayout"]);
       } else if (keyDowns["0"] == true) {
         setDropdown(layouts["newLayout"]);
+      }
+
+    } else if (keyDowns["i"] == true) {
+      if (keyDowns["1"] == true) {
+        importTestData();
       }
 
     } else if (keys.length == 1 && document.getElementById("promptPopup").style.display == "block") {

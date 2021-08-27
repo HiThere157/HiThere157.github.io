@@ -452,6 +452,31 @@
     </div>
   </div>
 
+  <div class="module" name="module" id="downloads">
+    <!--Placeholder-->
+    <div class="IO" style="display: none;">
+      <span>Input:</span>
+      <select name="module_I" onchange="selected_Module(this)"></select>
+      <select name="molule_Idataset" onchange="selected_Module(this)" style="display: none;"></select>
+      <input name="molule_IN" placeholder="Round to n" onchange="selected_Module(this)" style="width: 80px;">
+    </div>
+    <div class="IO_main" style="height: 100%; overflow-y: auto;">
+      <!--Placeholder-->
+      <div name="mod_main" class="mod_main" style="display: none;">
+        <span class="mod_text" name="mod_text"></span>
+        <span name="mod_parent"></span>
+        <span name="mod_param"></span>
+        <input name="mod_input">
+        <input name="repeat_input">
+        <label name="repeat_label">Repeat</label>
+      </div>
+      <div id="list_downloads"></div>
+      <div name="mod_out" style="display: none;"></div>
+    </div>
+    <div class="IO_footer" name="IO_footer" style="display: none;">
+    </div>
+  </div>
+
   <div class="module" name="module" id="misc">
     <!--Placeholder-->
     <div class="IO" style="display: none;">
@@ -508,6 +533,12 @@
       <div class="misc_container">
         <span>Standart Layout:</span>
         <kbd>L</kbd>
+        <span>+</span>
+        <kbd>1</kbd>
+      </div>
+      <div class="misc_container">
+        <span>Import Test Data:</span>
+        <kbd>I</kbd>
         <span>+</span>
         <kbd>1</kbd>
       </div>
