@@ -1,3 +1,14 @@
+function removeNaN(x, y){
+  for (let i = 0; i < x.length; i++) {
+    if(isNaN(x[i]) == true || isNaN(y[i]) == true){
+      x.splice(i,1);
+      y.splice(i,1);
+    }
+  }
+
+  return [x, y];
+}
+
 function Fit(id, operation, nDigits) {
   let xAxis = document.getElementById("module_Ix_fit").selectedIndex;
   let yAxis = document.getElementById("module_I_fit").selectedIndex;
@@ -35,6 +46,8 @@ function Fit(id, operation, nDigits) {
     }
     type[1] = "number";
   }
+
+  [x_vals, y_vals] = removeNaN([...x_vals], [...y_vals]);
 
   if(type[0] == "number" && type[1] == "number"){
     let koeff = [];
@@ -93,7 +106,6 @@ function Fit(id, operation, nDigits) {
       fitTable.push([i, x_vals[i].toString() + ", " + y_vals[i].toString(), tmp[i]]);
     }
   
-    
     onReturn(id, operation, [fitTable, tmp, name, n]);
     
   }else{
