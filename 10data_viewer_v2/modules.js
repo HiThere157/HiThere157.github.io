@@ -669,11 +669,11 @@ function listDownloads(element = null) {
   let links = document.getElementsByName("dl");
 
   if (element == null) {
-    let linkTable = [["Filename", "Action"]];
+    let linkTable = [["Filename", "Time", "Action"]];
 
     for (let i = 0; i < links.length; i++) {
       let buttons = "<div class='flexClass'><button id='cLink" + i + "' onclick='listDownloads(this)'>Click</button><button id='dLink" + i + "' onclick='listDownloads(this)'>Delete</button></div>";
-      linkTable.push([filterText(links[i].download), buttons]);
+      linkTable.push([filterText(links[i].download), links[i].getAttribute("time"), buttons]);
     }
 
     document.getElementById("list_downloads").innerHTML = makeTableHTML(linkTable);

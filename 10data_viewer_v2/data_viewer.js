@@ -905,8 +905,10 @@ function updateDropdown(append = 0, remove = false, mod = true) {
 
 function createLink(href, name, download, btnID) {
   let link = document.createElement("a");
+  let date = new Date();
   link.href = href;
   link.setAttribute("name", name)
+  link.setAttribute("time", date.getHours() + ":" + date.getMinutes());
   link.download = download;
   document.body.appendChild(link);
 
