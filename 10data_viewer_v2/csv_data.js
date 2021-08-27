@@ -326,7 +326,7 @@ function showData(element = null, skip_transpose = false) {
 
   if (skip_row == true) {
     for (let i = 0; i < csvData[0].length; i++) {
-      document.getElementById("lC" + (i + 1)).innerText = "Name:" + csvData[0][i];
+      document.getElementById("lC" + (i + 1)).innerText = "Name: " + csvData[0][i];
       document.getElementById("lC" + (i + 1)).style = "display:block";
     }
   }

@@ -679,7 +679,7 @@ function promptSubmit(element) {
     } else if (parentId == "prompt_io") {
       if (elementName == "ok_Btn" || element.id == "prompt_Input") {
         let tmp = document.getElementById("prompt_Input");
-        ret = tmp.value;
+        ret = filterText(tmp.value);
         tmp.value = "";
 
       } else {
@@ -689,7 +689,7 @@ function promptSubmit(element) {
     } else if (parentId == "prompt_ios") {
       if (elementName == "ok_Btn" || element.id == "prompt_Input_ios") {
         let tmp = document.getElementById("prompt_Input_ios");
-        ret = tmp.value;
+        ret = filterText(tmp.value);
         tmp.value = "";
       } else {
         ret = null;
