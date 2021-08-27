@@ -104,7 +104,6 @@ class Tile {
       for (let j = -1; j < 2; j++) {
         if (this.x + i >= 0 && this.x + i < columns && this.y + j >= 0 && this.y + j < rows) {
           tiles[this.x + i][this.y + j].showMe();
-          ;
         }
       }
     }

@@ -766,7 +766,7 @@ function Calc(element) {
     calcs = [solution.toString()];
   }
 
-  if (tmp == NaN) {
+  if (isNaN(tmp) == true) {
     tmp = 0;
   }
   document.getElementById("calc_out").value = Number(Number(tmp.toString().replace(",", ".")).toFixed(15));

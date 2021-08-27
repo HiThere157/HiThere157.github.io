@@ -51,7 +51,7 @@ textarea {
   background-color: var(--button-pressed);
   border-radius: 3px;
   border-width: 1px;
-  padding: 2px 7px 2px 7px;
+  padding: 2px 7px;
 }
 
 .icon_container {
@@ -328,7 +328,7 @@ input:checked + .slider:before {
   background-color: var(--item-background);
   height: 80%;
   width: 19%;
-  margin: .3% .3%;
+  margin: .3%;
 }
 .bottom_item_header {
   background-color: var(--header);
