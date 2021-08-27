@@ -412,7 +412,7 @@ function enableEdit(element) {
 //changes value in dataset
 function editValue(element) {
   let id = element;
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 7; i++) {
     id = id.parentElement;
   }
 
