@@ -134,9 +134,9 @@ function makeCSV(prompt) {
 
       let encodedUri = encodeURI(csvContent);
       let link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
+      link.href = encodedUri;
       link.setAttribute("name", "dl")
-      link.setAttribute("download", prompt + ".csv");
+      link.download = prompt + ".svg";
       document.body.appendChild(link);
 
       link.click();

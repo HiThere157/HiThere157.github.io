@@ -19,6 +19,11 @@ function setupHTML() {
   document.getElementsByName("graph_header").forEach(element => {
     let id = element.id[element.id.length - 1];
 
+    let dlButton = document.createElement("button");
+    dlButton.id = "dlBtn" + id.toString();
+    dlButton.innerText = "Save Chart";
+    dlButton.onclick = function () { downloadChartBtn(this); };
+
     let scaleLabel = document.createElement("label");
     scaleLabel.id = "setScaleLabel" + id.toString();
     scaleLabel.innerText = "Log Scale";
@@ -30,6 +35,7 @@ function setupHTML() {
     scaleInput.id = "setScale" + id.toString();
     scaleInput.onchange = function () { dropdownChange(this, false); };
 
+    element.appendChild(dlButton);
     element.appendChild(scaleLabel);
     element.appendChild(scaleInput);
 
@@ -330,6 +336,7 @@ function drawChart(id = null, hide = false) {
     charts[id].chart.draw(charts[id].data, options);
     charts[id].scatter.draw(charts[id].data, options);
     charts[id].pie.draw(charts[id].data, options);
+    document.getElementById("dlBtn" + id).className = "";
   }
 
   if (hide == true) {
@@ -381,9 +388,7 @@ function updateAll(graphUpdate = false) {
     });
   }
 
-  document.getElementsByName("yAxis_dropdown").forEach(element => {
-    dropdownChange(element);
-  });
+  drawChart();
 }
 
 //enables the edit buttons for a specific dataset
@@ -896,6 +901,86 @@ function updateDropdown(append = 0, remove = false, mod = true) {
   setupDropdown("module_Ix", datasets.dataSet_names, append, remove);
   setupDropdown("molule_Idataset", datasets.dataSet_names, append, remove);
   setupDropdown("modAxis_dropdown", datasets.dataSetMods_names, append, remove, mod);
+}
+
+//download chart as svg/png
+function downloadChartBtn(element) {
+  openPopup("promptPopup", "prompt_ios", ["Enter Filename", "SVG", "PNG"], downloadChart, [element]);
+}
+function downloadChart(element, prompt) {
+  if (prompt[0] != null && prompt[0] != "") {
+    if (prompt[0].substring(0, 2) != "!h") {
+      let id = element.id.substr(element.id.length - 1);
+      let parent = document.getElementById("top_item_main" + id);
+      let graphs = parent.getElementsByClassName("graph_main");
+
+      for (let i = 0; i < graphs.length; i++) {
+        if (graphs[i].style.display == "block") {
+          var target = graphs[i];
+        }
+      }
+
+      let svgElement = target.getElementsByTagName("svg")[0];
+
+      let height = svgElement.getAttribute("height");
+      let width = svgElement.getAttribute("width");
+
+      let serializer = new XMLSerializer();
+      let source = serializer.serializeToString(svgElement);
+
+      if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+        source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+      }
+      if (!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+        source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+      }
+
+      source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+      let encodedUri = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+
+      if (prompt[1] == false) {
+        let link = document.createElement("a");
+        link.href = encodedUri;
+        link.setAttribute("name", "dl")
+        link.download = prompt[0] + ".svg";
+        document.body.appendChild(link);
+
+        link.click();
+        document.getElementById("dlBtn" + id).className = "pressedBtn";
+
+      } else {
+        let canvas = document.querySelector("canvas");
+        canvas.setAttribute("height", height);
+        canvas.setAttribute("width", width);
+
+        let context = canvas.getContext("2d");
+
+        let image = new Image;
+        image.src = encodedUri;
+        image.onload = function () {
+          context.drawImage(image, 0, 0);
+
+          let link = document.createElement("a");
+          link.href = canvas.toDataURL("image/png");
+          link.setAttribute("name", "dl")
+          link.download = prompt[0] + ".png";
+          document.body.appendChild(link);
+
+          link.click();
+          document.getElementById("dlBtn" + id).className = "pressedBtn";
+        };
+      }
+
+    } else {
+      let links = document.getElementsByName("dl");
+      let link = links[links.length - 1 - prompt[0].substring(2, prompt[0].length)];
+
+      if (link != undefined) {
+        link.click();
+        document.getElementById("dlBtn" + id).className = "pressedBtn";
+      }
+    }
+  }
 }
 
 //determine if color is dark or light
