@@ -689,7 +689,7 @@ function listDownloads(element = null) {
   }
 }
 function deleteLink(link, param) {
-  if(param == true){
+  if (param == true) {
     link.remove();
     listDownloads();
   }

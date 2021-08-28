@@ -920,7 +920,7 @@ function createLink(href, name, download, btnID, resolution = "") {
 
 //download chart as svg/png
 function downloadChartBtn(element) {
-  openPopup("promptPopup", "prompt_ios", ["Enter Filename", "SVG", "PNG"], downloadChart, [element]);
+  openPopup("promptPopup", "prompt_ios", ["Enter Filename. Change PNG resolution in 'Misc'", "SVG", "PNG"], downloadChart, [element]);
 }
 function downloadChart(element, prompt) {
   if (prompt[0] != null && prompt[0] != "") {
@@ -954,7 +954,7 @@ function downloadChart(element, prompt) {
         createLink(encodedUri, "dl", prompt[0] + ".svg", "dlBtn" + id);
 
       } else {
-        let [width, height] = resolution; 
+        let [width, height] = resolution;
         let canvas = document.querySelector("canvas");
         canvas.setAttribute("height", height);
         canvas.setAttribute("width", width);
@@ -1048,10 +1048,10 @@ function reolutionChange(reverse = false) {
 
   let custom_input = document.getElementById("custom_resolution");
 
-  if(element.selectedIndex == 5){
+  if (element.selectedIndex == 5) {
     custom_input.style = "";
 
-    if(reverse == true){
+    if (reverse == true) {
       document.getElementById("custom_width").value = resolution[0];
       document.getElementById("custom_height").value = resolution[1];
     }
@@ -1059,11 +1059,11 @@ function reolutionChange(reverse = false) {
     let width = document.getElementById("custom_width").value;
     let height = document.getElementById("custom_height").value;
 
-    if(width != "" && height != ""){
+    if (width != "" && height != "") {
       resolution = [width, height];
     }
 
-  }else{
+  } else {
     custom_input.style.display = "none";
     resolution = element.value.split(" x ");
   }
