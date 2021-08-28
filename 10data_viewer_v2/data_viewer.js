@@ -130,7 +130,7 @@ function makeTableHTML(Array, buttons = false, id = "") {
       result += "<tr>";
       for (let j = 0; j < Array[i].length; j++) {
         let tmp = Array[i][j];
-        let htmlButton = " <div><button id='e" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div edit_div'></div></button><button id='d" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div trash_div'></div></button><button id='i" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div arrow_div'></div></button></div>"
+        let htmlButton = "<span>-</span><div><button id='e" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div edit_div'></div></button><button id='d" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div trash_div'></div></button><button id='i" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div arrow_div'></div></button></div>"
         if (tmp == undefined) {
           tmp = "";
         }
@@ -451,7 +451,7 @@ function table(id, editV = undefined, param = undefined, prompt = undefined) {
         add_ = "checked";
       }
 
-      tmpArray.push("<div class='flexClass'>" + datasets.dataSet_names[element.selectedIndex - 1] + "<label for='editEnable" + tmpArray.length + "'> - edit</label><input id='editEnable" + tmpArray.length + "' onchange='enableEdit(this)' type='checkbox' " + add_ + "></div>");
+      tmpArray.push("<div class='flexClass'>" + datasets.dataSet_names[element.selectedIndex - 1] + "<span>-</span><div class='flexClass'><label for='editEnable" + tmpArray.length + "'>edit</label><input id='editEnable" + tmpArray.length + "' onchange='enableEdit(this)' type='checkbox' " + add_ + " style='margin: 3px;'></div></div>");
     } else {
       tmpArray.push("None");
     }
