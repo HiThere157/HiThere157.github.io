@@ -1034,6 +1034,20 @@ function changeTheme(element) {
   }
 }
 
+//apply invert filter
+function invertTheme(element) {
+  //sync checkbox state bewteen module template and actual module
+  document.getElementsByName("invert_input").forEach(element => {
+    element.checked = document.getElementById("invert_input").checked;
+  });
+
+  if (element.checked == true) {
+    document.documentElement.style.setProperty("--invert", "1");
+  } else {
+    document.documentElement.style.setProperty("--invert", "0");
+  }
+}
+
 //change default resolution for PNGs
 var resolution = ["720", "480"];
 function reolutionChange(reverse = false) {
