@@ -648,7 +648,7 @@ function Fgen(nDigits) {
     if (type == "Linear") {
       genTable.push([i, tmp[i]]);
 
-      var ret = [genTable, tmp, "Fgen(" + type + ")", x_interval[0] + "," + x_interval[1] + "," + x_interval[2]];
+      var ret = [genTable, tmp, "Fgen(" + type + ")", x_interval.join(",")];
     } else {
       genTable.push([i, x[i], tmp[i]]);
 
@@ -672,7 +672,7 @@ function listDownloads(element = null) {
     let linkTable = [["Filename", "Resolution", "Time", "Action"]];
 
     for (let i = 0; i < links.length; i++) {
-      let buttons = "<div class='flexClass'><button id='cLink" + i + "' onclick='listDownloads(this)'>Click</button><button id='dLink" + i + "' onclick='listDownloads(this)'>Delete</button></div>";
+      let buttons = "<button id='cLink" + i + "' class='icon_container' onclick='listDownloads(this)'><div class='icon_div mouse_div'></div></button><button id='dLink" + i + "' class='icon_container' onclick='listDownloads(this)'><div class='icon_div trash_div'></div></button>";
       linkTable.push([filterText(links[i].download), links[i].getAttribute("resolution"), links[i].getAttribute("time"), buttons]);
     }
 
@@ -682,7 +682,6 @@ function listDownloads(element = null) {
 
     if (element.id.substring(0, 1) == "c") {
       links[index].click();
-      element.className = "pressedBtn";
     } else {
       openPopup("promptPopup", "prompt_co", "Are you Sure?", deleteLink, [links[index]], "deleteLink");
     }
@@ -1031,9 +1030,15 @@ function selected_Module(element, depth = false) {
 
 function onReturn(id, operation, returned) {
   if (returned.length != 0 && returned != false && returned != true) {
+    console.log(returned)
     document.getElementsByName("mod_out")[id - slot_offset[id]].innerHTML = makeTableHTML(returned[0]);
     document.getElementsByName("mod_parent")[id - slot_offset[id]].innerText = returned[2];
-    document.getElementsByName("mod_param")[id - slot_offset[id]].innerText = returned[3].toFixed(3);
+
+    if (isNaN(returned[3]) == false) {
+      returned[3] = returned[3].toFixed(3);
+    }
+
+    document.getElementsByName("mod_param")[id - slot_offset[id]].innerText = returned[3];
     if (returned[1] != null) {
       tempSet[operation] = returned[1];
     }

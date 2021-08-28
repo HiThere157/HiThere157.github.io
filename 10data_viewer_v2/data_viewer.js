@@ -130,7 +130,7 @@ function makeTableHTML(Array, buttons = false, id = "") {
       result += "<tr>";
       for (let j = 0; j < Array[i].length; j++) {
         let tmp = Array[i][j];
-        let htmlButton = " <div><button id='e" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div edit_div'></div></button><button id='d" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div cross_div'></div></button><button id='i" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div arrow_div'></div></button></div>"
+        let htmlButton = " <div><button id='e" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div edit_div'></div></button><button id='d" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div trash_div'></div></button><button id='i" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div arrow_div'></div></button></div>"
         if (tmp == undefined) {
           tmp = "";
         }
@@ -359,9 +359,9 @@ function overviewTable() {
       }
 
       if (dataset.id <= 1) {
-        tmp.push("<div class='flexClass'><button name='" + dataset.name + "' onclick='copySet(this)'>Copy</button></div>");
+        tmp.push("<button class='icon_container' name='" + dataset.name + "' onclick='copySet(this)'><div class='icon_div copy_div'></div></button>");
       } else {
-        tmp.push("<div class='flexClass'><button name='" + dataset.name + "' onclick='deleteSetBtn(this)'>Delete</button><button name='" + dataset.name + "' onclick='renameSetBtn(this)'>Rename</button><button name='" + dataset.name + "' onclick='copySet(this)'>Copy</button></div>");
+        tmp.push("<button class='icon_container' name='" + dataset.name + "' onclick='renameSetBtn(this)'><div class='icon_div edit_div'></div></button><button class='icon_container' name='" + dataset.name + "' onclick='deleteSetBtn(this)'><div class='icon_div trash_div'></div></button><button class='icon_container' name='" + dataset.name + "' onclick='copySet(this)'><div class='icon_div copy_div'></div></button>");
       }
 
       overviewArray.push(tmp);
