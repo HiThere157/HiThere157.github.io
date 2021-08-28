@@ -130,13 +130,13 @@ function makeTableHTML(Array, buttons = false, id = "") {
       result += "<tr>";
       for (let j = 0; j < Array[i].length; j++) {
         let tmp = Array[i][j];
-        let htmlButton = "<span>-</span><div><button id='e" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div edit_div'></div></button><button id='d" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div trash_div'></div></button><button id='i" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div plus_div'></div></button></div>"
+        let htmlButton = "<div><button id='e" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div edit_div'></div></button><button id='d" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div trash_div'></div></button><button id='i" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div plus_div'></div></button></div>"
         if (tmp == undefined) {
           tmp = "";
         }
 
         if (tmp.toString() != "" && i >= 1 && j >= 1 && buttons == true && edits[id][j - 1] == 1) {
-          result += "<td><div class='flexClass'>" + tmp.toString() + htmlButton + "</div>";
+          result += "<td><div class='flexClass' style='justify-content: space-evenly;'>" + tmp.toString() + htmlButton + "</div>";
         } else {
           result += "<td>" + tmp.toString();
         }

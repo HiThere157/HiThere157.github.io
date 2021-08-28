@@ -563,6 +563,7 @@ input:checked + .slider:before {
   width: 50px;
 }
 .flexClass {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
