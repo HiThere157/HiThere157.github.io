@@ -1029,6 +1029,12 @@ function changeTheme(element) {
 
   if (element.checked == true) {
     document.getElementsByTagName("html")[0].className = "darkTheme";
+
+    let invertElement = document.getElementById("invert_input");
+    if(invertElement.checked == true){
+      invertElement.click();
+    }
+
   } else {
     document.getElementsByTagName("html")[0].className = "";
   }
@@ -1043,6 +1049,12 @@ function invertTheme(element) {
 
   if (element.checked == true) {
     document.documentElement.style.setProperty("--invert", "1");
+
+    let themeElement = document.getElementById("theme_input");
+    if(themeElement.checked == true){
+      themeElement.click();
+    }
+
   } else {
     document.documentElement.style.setProperty("--invert", "0");
   }
