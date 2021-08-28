@@ -1031,7 +1031,7 @@ function changeTheme(element) {
     document.getElementsByTagName("html")[0].className = "darkTheme";
 
     let invertElement = document.getElementById("invert_input");
-    if(invertElement.checked == true){
+    if (invertElement.checked == true) {
       invertElement.click();
     }
 
@@ -1051,7 +1051,7 @@ function invertTheme(element) {
     document.documentElement.style.setProperty("--invert", "1");
 
     let themeElement = document.getElementById("theme_input");
-    if(themeElement.checked == true){
+    if (themeElement.checked == true) {
       themeElement.click();
     }
 
@@ -1135,7 +1135,8 @@ function setDropdown(array) {
 
 var layouts = {
   "defualtLayout": [["top_dropdown0", 1], ["top_dropdown1", 4], ["top_dropdown2", 5], ["top_dropdown3", 0], ["bottom_dropdown0", 0], ["bottom_dropdown1", 0], ["bottom_dropdown2", 0], ["bottom_dropdown3", 1]],
-  "newLayout": [["top_dropdown0", 0], ["top_dropdown1", 0], ["top_dropdown2", 0], ["top_dropdown3", 0], ["bottom_dropdown0", 0], ["bottom_dropdown1", 0], ["bottom_dropdown2", 0], ["bottom_dropdown3", 0]]
+  "newLayout": [["top_dropdown0", 0], ["top_dropdown1", 0], ["top_dropdown2", 0], ["top_dropdown3", 0], ["bottom_dropdown0", 0], ["bottom_dropdown1", 0], ["bottom_dropdown2", 0], ["bottom_dropdown3", 0]],
+  "settings": [["bottom_dropdown3", 5]]
 };
 var keyDowns = {};
 var CalcAlias = { "c": "ac", "p": "pm", "-": "min", "+": "plus", "/": "div", "%": "perc", ",": "k", "Enter": "eq", "=": "eq" }
@@ -1168,6 +1169,11 @@ function keyDown(event) {
     } else if (keyDowns["i"] == true) {
       if (keyDowns["1"] == true) {
         importTestData();
+      }
+
+    } else if (keyDowns["o"] == true) {
+      if (keyDowns["s"] == true) {
+        setDropdown(layouts["settings"]);
       }
 
     } else if (keys.length == 1 && document.getElementById("promptPopup").style.display == "block") {
