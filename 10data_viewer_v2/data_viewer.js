@@ -1146,18 +1146,13 @@ function keyDown(event) {
   }
 
   let focused = false;
-  let focusedInput = null;
   let tmp = [...document.getElementsByTagName("input")];
   tmp.push(...document.getElementsByTagName("textarea"));
 
   for (let i = 0; i < tmp.length; i++) {
-    if (tmp[i] === document.activeElement) {
-      if (tmp[i].id == "prompt_Input") {
-        focusedInput = tmp[i];
-      } else {
-        focused = true;
-        break;
-      }
+    if (tmp[i] === document.activeElement && tmp[i].id != "prompt_Input") {
+      focused = true;
+      break;
     }
   }
 
@@ -1184,10 +1179,17 @@ function keyDown(event) {
     } else if (keys.length == 1 && document.getElementById("promptPopup").style.display == "block") {
       let key = keys[0];
 
+      let okBtn = null;
+      document.getElementsByName("prompt_option").forEach(element => {
+        if (element.style.display != "none") {
+          okBtn = element.getElementsByClassName("promptInput okBtn")[0];
+        }
+      });
+
       if (key == "Escape") {
         openPopup(null, "close_prompt");
       } else if (key == "Enter") {
-        promptSubmit(focusedInput);
+        promptSubmit(okBtn);
       }
 
     } else if (keys.length == 1 && document.getElementById("bottom_dropdown3").selectedIndex == 1) {
