@@ -683,7 +683,7 @@ function listDownloads(element = null) {
     if (element.id.substring(0, 1) == "c") {
       links[index].click();
     } else {
-      openPopup("promptPopup", "prompt_co", "Are you Sure?", deleteLink, [links[index]], "deleteLink");
+      openPopup("promptPopup", "prompt_co", "Are you Sure you want to delete the link?", deleteLink, [links[index]], "deleteLink");
     }
   }
 }

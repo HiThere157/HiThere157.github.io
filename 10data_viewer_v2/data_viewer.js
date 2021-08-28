@@ -130,7 +130,7 @@ function makeTableHTML(Array, buttons = false, id = "") {
       result += "<tr>";
       for (let j = 0; j < Array[i].length; j++) {
         let tmp = Array[i][j];
-        let htmlButton = "<span>-</span><div><button id='e" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div edit_div'></div></button><button id='d" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div trash_div'></div></button><button id='i" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div arrow_div'></div></button></div>"
+        let htmlButton = "<span>-</span><div><button id='e" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div edit_div'></div></button><button id='d" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div trash_div'></div></button><button id='i" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div plus_div'></div></button></div>"
         if (tmp == undefined) {
           tmp = "";
         }
@@ -424,9 +424,9 @@ function editValue(element) {
   if (op == "e") {
     openPopup("promptPopup", "prompt_io", "Enter new value", table, [id, op, elementId.substring(1).split(",")]);
   } else if (op == "d") {
-    openPopup("promptPopup", "prompt_co", "Are you sure?", table, [id, op, elementId.substring(1).split(",")], "deleteValue");
+    openPopup("promptPopup", "prompt_co", "Are you sure you want to delete the value?", table, [id, op, elementId.substring(1).split(",")], "deleteValue");
   } else if (op == "i") {
-    openPopup("promptPopup", "prompt_ios", ["Enter new value", "above", "below"], table, [id, op, elementId.substring(1).split(",")]);
+    openPopup("promptPopup", "prompt_ios", ["Enter new value to insert into the dataset", "above", "below"], table, [id, op, elementId.substring(1).split(",")]);
   } else {
     table(id, op, elementId.substring(1).split(","));
   }
@@ -590,7 +590,7 @@ class DataSet {
 
 //delete Dataset
 function deleteSetBtn(element) {
-  openPopup("promptPopup", "prompt_co", "Are you Sure?", deleteSet, [element], "deleteSet");
+  openPopup("promptPopup", "prompt_co", "Are you Sure you want to delete the dataset?", deleteSet, [element], "deleteSet");
 }
 function deleteSet(element, prompt) {
   let name = element.getAttribute("name")
@@ -920,7 +920,7 @@ function createLink(href, name, download, btnID, resolution = "") {
 
 //download chart as svg/png
 function downloadChartBtn(element) {
-  openPopup("promptPopup", "prompt_ios", ["Enter Filename. Change PNG resolution in 'Misc'", "SVG", "PNG"], downloadChart, [element]);
+  openPopup("promptPopup", "prompt_ios", ["Enter Filename. Change PNG resolution setting in 'Misc'", "SVG", "PNG"], downloadChart, [element]);
 }
 function downloadChart(element, prompt) {
   if (prompt[0] != null && prompt[0] != "") {

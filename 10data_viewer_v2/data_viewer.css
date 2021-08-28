@@ -70,8 +70,8 @@ textarea {
   background-position: center;
   background-repeat: no-repeat;
 }
-.icon_div.arrow_div {
-  background-image: url(icons/arrow_icon.svg);
+.icon_div.plus_div {
+  background-image: url(icons/plus_icon.svg);
 }
 .icon_div.edit_div {
   background-image: url(icons/edit_icon.svg);
