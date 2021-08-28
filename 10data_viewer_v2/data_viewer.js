@@ -1146,13 +1146,18 @@ function keyDown(event) {
   }
 
   let focused = false;
+  let focusedInput = null;
   let tmp = [...document.getElementsByTagName("input")];
   tmp.push(...document.getElementsByTagName("textarea"));
 
   for (let i = 0; i < tmp.length; i++) {
     if (tmp[i] === document.activeElement) {
-      focused = true;
-      break;
+      if (tmp[i].id == "prompt_Input") {
+        focusedInput = tmp[i];
+      } else {
+        focused = true;
+        break;
+      }
     }
   }
 
@@ -1182,9 +1187,7 @@ function keyDown(event) {
       if (key == "Escape") {
         openPopup(null, "close_prompt");
       } else if (key == "Enter") {
-        if (document.getElementById("prompt_co").style.display != "none" || document.getElementById("prompt_o").style.display != "none") {
-          promptSubmit(null)
-        }
+        promptSubmit(focusedInput);
       }
 
     } else if (keys.length == 1 && document.getElementById("bottom_dropdown3").selectedIndex == 1) {

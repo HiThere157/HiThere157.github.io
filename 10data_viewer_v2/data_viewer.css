@@ -278,6 +278,9 @@ input:checked + .slider:before {
 
   filter: invert(var(--invert));
 }
+.top_item_header > * {
+  filter: invert(var(--invert));
+}
 .top_item_main {
   height: 95%;
   width: 100%;
@@ -347,6 +350,9 @@ input:checked + .slider:before {
   padding: 3px;
   min-height: 20px;
 
+  filter: invert(var(--invert));
+}
+.bottom_item_header > * {
   filter: invert(var(--invert));
 }
 .bottom_item_main {
