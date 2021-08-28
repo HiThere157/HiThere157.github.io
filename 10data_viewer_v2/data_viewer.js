@@ -314,9 +314,9 @@ function drawChart(id = null, hide = false) {
   let options = {
     chartArea: {
       left: 40,
-      top: 27,
+      top: 20,
       width: "90%",
-      height: "70%"
+      height: "73%"
     },
     legend: {
       position: "top"
