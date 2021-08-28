@@ -903,12 +903,13 @@ function updateDropdown(append = 0, remove = false, mod = true) {
   setupDropdown("modAxis_dropdown", datasets.dataSetMods_names, append, remove, mod);
 }
 
-function createLink(href, name, download, btnID) {
+function createLink(href, name, download, btnID, resolution = "") {
   let link = document.createElement("a");
   let date = new Date();
   link.href = href;
   link.setAttribute("name", name)
   link.setAttribute("time", date.getHours() + ":" + date.getMinutes());
+  link.setAttribute("resolution", resolution);
   link.download = download;
   document.body.appendChild(link);
 
@@ -936,9 +937,6 @@ function downloadChart(element, prompt) {
 
       let svgElement = target.getElementsByTagName("svg")[0];
 
-      let height = svgElement.getAttribute("height");
-      let width = svgElement.getAttribute("width");
-
       let serializer = new XMLSerializer();
       let source = serializer.serializeToString(svgElement);
 
@@ -956,6 +954,7 @@ function downloadChart(element, prompt) {
         createLink(encodedUri, "dl", prompt[0] + ".svg", "dlBtn" + id);
 
       } else {
+        let [width, height] = resolution; 
         let canvas = document.querySelector("canvas");
         canvas.setAttribute("height", height);
         canvas.setAttribute("width", width);
@@ -965,8 +964,8 @@ function downloadChart(element, prompt) {
         let image = new Image;
         image.src = encodedUri;
         image.onload = function () {
-          context.drawImage(image, 0, 0);
-          createLink(canvas.toDataURL("image/png"), "dl", prompt[0] + ".png", "dlBtn" + id);
+          context.drawImage(image, 0, 0, width, height);
+          createLink(canvas.toDataURL("image/png"), "dl", prompt[0] + ".png", "dlBtn" + id, resolution.join(" x "));
         };
       }
 
@@ -1032,6 +1031,41 @@ function changeTheme(element) {
     document.getElementsByTagName("html")[0].className = "darkTheme";
   } else {
     document.getElementsByTagName("html")[0].className = "";
+  }
+}
+
+//change default resolution for PNGs
+var resolution = ["720", "480"];
+function reolutionChange(reverse = false) {
+  //sync checkbox state bewteen module template and actual module
+  let tmp = [...document.getElementsByName("resolution_input")];
+  let element = tmp[0];
+  if (reverse == true) {
+    tmp.reverse();
+    element = tmp[1];
+  }
+  tmp[1].selectedIndex = tmp[0].selectedIndex;
+
+  let custom_input = document.getElementById("custom_resolution");
+
+  if(element.selectedIndex == 5){
+    custom_input.style = "";
+
+    if(reverse == true){
+      document.getElementById("custom_width").value = resolution[0];
+      document.getElementById("custom_height").value = resolution[1];
+    }
+
+    let width = document.getElementById("custom_width").value;
+    let height = document.getElementById("custom_height").value;
+
+    if(width != "" && height != ""){
+      resolution = [width, height];
+    }
+
+  }else{
+    custom_input.style.display = "none";
+    resolution = element.value.split(" x ");
   }
 }
 

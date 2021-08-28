@@ -669,11 +669,11 @@ function listDownloads(element = null) {
   let links = document.getElementsByName("dl");
 
   if (element == null) {
-    let linkTable = [["Filename", "Time", "Action"]];
+    let linkTable = [["Filename", "Resolution", "Time", "Action"]];
 
     for (let i = 0; i < links.length; i++) {
       let buttons = "<div class='flexClass'><button id='cLink" + i + "' onclick='listDownloads(this)'>Click</button><button id='dLink" + i + "' onclick='listDownloads(this)'>Delete</button></div>";
-      linkTable.push([filterText(links[i].download), links[i].getAttribute("time"), buttons]);
+      linkTable.push([filterText(links[i].download), links[i].getAttribute("resolution"), links[i].getAttribute("time"), buttons]);
     }
 
     document.getElementById("list_downloads").innerHTML = makeTableHTML(linkTable);
@@ -684,9 +684,14 @@ function listDownloads(element = null) {
       links[index].click();
       element.className = "pressedBtn";
     } else {
-      links[index].remove();
-      listDownloads();
+      openPopup("promptPopup", "prompt_co", "Are you Sure?", deleteLink, [links[index]], "deleteLink");
     }
+  }
+}
+function deleteLink(link, param) {
+  if(param == true){
+    link.remove();
+    listDownloads();
   }
 }
 
@@ -818,6 +823,8 @@ function show_Module(name, id, simple_mod = false) {
     document.getElementById("calc_out").value = 0;
   } else if (name == "downloads") {
     listDownloads();
+  } else if (name == "misc") {
+    reolutionChange(true);
   }
 
   if (simple_mod == true) {
