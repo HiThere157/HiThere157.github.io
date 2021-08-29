@@ -1,11 +1,14 @@
 :root {
-  --pimary-background: #cecece;
-  --secondary-background: #a8a8a8;
-  --item-background: #e2e2e2;
-  --popup-background: #fce8e8;
-  --button-pressed: #cccccc;
-  --prompt-background: #bbbbbbaa;
-  --okBtn-background: #8AB4F8;
+  --pimary-background: hsl(0, 0%, 80%);
+  --secondary-background: hsl(0, 0%, 65%);
+  --shadow: hsl(0, 0%, 55%);
+
+  --item-background: hsl(0, 0%, 90%);
+  --popup-background: hsl(0, 75%, 95%);
+  --prompt-background: hsla(0, 0%, 75%, 0.75);
+
+  --button-pressed: hsl(0, 0%, 80%);
+  --okBtn-background: hsl(217, 90%, 75%);
   
   --header: #256565;
   --selection: #256565bb;
@@ -24,12 +27,13 @@
 
 html {
   filter: invert(var(--invert));
+  height: 96%;
 }
 
-html, body {
+body {
   background-color: var(--popup-background);
   min-width: 1650px;
-  height: 98%;
+  height: 100%;
   padding: 0;
   margin: 0;
 
@@ -240,6 +244,8 @@ input:checked + .slider:before {
   border: solid 2px;
   border-radius: 3px;
   min-height: 100px;
+
+  box-shadow: 2px 1px 4px 2px var(--shadow);
 }
 .header_item {
   height: 100%;
@@ -277,6 +283,8 @@ input:checked + .slider:before {
   border: solid 2px;
   border-radius: 3px;
   min-height: 800px;
+
+  box-shadow: 2px 4px 4px 2px var(--shadow);
 }
 
 /* top row layout */
