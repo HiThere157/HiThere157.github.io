@@ -1017,6 +1017,7 @@ function colorChange(element) {
   });
 
   document.documentElement.style.setProperty("--header", element.value);
+  document.documentElement.style.setProperty("--selection", element.value + "bb");
 
   if (lightOrDark(element.value) == 1) {
     document.documentElement.style.setProperty("--header-color", "#000");

@@ -3,15 +3,21 @@
   --secondary-background: #a8a8a8;
   --item-background: #e2e2e2;
   --popup-background: #fce8e8;
-  --header: #256565;
-  --header-color: #000;
   --button-pressed: #cccccc;
   --prompt-background: #bbbbbbaa;
   --okBtn-background: #8AB4F8;
+  
+  --header: #256565;
+  --selection: #256565bb;
+  --header-color: #000;
 
   --invert: 0;
 }
 
+::selection {
+  background-color: var(--selection);
+  color: var(--header-color);
+}
 .darkTheme {
   filter: brightness(0.75);
 }
