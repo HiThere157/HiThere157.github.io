@@ -62,6 +62,7 @@ textarea {
   margin-top: 3px;
   width: 90%;
   min-height: 20px;
+  max-height: 800%;
   min-width: 300px;
   max-width: 95%;
   z-index: 3;
