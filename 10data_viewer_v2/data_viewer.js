@@ -1245,3 +1245,37 @@ window.addEventListener('beforeunload', function (e) {
     e.returnValue = '';
   }
 });
+
+//who tf uses window.print()?? im bored.
+var printReset = { "invert": 0, "theme": 0 };
+window.addEventListener("beforeprint", function (e) {
+  let themeElement = document.getElementById("theme_input");
+  if (themeElement.checked == true) {
+    printReset["theme"] = 1;
+    themeElement.click();
+  }
+
+  let invertElement = document.getElementById("invert_input");
+  if (invertElement.checked == true) {
+    printReset["invert"] = 1;
+    invertElement.click();
+  }
+
+  document.body.style = "width: 1650px; height: 1100px;";
+
+  updateAll(true);
+});
+
+window.addEventListener("afterprint", function (e) {
+  if (printReset["theme"] == 1) {
+    document.getElementById("theme_input").click();
+  }
+  if (printReset["invert"] == 1) {
+    document.getElementById("invert_input").click();
+  }
+
+  printReset = { "invert": 0, "theme": 0 };
+  document.body.style = "";
+
+  updateAll(true);
+});
