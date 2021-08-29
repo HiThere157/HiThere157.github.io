@@ -11,11 +11,12 @@
   --okBtn-background: hsl(217, 90%, 75%);
   
   --header: #256565;
-  --selection: #256565bb;
+  --selection: #256565cf;
   --header-color: #000;
 
   --invert: 0;
 }
+/* z-index: 0-default, 1-reserved, 2-slider, 3-textarea, 4-popup, 5-prompt */
 
 ::selection {
   background-color: var(--selection);
@@ -61,7 +62,9 @@ textarea {
   margin-top: 3px;
   width: 90%;
   min-height: 20px;
-  min-width: 100px;
+  min-width: 300px;
+  max-width: 95%;
+  z-index: 3;
 }
 .pressedBtn {
   background-color: var(--button-pressed);
@@ -240,7 +243,7 @@ input:checked + .slider:before {
 .header {
   background-color: var(--pimary-background);
   height: 10%;
-  margin: .4%;
+  margin: .3% .4% 0 .4%;
   border: solid 2px;
   border-radius: 3px;
   min-height: 100px;
@@ -402,7 +405,7 @@ input:checked + .slider:before {
   width: 100%;
   background-color: var(--prompt-background);
   backdrop-filter: blur(1px);
-  z-index: 4;
+  z-index: 5;
 }
 .promptPopup {
   overflow: hidden;
@@ -462,7 +465,7 @@ input:checked + .slider:before {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 3;
+  z-index: 4;
 }
 .popup_header {
   display: flex;
