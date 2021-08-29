@@ -20,8 +20,10 @@ function setupHTML() {
     let id = element.id[element.id.length - 1];
 
     let dlButton = document.createElement("button");
+    let icon = document.createElement("div");
+    icon.className = "icon_div save_div";
+    dlButton.appendChild(icon)
     dlButton.id = "dlBtn" + id.toString();
-    dlButton.innerText = "Save Chart";
     dlButton.onclick = function () { downloadChartBtn(this); };
 
     let scaleLabel = document.createElement("label");
@@ -903,6 +905,7 @@ function updateDropdown(append = 0, remove = false, mod = true) {
   setupDropdown("modAxis_dropdown", datasets.dataSetMods_names, append, remove, mod);
 }
 
+var pressLink = true;
 function createLink(href, name, download, btnID, resolution = "") {
   let link = document.createElement("a");
   let date = new Date();
@@ -913,7 +916,9 @@ function createLink(href, name, download, btnID, resolution = "") {
   link.download = download;
   document.body.appendChild(link);
 
-  link.click();
+  if(pressLink == true){
+    link.click();
+  }
   document.getElementById(btnID).className = "pressedBtn";
   listDownloads();
 }

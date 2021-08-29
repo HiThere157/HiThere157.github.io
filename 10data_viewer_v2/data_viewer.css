@@ -85,6 +85,17 @@ textarea {
 .icon_div.mouse_div {
   background-image: url(icons/mouse_pointer_icon.svg);
 }
+.icon_div.save_div {
+  background-image: url(icons/download_icon.svg);
+  margin: 1px 0;
+}
+.icon_div.popout_div {
+  background-image: url(icons/arrow_up_right_icon.svg);
+}
+.icon_div.clipboard_div {
+  background-image: url(icons/clipboard_icon.svg);
+  margin: 1px 0;
+}
 
 @keyframes rotate {
   from {transform: rotate(0deg);}
