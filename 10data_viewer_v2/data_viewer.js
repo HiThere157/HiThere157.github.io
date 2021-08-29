@@ -132,13 +132,13 @@ function makeTableHTML(Array, buttons = false, id = "") {
       result += "<tr>";
       for (let j = 0; j < Array[i].length; j++) {
         let tmp = Array[i][j];
-        let htmlButton = "<div><button id='e" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div edit_div'></div></button><button id='d" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div trash_div'></div></button><button id='i" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div plus_div'></div></button></div>"
+        let htmlButton = "<div style='margin-left: 5px'><button id='e" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div edit_div'></div></button><button id='d" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div trash_div'></div></button><button id='i" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div plus_div'></div></button></div>"
         if (tmp == undefined) {
           tmp = "";
         }
 
         if (tmp.toString() != "" && i >= 1 && j >= 1 && buttons == true && edits[id][j - 1] == 1) {
-          result += "<td><div class='flexClass' style='justify-content: space-evenly;'>" + tmp.toString() + htmlButton + "</div>";
+          result += "<td><div class='flexClass editIcons'>" + tmp.toString() + htmlButton + "</div>";
         } else {
           result += "<td>" + tmp.toString();
         }
@@ -361,9 +361,14 @@ function overviewTable() {
       }
 
       if (dataset.id <= 1) {
-        tmp.push("<button class='icon_container' name='" + dataset.name + "' onclick='copySet(this)'><div class='icon_div copy_div'></div></button>");
+        tmp.push("<button class='icon_container' name='" + dataset.name + "' onclick='copySetBtn(this)'><div class='icon_div copy_div'></div></button>");
       } else {
-        tmp.push("<button class='icon_container' name='" + dataset.name + "' onclick='renameSetBtn(this)'><div class='icon_div edit_div'></div></button><button class='icon_container' name='" + dataset.name + "' onclick='deleteSetBtn(this)'><div class='icon_div trash_div'></div></button><button class='icon_container' name='" + dataset.name + "' onclick='copySet(this)'><div class='icon_div copy_div'></div></button>");
+        let add_ = ""
+        if (dataset.selected == true) {
+          add_ = "checked";
+        }
+
+        tmp.push("<div class='flexClass'><input type='checkbox' name='" + dataset.name + "' onchange='selectSet(this)' style='margin: 3px'" + add_ + "><button class='icon_container' name='" + dataset.name + "' onclick='renameSetBtn(this)'><div class='icon_div edit_div'></div></button><button class='icon_container' name='" + dataset.name + "' onclick='deleteSetBtn(this)'><div class='icon_div trash_div'></div></button><button class='icon_container' name='" + dataset.name + "' onclick='copySetBtn(this)'><div class='icon_div copy_div'></div></button></div>");
       }
 
       overviewArray.push(tmp);
@@ -575,6 +580,7 @@ class DataSet {
     this.checkName = checkName;
 
     this.len = values.length;
+    this.selected = false;
 
     if (this.type == "") {
       this.type = typeof values[0];
@@ -592,10 +598,16 @@ class DataSet {
 
 //delete Dataset
 function deleteSetBtn(element) {
-  openPopup("promptPopup", "prompt_co", "Are you Sure you want to delete the dataset?", deleteSet, [element], "deleteSet");
+  let set = getSetbyName(element);
+  let selectedList = getAllSelected();
+
+  if (set.selected == true && selectedList.length > 1) {
+    openPopup("promptPopup", "prompt_co", "Are you Sure you want to delete the selected datasets? " + selectedList.length + " selected", deleteSetSelected, [selectedList], "deleteSetSelected");
+  } else {
+    openPopup("promptPopup", "prompt_co", "Are you Sure you want to delete the dataset?", deleteSet, [set.name], "deleteSet");
+  }
 }
-function deleteSet(element, prompt) {
-  let name = element.getAttribute("name")
+function deleteSet(name, prompt) {
   if (prompt == true) {
     if (datasets.dataSetMods_names.length != 0) {
       let index = datasets.dataSetMods_names.indexOf(name);
@@ -613,14 +625,26 @@ function deleteSet(element, prompt) {
     datasets.deletedSets += 1;
   }
 }
+function deleteSetSelected(sets, prompt) {
+  if (prompt == true) {
+    sets.forEach(set => {
+      deleteSet(set.name, true);
+    });
+  }
+}
 
 //rename Dataset
 function renameSetBtn(element) {
-  openPopup("promptPopup", "prompt_io", "Enter new name", renameSet, [element]);
-}
-function renameSet(element, prompt) {
-  let name = element.getAttribute("name");
+  let set = getSetbyName(element);
+  let selectedList = getAllSelected();
 
+  if (set.selected == true && selectedList.length > 1) {
+    openPopup("promptPopup", "prompt_io", "Enter new name for the selected datasets. " + selectedList.length + " selected", renameSetSelected, [selectedList]);
+  } else {
+    openPopup("promptPopup", "prompt_io", "Enter a new name", renameSet, [set.name]);
+  }
+}
+function renameSet(name, prompt) {
   if (prompt != null && prompt != "") {
     let index = datasets.dataSet_names.indexOf(name);
 
@@ -642,17 +666,58 @@ function renameSet(element, prompt) {
     updateDropdown();
   }
 }
+function renameSetSelected(sets, prompt) {
+  if (prompt != null && prompt != "") {
+    sets.forEach(set => {
+      renameSet(set.name, prompt);
+    });
+  }
+}
 
 //copy Dataset
-function copySet(element) {
-  let name = element.getAttribute("name");
-  let index = datasets.dataSet_names.indexOf(name);
-  let set = datasets.dataSet_list[index];
+function copySetBtn(element){
+  let set = getSetbyName(element);
+  let selectedList = getAllSelected();
 
+  if (set.selected == true && selectedList.length > 1) {
+    openPopup("promptPopup", "prompt_co", "Are you sure you want to copy the selected datasets? " + selectedList.length + " selected", copySetSelected, [selectedList], "copySelected");
+  } else {
+    copySet(set);
+  }
+}
+function copySet(set) {
   datasets.add(new DataSet(set.values, false, "copy", "", set.name));
 
   updateDropdown(1);
   updateAll();
+}
+function copySetSelected(sets, prompt) {
+  if(prompt == true){
+    sets.forEach(set => {
+      copySet(set);
+    });
+  }
+}
+
+function getSetbyName(element){
+  let name = element.getAttribute("name");
+  let index = datasets.dataSet_names.indexOf(name);
+
+  return datasets.dataSet_list[index];
+}
+function getAllSelected(){
+  let selectedList = [];
+  datasets.dataSet_list.forEach(set => {
+    if (set.selected == true) {
+      selectedList.push(set);
+    }
+  });
+
+  return selectedList;
+}
+function selectSet(element) {
+  let set = getSetbyName(element);
+  set.selected = !set.selected;
 }
 
 //on input in the custom prompt
@@ -916,7 +981,7 @@ function createLink(href, name, download, btnID, resolution = "") {
   link.download = download;
   document.body.appendChild(link);
 
-  if(pressLink == true){
+  if (pressLink == true) {
     link.click();
   }
   document.getElementById(btnID).className = "pressedBtn";

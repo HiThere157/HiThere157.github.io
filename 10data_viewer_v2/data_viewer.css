@@ -61,12 +61,15 @@ textarea {
   position: relative;
   margin-top: 3px;
   width: 90%;
-  min-height: 20px;
+  overflow: hidden auto;
+
+  min-height: 40px;
   max-height: 800%;
   min-width: 300px;
   max-width: 95%;
   z-index: 3;
 }
+
 .pressedBtn {
   background-color: var(--button-pressed);
   border-radius: 3px;
@@ -109,6 +112,12 @@ textarea {
 .icon_div.clipboard_div {
   background-image: url(icons/clipboard_icon.svg);
   margin: 1px 0;
+}
+.flexClass.editIcons > div {
+  visibility: hidden;
+}
+.flexClass.editIcons:hover > div {
+  visibility: visible;
 }
 
 @keyframes rotate {
