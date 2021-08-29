@@ -132,7 +132,7 @@ function makeTableHTML(Array, buttons = false, id = "") {
       result += "<tr>";
       for (let j = 0; j < Array[i].length; j++) {
         let tmp = Array[i][j];
-        let htmlButton = "<div style='margin-left: 5px'><button id='e" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div edit_div'></div></button><button id='d" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div trash_div'></div></button><button id='i" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div plus_div'></div></button></div>"
+        let htmlButton = "<div class='editButtons_container'><button id='e" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div edit_div'></div></button><button id='d" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div trash_div'></div></button><button id='i" + i + "," + j + "' class='icon_container' onclick='editValue(this)'><div class='icon_div plus_div'></div></button></div>"
         if (tmp == undefined) {
           tmp = "";
         }
@@ -675,7 +675,7 @@ function renameSetSelected(sets, prompt) {
 }
 
 //copy Dataset
-function copySetBtn(element){
+function copySetBtn(element) {
   let set = getSetbyName(element);
   let selectedList = getAllSelected();
 
@@ -692,20 +692,20 @@ function copySet(set) {
   updateAll();
 }
 function copySetSelected(sets, prompt) {
-  if(prompt == true){
+  if (prompt == true) {
     sets.forEach(set => {
       copySet(set);
     });
   }
 }
 
-function getSetbyName(element){
+function getSetbyName(element) {
   let name = element.getAttribute("name");
   let index = datasets.dataSet_names.indexOf(name);
 
   return datasets.dataSet_list[index];
 }
-function getAllSelected(){
+function getAllSelected() {
   let selectedList = [];
   datasets.dataSet_list.forEach(set => {
     if (set.selected == true) {

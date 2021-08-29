@@ -113,11 +113,18 @@ textarea {
   background-image: url(icons/clipboard_icon.svg);
   margin: 1px 0;
 }
+.flexClass.editIcons {
+  padding: 2px 0;
+}
 .flexClass.editIcons > div {
   visibility: hidden;
 }
 .flexClass.editIcons:hover > div {
   visibility: visible;
+}
+.editButtons_container {
+  position: absolute;
+  background-color: var(--item-background);
 }
 
 @keyframes rotate {
