@@ -294,7 +294,7 @@ function showData(element = null, skip_transpose = false) {
 
   } else {
     if (csvData.length > 5) {
-      if (isNaN(csvData[0][0]) != isNaN(csvData[1][0])) {
+      if (isNaN(csvData[0][0]) != isNaN(csvData[1][0]) && csvData[0][0] != "NaN" && csvData[1][0] != "NaN") {
         skip_row = true;
       }
 
@@ -357,7 +357,7 @@ function getType(array) {
   let ret = "number";
   let retArray = [];
   array.forEach(value => {
-    if (isNaN(Number(value)) == true && value != undefined) {
+    if (isNaN(Number(value)) == true && value != undefined && value != "NaN") {
       ret = "string";
       value.replaceAll('\"', '');
     }

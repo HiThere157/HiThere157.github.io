@@ -557,7 +557,7 @@ class DataSet {
     if (name == "") {
       this.name = operation;
     } else {
-      this.name = name;
+      this.name = name.toString();
     }
 
     if (checkName == false) {
