@@ -325,7 +325,8 @@ function drawChart(id = null, hide = false) {
     },
     width: "100%",
     backgroundColor: { fill: "transparent" },
-    vAxis: { scaleType: scale }
+    vAxis: { scaleType: scale },
+    colors: lineColors
   };
 
   if (id == null) {
@@ -1129,6 +1130,22 @@ function invertTheme(element) {
   } else {
     document.documentElement.style.setProperty("--invert", "0");
   }
+}
+
+var lineColors = [document.getElementById("line_color_input0").value, document.getElementById("line_color_input1").value];
+function lineColorChange() {
+  let l0 = document.getElementById("line_color_input0").value;
+  let l1 = document.getElementById("line_color_input1").value;
+  //sync checkbox state bewteen module template and actual module
+  document.getElementsByName("line_color_input0").forEach(element => {
+    element.value = l0;
+  });
+  document.getElementsByName("line_color_input1").forEach(element => {
+    element.value = l1;
+  });
+
+  lineColors = [l0, l1];
+  updateAll(true);
 }
 
 //change default resolution for PNGs

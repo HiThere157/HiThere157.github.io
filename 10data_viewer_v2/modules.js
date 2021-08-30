@@ -1005,7 +1005,7 @@ function selected_Module(element, depth = false) {
 
     } else if (operation == "n-fit") {
       document.getElementById("loading_icon").style.display = "inline-block";
-      setTimeout(Fit, 500, ...[id, operation, nDigits]);
+      setTimeout(Fit, 750, ...[id, operation, nDigits]);
       returned = true;
 
     } else if (operation == "xflip") {
@@ -1030,7 +1030,6 @@ function selected_Module(element, depth = false) {
 
 function onReturn(id, operation, returned) {
   if (returned.length != 0 && returned != false && returned != true) {
-    console.log(returned)
     document.getElementsByName("mod_out")[id - slot_offset[id]].innerHTML = makeTableHTML(returned[0]);
     document.getElementsByName("mod_parent")[id - slot_offset[id]].innerText = returned[2];
 

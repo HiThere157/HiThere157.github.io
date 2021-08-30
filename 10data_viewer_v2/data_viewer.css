@@ -127,6 +127,16 @@ textarea {
   background-color: var(--item-background);
 }
 
+/* preload svgs */
+body::after {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  z-index: -1;
+  content: url(icons/copy_icon.svg) url(icons/edit_icon.svg) url(icons/external_link_icon.svg) url(icons/mouse_pointer_icon.svg) url(icons/plus_icon.svg) url(icons/rotate_icon.svg) url(icons/trash_icon.svg) url(icons/cross_icon.svg);
+}
+
 @keyframes rotate {
   from {transform: rotate(0deg);}
   to {transform: rotate(360deg);}
@@ -137,7 +147,7 @@ textarea {
   margin-top: 20px;
   height: 24px;
   width: 24px;
-  background-image: url("icons/rotate_icon.svg");
+  background-image: url(icons/rotate_icon.svg);
   background-repeat: no-repeat;
   background-position: center;
 
@@ -195,8 +205,10 @@ input[type="color"] {
 	-webkit-appearance: none;
 	border: none;
 	width: 32px;
-	height: 32px;
-
+	height: 15px;
+  padding: 0;
+}
+#color_input {
   filter: invert(var(--invert));
 }
 input[type="color"]::-webkit-color-swatch-wrapper {
@@ -537,7 +549,7 @@ input:checked + .slider:before {
   right: 6px;
   border-radius: 7px;
   border: solid 1px;
-  background-image: url("icons/cross_icon.svg");
+  background-image: url(icons/cross_icon.svg);
   background-repeat: no-repeat;
   background-position: center;
   transition: 250ms;

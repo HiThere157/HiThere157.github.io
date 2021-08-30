@@ -526,7 +526,7 @@
         </div>
         <div class="misc_container">
           <label for="color_input">Header Color:</label>
-          <input id="color_input" name="color_input" type="color" style="height: 15px;" value="#256565"
+          <input id="color_input" name="color_input" type="color" value="#256565"
             onchange="colorChange(this)">
         </div>
         <div class="misc_container">
@@ -539,6 +539,15 @@
             <option>7680 x 4320</option>
             <option>Custom</option>
           </select>
+        </div>
+        <div class="misc_container">
+          <span>Line Colors:</span>
+          <label for="line_color_input0">1.</label>
+          <input id="line_color_input0" name="line_color_input0" type="color" value="#2c499b"
+            onchange="lineColorChange()">
+          <label for="line_color_input1">2.</label>
+          <input id="line_color_input1" name="line_color_input1" type="color" value="#267c43"
+            onchange="lineColorChange()">
         </div>
         <div id="custom_resolution" class="misc_container" style="display: none;">
           <label>Width: </label>
