@@ -318,7 +318,7 @@ function drawChart(id = null, hide = false) {
       left: 40,
       top: 20,
       width: "90%",
-      height: "73%"
+      height: "85%"
     },
     legend: {
       position: "top"
@@ -877,7 +877,7 @@ function dropdownChange(element, isDropdown = true, setSliderValue = true) {
     document.getElementById("top_item_main_overview" + id).style = "display: none;";
 
     if (value == "Graph" || value == "Scatter" || value == "Pie Chart") {
-      document.getElementById("top_item_main" + id).style = "display: block;";
+      document.getElementById("top_item_main" + id).style = "display: flex;";
       if (value == "Graph") {
         showChart("", id);
       } else if (value == "Scatter") {

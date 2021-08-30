@@ -315,6 +315,8 @@ input:checked + .slider:before {
   display: flex;
 }
 .main_top_item {
+  display: flex;
+  flex-direction: column;
   background-color: var(--item-background);
   height: 97.5%;
   width: 33%;
@@ -335,7 +337,10 @@ input:checked + .slider:before {
   filter: invert(var(--invert));
 }
 .top_item_main {
-  height: 95%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 0;
   width: 100%;
 }
 .top_item_main_table {
@@ -346,6 +351,9 @@ input:checked + .slider:before {
   height: 95%;
   display: none;
   overflow-y: auto;
+}
+.graph_header_container {
+  width: 100%;
 }
 .graph_header {
   display: flex;
@@ -368,7 +376,9 @@ input:checked + .slider:before {
   margin-top: 2px;
 }
 .graph_main {
-  height: 95%;
+  flex-grow: 1;
+  width: 100%;
+  min-height: 0;
   display: none;
 }
 .table_header {
@@ -380,7 +390,7 @@ input:checked + .slider:before {
   overflow: hidden;
 }
 .table_main {
-  height: 95%;
+  height: 93.5%;
   overflow-y: auto;
 }
 

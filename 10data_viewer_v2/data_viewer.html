@@ -38,8 +38,12 @@
         <div class="export_item">
           <div class="exportButtons">
             <button onclick="addGetParam()" style="margin-right: 4px;">Add GET</button>
-            <button id="exportButton" onclick="makeCSVBtn()"><div class="icon_div save_div"></div></button>
-            <button id="copyButton" onclick="copyToClip()"><div class="icon_div clipboard_div"></div></button>
+            <button id="exportButton" onclick="makeCSVBtn()">
+              <div class="icon_div save_div"></div>
+            </button>
+            <button id="copyButton" onclick="copyToClip()">
+              <div class="icon_div clipboard_div"></div>
+            </button>
             <label for="formatOutput">CSV Format</label>
             <input id="formatOutput" type="checkbox" onchange="exportField(true)">
           </div>
@@ -56,19 +60,24 @@
       <div name="top_item" class="main_top_item">
         <div class="top_item_header">
           <select name="top_dropdown" id="top_dropdown0" onchange="dropdownChange(this)"></select>
-          <button onclick="openPopup('graph_popup')" style="padding: 1px 4px"><div class="icon_div popout_div"></div></button>
+          <button onclick="openPopup('graph_popup')" style="padding: 1px 4px">
+            <div class="icon_div popout_div"></div>
+          </button>
         </div>
         <!--Graph Div-->
         <div class="top_item_main" name="top_item_main" id="top_item_main0">
-          <div class="graph_header" name="graph_header" id="graph_header0"></div>
-          <div class="range_slider_container">
-            <div class="range_slider" id="slider-range0"></div>
+          <div class="graph_header_container">
+            <div class="graph_header" name="graph_header" id="graph_header0"></div>
+            <div class="range_slider_container">
+              <div class="range_slider" id="slider-range0"></div>
+            </div>
+            <div>
+              <input class="slider_input" id="0xRange0" accept="number" onchange="updateSlider(0, [])">
+              <span> - </span>
+              <input class="slider_input" id="1xRange0" accept="number" onchange="updateSlider(0, [])">
+            </div>
           </div>
-          <div>
-            <input class="slider_input" id="0xRange0" accept="number" onchange="updateSlider(0, [])">
-            <span> - </span>
-            <input class="slider_input" id="1xRange0" accept="number" onchange="updateSlider(0, [])">
-          </div>
+
           <div class="graph_main" name="graph_main" id="graph_main0"></div>
           <div class="graph_main" id="0graph_main0"></div>
           <div class="graph_main" id="1graph_main0"></div>
@@ -88,15 +97,18 @@
         </div>
         <!--Graph Div-->
         <div class="top_item_main" name="top_item_main" id="top_item_main1">
-          <div class="graph_header" name="graph_header" id="graph_header1"></div>
-          <div class="range_slider_container">
-            <div class="range_slider" id="slider-range1"></div>
+          <div class="graph_header_container">
+            <div class="graph_header" name="graph_header" id="graph_header1"></div>
+            <div class="range_slider_container">
+              <div class="range_slider" id="slider-range1"></div>
+            </div>
+            <div>
+              <input class="slider_input" id="0xRange1" accept="number" onchange="updateSlider(1, [])">
+              <span> - </span>
+              <input class="slider_input" id="1xRange1" accept="number" onchange="updateSlider(1, [])">
+            </div>
           </div>
-          <div>
-            <input class="slider_input" id="0xRange1" accept="number" onchange="updateSlider(1, [])">
-            <span> - </span>
-            <input class="slider_input" id="1xRange1" accept="number" onchange="updateSlider(1, [])">
-          </div>
+
           <div class="graph_main" name="graph_main" id="graph_main1"></div>
           <div class="graph_main" id="0graph_main1"></div>
           <div class="graph_main" id="1graph_main1"></div>
@@ -116,14 +128,16 @@
         </div>
         <!--Graph Div-->
         <div class="top_item_main" name="top_item_main" id="top_item_main2">
-          <div class="graph_header" name="graph_header" id="graph_header2"></div>
-          <div class="range_slider_container">
-            <div class="range_slider" id="slider-range2"></div>
-          </div>
-          <div>
-            <input class="slider_input" id="0xRange2" accept="number" onchange="updateSlider(2, [])">
-            <span> - </span>
-            <input class="slider_input" id="1xRange2" accept="number" onchange="updateSlider(2, [])">
+          <div class="graph_header_container">
+            <div class="graph_header" name="graph_header" id="graph_header2"></div>
+            <div class="range_slider_container">
+              <div class="range_slider" id="slider-range2"></div>
+            </div>
+            <div>
+              <input class="slider_input" id="0xRange2" accept="number" onchange="updateSlider(2, [])">
+              <span> - </span>
+              <input class="slider_input" id="1xRange2" accept="number" onchange="updateSlider(2, [])">
+            </div>
           </div>
           <div class="graph_main" name="graph_main" id="graph_main2"></div>
           <div class="graph_main" id="0graph_main2"></div>
@@ -176,15 +190,18 @@
         </div>
         <!--Graph Div-->
         <div class="top_item_main" name="top_item_main" id="top_item_main3">
-          <div class="graph_header" name="graph_header" id="graph_header3"></div>
-          <div class="range_slider_container">
-            <div class="range_slider" id="slider-range3"></div>
+          <div class="graph_header_container">
+            <div class="graph_header" name="graph_header" id="graph_header3"></div>
+            <div class="range_slider_container">
+              <div class="range_slider" id="slider-range3"></div>
+            </div>
+            <div>
+              <input class="slider_input" id="0xRange3" accept="number" onchange="updateSlider(3, [])">
+              <span> - </span>
+              <input class="slider_input" id="1xRange3" accept="number" onchange="updateSlider(3, [])">
+            </div>
           </div>
-          <div>
-            <input class="slider_input" id="0xRange3" accept="number" onchange="updateSlider(3, [])">
-            <span> - </span>
-            <input class="slider_input" id="1xRange3" accept="number" onchange="updateSlider(3, [])">
-          </div>
+
           <div class="graph_main" name="graph_main" id="graph_main3"></div>
           <div class="graph_main" id="0graph_main3"></div>
           <div class="graph_main" id="1graph_main3"></div>
@@ -257,7 +274,8 @@
     <div class="IO">
       <span>Input:</span>
       <select class="data_select" name="module_I" onchange="selected_Module(this)"></select>
-      <select class="data_select" name="molule_Idataset" onchange="selected_Module(this)" style="display: none;"></select>
+      <select class="data_select" name="molule_Idataset" onchange="selected_Module(this)"
+        style="display: none;"></select>
       <input name="molule_IN" placeholder="Round to n" onchange="selected_Module(this)" style="width: 80px;">
     </div>
     <div class="IO_main">
@@ -508,7 +526,8 @@
         </div>
         <div class="misc_container">
           <label for="color_input">Header Color:</label>
-          <input id="color_input" name="color_input" type="color" style="height: 15px;" value="#256565" onchange="colorChange(this)">
+          <input id="color_input" name="color_input" type="color" style="height: 15px;" value="#256565"
+            onchange="colorChange(this)">
         </div>
         <div class="misc_container">
           <label for="resolution_input">PNG Resolution:</label>
@@ -592,7 +611,8 @@
     <div class="IO">
       <span>Input:</span>
       <select class="data_select" name="module_I" onchange="selected_Module(this)"></select>
-      <select class="data_select" name="molule_Idataset" onchange="selected_Module(this)" style="display: none;"></select>
+      <select class="data_select" name="molule_Idataset" onchange="selected_Module(this)"
+        style="display: none;"></select>
       <input name="molule_IN" placeholder="Round to n" onchange="selected_Module(this)" style="width: 80px;">
     </div>
     <div class="IO_main">
@@ -601,7 +621,8 @@
         <span name="mod_parent" style="display: none;"></span>
         <span name="mod_param" style="display: none;"></span>
         <input name="mod_input" placeholder="Input n" onchange="selected_Module(this, true)" style="width: 85px;">
-        <input id="repeat_id" name="repeat_input" type="checkbox" onchange="selected_Module(this, true)" style="display: none;">
+        <input id="repeat_id" name="repeat_input" type="checkbox" onchange="selected_Module(this, true)"
+          style="display: none;">
         <label for="repeat_id" name="repeat_label" style="display: none;">Repeat</label>
       </div>
       <div name="mod_out"></div>
