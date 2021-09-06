@@ -945,7 +945,7 @@ function selected_Module(element, depth = false) {
   let repeat_input = document.getElementsByName("repeat_input")[id - slot_offset[id]].checked;
 
   if (nDigits == "") {
-    nDigits = 3;
+    nDigits = default_nDigigts;
   }
 
   if (data != undefined) {
@@ -957,6 +957,16 @@ function selected_Module(element, depth = false) {
     }
   } else {
     var minLen = 0;
+  }
+
+  let tableOutElem = document.getElementsByName("mod_out")[id - slot_offset[id]];
+  if (data == undefined) {
+    tableOutElem.style.opacity = 0.5;
+    datasetInput.selectedIndex = 0;
+    datasetInput.disabled = true;
+  } else {
+    tableOutElem.style.opacity = 1;
+    datasetInput.disabled = false;
   }
 
   //element => module input dropdown HTML element

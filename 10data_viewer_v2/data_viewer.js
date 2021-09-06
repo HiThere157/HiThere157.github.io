@@ -522,7 +522,7 @@ function table(id, editV = undefined, param = undefined, prompt = undefined) {
       if (tmp == undefined) {
         tmp = "";
       } else if (tmp != "" && isNaN(tmp) == false) {
-        tmp = Number(Number(tmp).toFixed(4)).toString();
+        tmp = Number(Number(tmp).toFixed(default_nDigigts)).toString();
       }
 
       tmpArray.push(tmp);
@@ -1132,6 +1132,22 @@ function invertTheme(element) {
   }
 }
 
+var default_nDigigts = 3;
+function changeRound(element) {
+  //sync checkbox state bewteen module template and actual module
+  document.getElementsByName("round_input").forEach(element => {
+    element.value = document.getElementById("round_input").value;
+  });
+
+  default_nDigigts = parseInt(element.value);
+  if (default_nDigigts < 0) {
+    default_nDigigts = 0;
+    element.value = 0;
+  }
+  updateAll();
+}
+
+//change chart line colors
 var lineColors = [document.getElementById("line_color_input0").value, document.getElementById("line_color_input1").value];
 function lineColorChange() {
   let l0 = document.getElementById("line_color_input0").value;
