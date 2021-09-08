@@ -942,7 +942,8 @@ function selected_Module(element, depth = false) {
   let datasetInput = document.getElementsByName("molule_Idataset")[id - slot_offset[id]];
   let datasetData = datasets.dataSet_list[datasetInput.selectedIndex - 1];
 
-  let repeat_input = document.getElementsByName("repeat_input")[id - slot_offset[id]].checked;
+  let repeat_inputElem = document.getElementsByName("repeat_input")[id - slot_offset[id]];
+  let repeat_input = repeat_inputElem.checked;
 
   if (nDigits == "") {
     nDigits = default_nDigigts;
@@ -964,9 +965,12 @@ function selected_Module(element, depth = false) {
     tableOutElem.style.opacity = 0.5;
     datasetInput.selectedIndex = 0;
     datasetInput.disabled = true;
+    repeat_inputElem.checked = false;
+    repeat_inputElem.disabled = true;
   } else {
     tableOutElem.style.opacity = 1;
     datasetInput.disabled = false;
+    repeat_inputElem.disabled = false;
   }
 
   //element => module input dropdown HTML element

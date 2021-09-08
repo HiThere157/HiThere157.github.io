@@ -389,14 +389,17 @@ function updateAll(graphUpdate = false) {
       table(i);
     }
 
-    document.getElementsByName("module_I").forEach(element => {
-      if (element.parentElement.style.display != "none" && element.parentElement.parentElement.style.display != "") {
-        selected_Module(element);
-      }
-    });
+    updateModules();
   }
 
   drawChart();
+}
+function updateModules() {
+  document.getElementsByName("module_I").forEach(element => {
+    if (element.parentElement.style.display != "none" && element.parentElement.parentElement.style.display != "") {
+      selected_Module(element);
+    }
+  });
 }
 
 //enables the edit buttons for a specific dataset
@@ -624,6 +627,7 @@ function deleteSet(name, prompt) {
 
     updateDropdown(0, true);
     datasets.deletedSets += 1;
+    updateModules();
   }
 }
 function deleteSetSelected(sets, prompt) {
@@ -665,6 +669,7 @@ function renameSet(name, prompt) {
     }
 
     updateDropdown();
+    updateModules();
   }
 }
 function renameSetSelected(sets, prompt) {
@@ -1132,9 +1137,10 @@ function invertTheme(element) {
   }
 }
 
+//change default round to n
 var default_nDigigts = 3;
 function changeRound(element) {
-  //sync checkbox state bewteen module template and actual module
+  //sync value bewteen module template and actual module
   document.getElementsByName("round_input").forEach(element => {
     element.value = document.getElementById("round_input").value;
   });
@@ -1270,9 +1276,11 @@ function keyDown(event) {
         setDropdown(layouts["newLayout"]);
       }
 
-    } else if (keyDowns["i"] == true) {
-      if (keyDowns["1"] == true) {
+    } else if (keyDowns["d"] == true) {
+      if (keyDowns["t"] == true) {
         importTestData();
+      } else if (keyDowns["v"] == true) {
+        logVars();
       }
 
     } else if (keyDowns["o"] == true) {
@@ -1324,6 +1332,63 @@ function importTestData() {
   datasets.add(new DataSet(td[2], false, "Test"));
 
   updateDropdown();
+}
+
+var CC = {
+  reset: '\033[0m',
+
+  black: '\033[30m',
+  red: '\033[31m',
+  green: '\033[32m',
+  yellow: '\033[33m',
+  blue: '\033[34m',
+  magenta: '\033[35m',
+  cyan: '\033[36m',
+  white: '\033[37m',
+}
+function logType(Variable) {
+  let ret = "";
+  if (Array.isArray(Variable) == true) {
+    ret = "A"
+    if (Variable[0] != undefined) {
+      ret += logType(Variable[0]);
+    }
+  } else if (typeof Variable == "object") {
+    ret = "O";
+  } else if (isNaN(Variable) == false) {
+    ret = "N";
+  } else {
+    ret = "S";
+  }
+
+  return ret;
+}
+function logVars() {
+  console.log(`\n${CC.red}data_viewer.js: ${CC.cyan}(A: Array, O: Object, N: Number, S: String)`)
+  console.log(`-> ${CC.magenta}(General) ${CC.cyan}(${logType(datasets)})`, "'datasets': ", datasets);
+  console.log(`-> ${CC.magenta}(General) ${CC.cyan}(${logType(default_nDigigts)})`, "'default_nDigigts': ", default_nDigigts);
+  console.log(`-> ${CC.magenta}(Hotkeys) ${CC.cyan}(${logType(keyDowns)})`, "'keyDowns': ", keyDowns);
+  console.log(`-> ${CC.magenta}(Hotkeys) ${CC.cyan}(${logType(layouts)})`, "'layouts': ", layouts);
+  console.log(`-> ${CC.magenta}(Save Chart) ${CC.cyan}(${logType(resolution)})`, "'resolution': ", resolution);
+  console.log(`-> ${CC.magenta}(Draw Chart) ${CC.cyan}(${logType(lineColors)})`, "'lineColors': ", lineColors);
+  console.log(`-> ${CC.magenta}(Draw Chart) ${CC.cyan}(${logType(charts)})`, "'charts': ", charts);
+  console.log(`-> ${CC.magenta}(Draw Chart) ${CC.cyan}(${logType(sliders)})`, "'sliders': ", sliders);
+  console.log(`-> ${CC.magenta}(Draw Chart) ${CC.cyan}(${logType(scales)})`, "'scales': ", scales);
+  console.log(`-> ${CC.magenta}(Draw Table) ${CC.cyan}(${logType(edits)})`, "'edits': ", edits);
+  console.log(`-> ${CC.magenta}(Prompt handler) ${CC.cyan}(${logType(awaitButton)})`, "'awaitButton': ", awaitButton);
+  console.log(`-> ${CC.magenta}(Prompt handler) ${CC.cyan}(${logType(dontShow)})`, "'dontShow': ", dontShow);
+
+  console.log(`\n${CC.red}csv_data.js:`)
+  console.log(`-> ${CC.magenta}(Import) ${CC.cyan}(${logType(csvData)})`, "'csvData': ", csvData);
+  console.log(`-> ${CC.magenta}(Import) ${CC.cyan}(${logType(buttonData)})`, "'buttonData': ", buttonData);
+  console.log(`-> ${CC.magenta}(Import) ${CC.cyan}(${logType(skip_row)})`, "'skip_row': ", skip_row);
+
+  console.log(`\n${CC.red}modules.js:`)
+  console.log(`-> ${CC.magenta}(Modules) ${CC.cyan}(${logType(tempSet)})`, "'tempSet': ", tempSet);
+  console.log(`-> ${CC.magenta}(Modules) ${CC.cyan}(${logType(slot_offset)})`, "'slot_offset': ", slot_offset);
+  console.log(`-> ${CC.magenta}(Calculator) ${CC.cyan}(${logType(calcs)})`, "'calcs': ", calcs);
+
+  document.getElementById("openConsoleSpan").style.display = "";
 }
 
 window.addEventListener("keydown", keyDown);
