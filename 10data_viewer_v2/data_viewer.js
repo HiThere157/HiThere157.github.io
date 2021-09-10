@@ -959,6 +959,15 @@ function dropdownChange(element, isDropdown = true, setSliderValue = true) {
   }
 }
 
+//set the selected option of a dropdown
+function setDropdown(array) {
+  array.forEach(element => {
+    let tmp = document.getElementById(element[0]);
+    tmp.selectedIndex = element[1];
+    dropdownChange(tmp);
+  });
+}
+
 //updates all dropdowns, i.e. on new dataset
 function updateDropdown(append = 0, remove = false, mod = true) {
   overviewTable();
@@ -976,6 +985,7 @@ function updateDropdown(append = 0, remove = false, mod = true) {
   setupDropdown("modAxis_dropdown", datasets.dataSetMods_names, append, remove, mod);
 }
 
+//create link element
 var pressLink = true;
 function createLink(href, name, download, btnID, resolution = "") {
   let link = document.createElement("a");
@@ -1056,203 +1066,7 @@ function downloadChart(element, prompt) {
   }
 }
 
-//determine if color is dark or light
-function lightOrDark(color) {
-  if (color.match(/^rgb/)) {
-    color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
-
-    r = color[1];
-    g = color[2];
-    b = color[3];
-  }
-  else {
-    //convert it to HEX
-    color = + ("0x" + color.slice(1).replace(color.length < 5 && /./g, '$&$&'));
-
-    r = color >> 16;
-    g = color >> 8 & 255;
-    b = color & 255;
-  }
-
-  // HSP (Highly Sensitive Poo)
-  hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
-
-  return hsp > 127.5 ? 1 : 0;
-}
-
-//on new overlay color
-function colorChange(element) {
-  //sync input value bewteen module template and actual module
-  document.getElementsByName("color_input").forEach(element => {
-    element.value = document.getElementById("color_input").value;
-  });
-
-  document.documentElement.style.setProperty("--header", element.value);
-  document.documentElement.style.setProperty("--selection", element.value + "bb");
-
-  if (lightOrDark(element.value) == 1) {
-    document.documentElement.style.setProperty("--header-color", "#000");
-  } else {
-    document.documentElement.style.setProperty("--header-color", "#fff");
-  }
-}
-
-//changes Theme to Dark/Light mode
-function changeTheme(element) {
-  //sync checkbox state bewteen module template and actual module
-  document.getElementsByName("theme_input").forEach(element => {
-    element.checked = document.getElementById("theme_input").checked;
-  });
-
-  if (element.checked == true) {
-    document.getElementsByTagName("html")[0].className = "darkTheme";
-
-    let invertElement = document.getElementById("invert_input");
-    if (invertElement.checked == true) {
-      invertElement.click();
-    }
-
-  } else {
-    document.getElementsByTagName("html")[0].className = "";
-  }
-}
-
-//apply invert filter
-function invertTheme(element) {
-  //sync checkbox state bewteen module template and actual module
-  document.getElementsByName("invert_input").forEach(element => {
-    element.checked = document.getElementById("invert_input").checked;
-  });
-
-  if (element.checked == true) {
-    document.documentElement.style.setProperty("--invert", "1");
-
-    let themeElement = document.getElementById("theme_input");
-    if (themeElement.checked == true) {
-      themeElement.click();
-    }
-
-  } else {
-    document.documentElement.style.setProperty("--invert", "0");
-  }
-}
-
-//change default round to n
-var default_nDigigts = 3;
-function changeRound(element) {
-  //sync value bewteen module template and actual module
-  document.getElementsByName("round_input").forEach(element => {
-    element.value = document.getElementById("round_input").value;
-  });
-
-  default_nDigigts = parseInt(element.value);
-  if (default_nDigigts < 0) {
-    default_nDigigts = 0;
-    element.value = 0;
-  }
-  updateAll();
-}
-
-//change csv delimiter
-function changeDelimiter(element) {
-  //sync value bewteen module template and actual module
-  document.getElementsByName("csvDelimiter_input").forEach(element => {
-    element.value = document.getElementById("csvDelimiter_input").value;
-  });
-
-  csvDelimiter = filterText(element.value);
-}
-
-//change chart line colors
-var lineColors = [document.getElementById("line_color_input0").value, document.getElementById("line_color_input1").value];
-function lineColorChange() {
-  let l0 = document.getElementById("line_color_input0").value;
-  let l1 = document.getElementById("line_color_input1").value;
-  //sync checkbox state bewteen module template and actual module
-  document.getElementsByName("line_color_input0").forEach(element => {
-    element.value = l0;
-  });
-  document.getElementsByName("line_color_input1").forEach(element => {
-    element.value = l1;
-  });
-
-  lineColors = [l0, l1];
-  updateAll(true);
-}
-
-//change default resolution for PNGs
-var resolution = ["720", "480"];
-function reolutionChange(reverse = false) {
-  //sync checkbox state bewteen module template and actual module
-  let tmp = [...document.getElementsByName("resolution_input")];
-  let element = tmp[0];
-  if (reverse == true) {
-    tmp.reverse();
-    element = tmp[1];
-  }
-  tmp[1].selectedIndex = tmp[0].selectedIndex;
-
-  let custom_input = document.getElementById("custom_resolution");
-
-  if (element.selectedIndex == 5) {
-    custom_input.style = "";
-
-    if (reverse == true) {
-      document.getElementById("custom_width").value = resolution[0];
-      document.getElementById("custom_height").value = resolution[1];
-    }
-
-    let width = document.getElementById("custom_width").value;
-    let height = document.getElementById("custom_height").value;
-
-    if (width != "" && height != "") {
-      resolution = [width, height];
-    }
-
-  } else {
-    custom_input.style.display = "none";
-    resolution = element.value.split(" x ");
-  }
-}
-
-//import GET parameter
-function getGET(remove = false) {
-  if (remove == false) {
-    let dataStr = window.location.search.substr(1);
-    if (dataStr.substring(0, 2) == "d=") {
-      openPopup("promptPopup", "prompt_co", "GET parameter detected. Allow import?", parseDataGET, [filterText(dataStr.substr(2))], "GETImport");
-    }
-  } else {
-    window.history.replaceState(null, null, "?");
-  }
-}
-
-//import default datasets
-function importData() {
-  let r = [];
-  let rp = [];
-  for (let i = -1000; i < 1001; i++) {
-    r.push(i / 10);
-    if (i >= 0) {
-      rp.push(i / 10);
-    }
-  }
-
-  datasets.add(new DataSet(r, true, "", "R"));
-  datasets.add(new DataSet(rp, true, "", "R+"));
-
-  updateDropdown();
-}
-
-//set the selected option of a dropdown
-function setDropdown(array) {
-  array.forEach(element => {
-    let tmp = document.getElementById(element[0]);
-    tmp.selectedIndex = element[1];
-    dropdownChange(tmp);
-  });
-}
-
+//on keyDown event
 var layouts = {
   "defualtLayout": [["top_dropdown0", 1], ["top_dropdown1", 4], ["top_dropdown2", 5], ["top_dropdown3", 0], ["bottom_dropdown0", 0], ["bottom_dropdown1", 0], ["bottom_dropdown2", 0], ["bottom_dropdown3", 1]],
   "newLayout": [["top_dropdown0", 0], ["top_dropdown1", 0], ["top_dropdown2", 0], ["top_dropdown3", 0], ["bottom_dropdown0", 0], ["bottom_dropdown1", 0], ["bottom_dropdown2", 0], ["bottom_dropdown3", 0]],
@@ -1325,11 +1139,26 @@ function keyDown(event) {
     }
   }
 }
-
 function keyUp(event) {
   delete keyDowns[event.key];
 }
 
+//import default datasets
+function importData() {
+  let r = [];
+  let rp = [];
+  for (let i = -1000; i < 1001; i++) {
+    r.push(i / 10);
+    if (i >= 0) {
+      rp.push(i / 10);
+    }
+  }
+
+  datasets.add(new DataSet(r, true, "", "R"));
+  datasets.add(new DataSet(rp, true, "", "R+"));
+
+  updateDropdown();
+}
 function importTestData() {
   let td = [
     [NaN, 0, 0.4307, 0.6826, 0.8614, 1, 1.1133, 1.2091, 1.292, 1.3652, 1.4307, 1.4899, 1.544, 1.5937, 1.6397, 1.6826, 1.7227, 1.7604, 1.7959, 1.8295, 1.8614, 1.8917, 1.9206, 1.9482, 1.9746, 2, 2.0244, 2.0478, 2.0704, 2.0922, 2.1133, 2.1337, 2.1534, 2.1725, 2.1911, 2.2091, 2.2266, 2.2436, 2.2602, 2.2763, 2.292, 2.3074, 2.3223, 2.337, 2.3512, 2.3652, 2.3789, 2.3922, 2.4053, 2.4181],
@@ -1398,7 +1227,7 @@ function logVars() {
   console.info(`-> ${CC.magenta}(Prompt handler) ${CC.cyan}(${logType(dontShow)})`, "'dontShow': ", dontShow);
   console.groupEnd(label1);
 
-  let label2 = `${CC.red}csv_data.js:`;
+  let label2 = `${CC.red}io_data.js:`;
   console.group(label2);
   console.info(`-> ${CC.magenta}(Import) ${CC.cyan}(${logType(csvData)})`, "'csvData': ", csvData);
   console.info(`-> ${CC.magenta}(Import) ${CC.cyan}(${logType(buttonData)})`, "'buttonData': ", buttonData);

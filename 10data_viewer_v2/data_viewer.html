@@ -528,6 +528,7 @@
           <input id="csvDelimiter_input" name="csvDelimiter_input" value="," onchange="changeDelimiter(this)"
             style="width: 40px;">
         </div>
+        <hr style="width: 130px;">
         <div class="misc_container">
           <label for="theme_input">Brightness Filter:</label>
           <input id="theme_input" name="theme_input" type="checkbox" onchange="changeTheme(this)">
@@ -540,6 +541,16 @@
           <label for="color_input">Header Color:</label>
           <input id="color_input" name="color_input" type="color" value="#256565" onchange="colorChange(this)">
         </div>
+        <div class="misc_container">
+          <span>Line Colors:</span>
+          <label for="line_color_input0">1.</label>
+          <input id="line_color_input0" name="line_color_input0" type="color" value="#2c499b"
+            onchange="lineColorChange()">
+          <label for="line_color_input1">2.</label>
+          <input id="line_color_input1" name="line_color_input1" type="color" value="#267c43"
+            onchange="lineColorChange()">
+        </div>
+        <hr style="width: 130px;">
         <div class="misc_container">
           <label for="resolution_input">PNG Resolution:</label>
           <select id="resolution_input" name="resolution_input" onchange="reolutionChange()">
@@ -556,15 +567,6 @@
           <input id="custom_width" type="number" style="width: 80px;" onchange="reolutionChange()">
           <label>Height: </label>
           <input id="custom_height" type="number" style="width: 80px;" onchange="reolutionChange()">
-        </div>
-        <div class="misc_container">
-          <span>Line Colors:</span>
-          <label for="line_color_input0">1.</label>
-          <input id="line_color_input0" name="line_color_input0" type="color" value="#2c499b"
-            onchange="lineColorChange()">
-          <label for="line_color_input1">2.</label>
-          <input id="line_color_input1" name="line_color_input1" type="color" value="#267c43"
-            onchange="lineColorChange()">
         </div>
 
         <p style="padding-top: 10px;">
@@ -676,9 +678,10 @@
     </div>
   </div>
 
-  <script src="csv_data.js"></script>
+  <script src="io_data.js"></script>
   <script src="modules.js"></script>
   <script src="data_viewer.js"></script>
+  <script src="settings.js"></script>
   <script src="polynomial_regression.js"></script>
 </body>
 
