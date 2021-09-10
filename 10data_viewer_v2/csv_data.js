@@ -128,7 +128,7 @@ function makeCSV(prompt) {
       let csvContent = "data:text/csv; charset=utf-8,";
 
       rows.forEach(function (rowArray) {
-        let row = rowArray.join(",");
+        let row = rowArray.join(csvDelimiter);
         csvContent += row + "\r\n";
       });
 
@@ -187,12 +187,13 @@ function trimArray(array) {
 }
 
 //converts csv string to array
-function csvToArray(str, delimiter = ",") {
+var csvDelimiter = ",";
+function csvToArray(str) {
   let rows = str.split("\n");
   let array = [];
 
   for (let i = 0; i < rows.length; i++) {
-    array.push(rows[i].split(delimiter));
+    array.push(rows[i].split(csvDelimiter));
   }
 
   trimArray(array);

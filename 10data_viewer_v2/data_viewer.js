@@ -1153,6 +1153,16 @@ function changeRound(element) {
   updateAll();
 }
 
+//change csv delimiter
+function changeDelimiter(element) {
+  //sync value bewteen module template and actual module
+  document.getElementsByName("csvDelimiter_input").forEach(element => {
+    element.value = document.getElementById("csvDelimiter_input").value;
+  });
+
+  csvDelimiter = filterText(element.value);
+}
+
 //change chart line colors
 var lineColors = [document.getElementById("line_color_input0").value, document.getElementById("line_color_input1").value];
 function lineColorChange() {
@@ -1334,6 +1344,7 @@ function importTestData() {
   updateDropdown();
 }
 
+//log global vars
 var CC = {
   reset: '\033[0m',
 
@@ -1363,30 +1374,44 @@ function logType(Variable) {
 
   return ret;
 }
+function fillZero(String) {
+  let tmp = "0" + String;
+  return tmp.substr(tmp.length-2, 2);
+}
 function logVars() {
-  console.log(`\n${CC.red}data_viewer.js: ${CC.cyan}(A: Array, O: Object, N: Number, S: String)`)
-  console.log(`-> ${CC.magenta}(General) ${CC.cyan}(${logType(datasets)})`, "'datasets': ", datasets);
-  console.log(`-> ${CC.magenta}(General) ${CC.cyan}(${logType(default_nDigigts)})`, "'default_nDigigts': ", default_nDigigts);
-  console.log(`-> ${CC.magenta}(Hotkeys) ${CC.cyan}(${logType(keyDowns)})`, "'keyDowns': ", keyDowns);
-  console.log(`-> ${CC.magenta}(Hotkeys) ${CC.cyan}(${logType(layouts)})`, "'layouts': ", layouts);
-  console.log(`-> ${CC.magenta}(Save Chart) ${CC.cyan}(${logType(resolution)})`, "'resolution': ", resolution);
-  console.log(`-> ${CC.magenta}(Draw Chart) ${CC.cyan}(${logType(lineColors)})`, "'lineColors': ", lineColors);
-  console.log(`-> ${CC.magenta}(Draw Chart) ${CC.cyan}(${logType(charts)})`, "'charts': ", charts);
-  console.log(`-> ${CC.magenta}(Draw Chart) ${CC.cyan}(${logType(sliders)})`, "'sliders': ", sliders);
-  console.log(`-> ${CC.magenta}(Draw Chart) ${CC.cyan}(${logType(scales)})`, "'scales': ", scales);
-  console.log(`-> ${CC.magenta}(Draw Table) ${CC.cyan}(${logType(edits)})`, "'edits': ", edits);
-  console.log(`-> ${CC.magenta}(Prompt handler) ${CC.cyan}(${logType(awaitButton)})`, "'awaitButton': ", awaitButton);
-  console.log(`-> ${CC.magenta}(Prompt handler) ${CC.cyan}(${logType(dontShow)})`, "'dontShow': ", dontShow);
+  let date = new Date();
 
-  console.log(`\n${CC.red}csv_data.js:`)
-  console.log(`-> ${CC.magenta}(Import) ${CC.cyan}(${logType(csvData)})`, "'csvData': ", csvData);
-  console.log(`-> ${CC.magenta}(Import) ${CC.cyan}(${logType(buttonData)})`, "'buttonData': ", buttonData);
-  console.log(`-> ${CC.magenta}(Import) ${CC.cyan}(${logType(skip_row)})`, "'skip_row': ", skip_row);
+  console.log(`${CC.yellow}------ Global Vars: [${date.getHours()}:${fillZero(date.getMinutes())}:${fillZero(date.getSeconds())}] ${CC.cyan}(A: Array, O: Object, N: Number, S: String) ${CC.yellow}------`)
+  let label1 = `${CC.red}data_viewer.js: `;
+  console.group(label1);
+  console.info(`-> ${CC.magenta}(General) ${CC.cyan}(${logType(datasets)})`, "'datasets': ", datasets);
+  console.info(`-> ${CC.magenta}(General) ${CC.cyan}(${logType(default_nDigigts)})`, "'default_nDigigts': ", default_nDigigts);
+  console.info(`-> ${CC.magenta}(Hotkeys) ${CC.cyan}(${logType(keyDowns)})`, "'keyDowns': ", keyDowns);
+  console.info(`-> ${CC.magenta}(Hotkeys) ${CC.cyan}(${logType(layouts)})`, "'layouts': ", layouts);
+  console.info(`-> ${CC.magenta}(Save Chart) ${CC.cyan}(${logType(resolution)})`, "'resolution': ", resolution);
+  console.info(`-> ${CC.magenta}(Draw Chart) ${CC.cyan}(${logType(lineColors)})`, "'lineColors': ", lineColors);
+  console.info(`-> ${CC.magenta}(Draw Chart) ${CC.cyan}(${logType(charts)})`, "'charts': ", charts);
+  console.info(`-> ${CC.magenta}(Draw Chart) ${CC.cyan}(${logType(sliders)})`, "'sliders': ", sliders);
+  console.info(`-> ${CC.magenta}(Draw Chart) ${CC.cyan}(${logType(scales)})`, "'scales': ", scales);
+  console.info(`-> ${CC.magenta}(Draw Table) ${CC.cyan}(${logType(edits)})`, "'edits': ", edits);
+  console.info(`-> ${CC.magenta}(Prompt handler) ${CC.cyan}(${logType(awaitButton)})`, "'awaitButton': ", awaitButton);
+  console.info(`-> ${CC.magenta}(Prompt handler) ${CC.cyan}(${logType(dontShow)})`, "'dontShow': ", dontShow);
+  console.groupEnd(label1);
 
-  console.log(`\n${CC.red}modules.js:`)
-  console.log(`-> ${CC.magenta}(Modules) ${CC.cyan}(${logType(tempSet)})`, "'tempSet': ", tempSet);
-  console.log(`-> ${CC.magenta}(Modules) ${CC.cyan}(${logType(slot_offset)})`, "'slot_offset': ", slot_offset);
-  console.log(`-> ${CC.magenta}(Calculator) ${CC.cyan}(${logType(calcs)})`, "'calcs': ", calcs);
+  let label2 = `${CC.red}csv_data.js:`;
+  console.group(label2);
+  console.info(`-> ${CC.magenta}(Import) ${CC.cyan}(${logType(csvData)})`, "'csvData': ", csvData);
+  console.info(`-> ${CC.magenta}(Import) ${CC.cyan}(${logType(buttonData)})`, "'buttonData': ", buttonData);
+  console.info(`-> ${CC.magenta}(Import) ${CC.cyan}(${logType(skip_row)})`, "'skip_row': ", skip_row);
+  console.info(`-> ${CC.magenta}(Import) ${CC.cyan}(${logType(csvDelimiter)})`, "'csvDelimiter': ", csvDelimiter);
+  console.groupEnd(label2);
+
+  let label3 = `${CC.red}modules.js:`;
+  console.group(label3)
+  console.info(`-> ${CC.magenta}(Modules) ${CC.cyan}(${logType(tempSet)})`, "'tempSet': ", tempSet);
+  console.info(`-> ${CC.magenta}(Modules) ${CC.cyan}(${logType(slot_offset)})`, "'slot_offset': ", slot_offset);
+  console.info(`-> ${CC.magenta}(Calculator) ${CC.cyan}(${logType(calcs)})`, "'calcs': ", calcs);
+  console.groupEnd(label3)
 
   document.getElementById("openConsoleSpan").style.display = "";
 }
