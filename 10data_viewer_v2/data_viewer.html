@@ -551,6 +551,12 @@
             <option>Custom</option>
           </select>
         </div>
+        <div id="custom_resolution" class="misc_container" style="display: none;">
+          <label>Width: </label>
+          <input id="custom_width" type="number" style="width: 80px;" onchange="reolutionChange()">
+          <label>Height: </label>
+          <input id="custom_height" type="number" style="width: 80px;" onchange="reolutionChange()">
+        </div>
         <div class="misc_container">
           <span>Line Colors:</span>
           <label for="line_color_input0">1.</label>
@@ -559,12 +565,6 @@
           <label for="line_color_input1">2.</label>
           <input id="line_color_input1" name="line_color_input1" type="color" value="#267c43"
             onchange="lineColorChange()">
-        </div>
-        <div id="custom_resolution" class="misc_container" style="display: none;">
-          <label>Width: </label>
-          <input id="custom_width" type="number" style="width: 80px;" onchange="reolutionChange()">
-          <label>Height: </label>
-          <input id="custom_height" type="number" style="width: 80px;" onchange="reolutionChange()">
         </div>
 
         <p style="padding-top: 10px;">
