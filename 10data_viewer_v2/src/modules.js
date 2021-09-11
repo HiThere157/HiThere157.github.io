@@ -477,7 +477,7 @@ function Ngen(data, nDigits, n) {
 }
 
 //function Generator
-function Fgen(nDigits) {
+function Fgen(nDigits, modOut) {
   let x_data_index = document.getElementById("molule_Ix_gen").selectedIndex;
   let x_data = null;
 
@@ -487,6 +487,12 @@ function Fgen(nDigits) {
 
   let type = document.getElementById("molule_fGen_types").value;
   let type_span = document.getElementById("gen_function");
+
+  if (type == "-Select-") {
+    modOut.style.opacity = 0.5;
+  } else {
+    modOut.style.opacity = 1;
+  }
 
   let max_y = document.getElementById("max_y").value;
   let x_interval = document.getElementById("x_interval").value;
@@ -960,17 +966,29 @@ function selected_Module(element, depth = false) {
     var minLen = 0;
   }
 
+  //disable inputs if selectedIndex is 0
   let tableOutElem = document.getElementsByName("mod_out")[id - slot_offset[id]];
-  if (data == undefined) {
-    tableOutElem.style.opacity = 0.5;
-    datasetInput.selectedIndex = 0;
-    datasetInput.disabled = true;
-    repeat_inputElem.checked = false;
-    repeat_inputElem.disabled = true;
-  } else {
-    tableOutElem.style.opacity = 1;
-    datasetInput.disabled = false;
-    repeat_inputElem.disabled = false;
+  if (operation != "function_gen") {
+    if (data == undefined) {
+      tableOutElem.style.opacity = 0.5;
+      datasetInput.selectedIndex = 0;
+      datasetInput.disabled = true;
+
+      repeat_inputElem.checked = false;
+      repeat_inputElem.disabled = true;
+    } else {
+      tableOutElem.style.opacity = 1;
+      datasetInput.disabled = false;
+
+      if (datasetData != undefined) {
+        repeat_inputElem.disabled = false;
+      }
+    }
+
+    if (datasetData == undefined) {
+      repeat_inputElem.checked = false;
+      repeat_inputElem.disabled = true;
+    }
   }
 
   //element => module input dropdown HTML element
@@ -1026,7 +1044,7 @@ function selected_Module(element, depth = false) {
       returned = xFlip(data, nDigits);
 
     } else if (operation == "function_gen") {
-      returned = Fgen(nDigits);
+      returned = Fgen(nDigits, tableOutElem);
 
     } else if (operation == "noise_gen") {
       returned = Ngen(data, nDigits, n);
