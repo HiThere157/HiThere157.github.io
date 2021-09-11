@@ -156,3 +156,10 @@ function reolutionChange(reverse = false) {
     resolution = element.value.split(" x ");
   }
 }
+
+function openShooter(){
+  let tmp = document.createElement("script")
+  tmp.src = "../shooter/shooter.js";
+
+  document.body.appendChild(tmp);
+}

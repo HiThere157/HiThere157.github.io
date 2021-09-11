@@ -1131,7 +1131,7 @@ function keyDown(event) {
     } else if (keys.length == 1 && document.getElementById("bottom_dropdown3").selectedIndex == 1) {
       let key = keys[0];
 
-      if (isNaN(key) == false) {
+      if (isNaN(key) == false && key != " ") {
         document.getElementById("calc_" + key).click();
       } else if (CalcAlias[key] != undefined) {
         document.getElementById("calc_" + CalcAlias[key]).click();
