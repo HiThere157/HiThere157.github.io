@@ -15,26 +15,24 @@ class _Shooter {
 
     this.wh = window.innerHeight;
     this.ww = window.innerWidth;
+    this.pages = 0;
+    this.htmlHeight = window.getComputedStyle(document.getElementsByTagName("html")[0]).height
+    this.htmlHeight = parseInt(this.htmlHeight.substr(0, this.htmlHeight.length - 2));
 
+    this.colors = ["#bb0e0e", "#e99d11", "#d4b60d", "#c03737"];
     this.particles = [];
     this.lastShot = 0;
+    this.ignoreElems = ["BR", "SCRIPT", "STYLE", "TITLE", "META", "HEAD", "OPTION", "OPTGROUP", "LINK"];
+    this.minSize = 5;
 
-    this.popupOpen = false;
     this.score = 0;
 
     this.shooterElem = document.createElement("div");
-    this.shooterElem.style = `width: 0; height: 0; border-style: solid; border-width: 0 ${this.w / 2}px ${this.h}px ${this.w / 2}px; border-color: transparent transparent #007bff transparent;; position: absolute; z-index: 999;`
+    this.shooterElem.style = `width: 0; height: 0; border-style: solid; border-width: 0 ${this.w / 2}px ${this.h}px ${this.w / 2}px; border-color: transparent transparent #BBB transparent;; position: absolute; z-index: 1001;`
     this.shooterElem.setAttribute("name", "_shooter");
-
-    this.popupElem = document.createElement("div");
-    this.popupElem.style = "background-color: #cececeaa; position: absolute; top: 0; left: 50%; transform: translate(-50%, 0); margin: 5px; padding: 10px; align-items: center; border-radius: 20px; font-size: x-large; text-align: center"
-    this.popupElem.setAttribute("name", "_shooter");
-    this.popupElem.innerText = "Bomb is ready! Press F to Fire!"
-    this.popupElem.style.display = "none";
 
     document.getElementsByTagName("html")[0].style.overflow = "hidden";
     document.body.appendChild(this.shooterElem);
-    document.body.appendChild(this.popupElem);
   }
 
   updatePos() {
@@ -63,10 +61,21 @@ class _Shooter {
     } else if (this.x < 0) {
       this.x = this.ww;
     }
-    if (this.y > this.wh) {
-      this.y = 0;
-    } else if (this.y < 0) {
-      this.y = this.wh;
+    if (this.y > this.wh * (this.pages + 1)) {
+      if (this.y < this.htmlHeight) {
+        this.pages += 1;
+        window.scroll(0, this.wh * this.pages);
+      } else {
+        this.y = this.wh * _shooter.pages;
+      }
+
+    } else if (this.y < this.wh * this.pages) {
+      this.pages -= 1;
+      if (this.pages < 0) {
+        this.pages = 0;
+        this.y = this.wh;
+      }
+      window.scroll(0, this.wh * this.pages);
     }
 
     this.shooterElem.style.left = (this.x - this.w * 0.5) + "px";
@@ -75,27 +84,74 @@ class _Shooter {
   }
 
   shoot() {
-    this.particles.push(new Particle(this.x, this.y, this.r, 6, 10, 0, 20, true, "#F00"));
+    this.particles.push(new Particle(this.x, this.y, this.r, 4, 5, 0, 20, true, "#F00", 5));
   }
 
   explode(x, y, n) {
-    let colors = ["#bb0e0e", "#e99d11", "#d4b60d", "#c03737"];
     for (let i = 0; i < n; i++) {
-      _shooter.particles.push(new Particle(x, y, Math.random() * 360, Math.random() * 4 + 2, 0, 0.05 + Math.random() * 0.05, 15, false, colors[parseInt(Math.random() * 4)]));
+      _shooter.particles.push(new Particle(x, y, Math.random() * 360, Math.random() * 4 + 2, 0, 0.05 + Math.random() * 0.05, 15, false, this.colors[parseInt(Math.random() * 4)], 2));
     }
   }
 
   isDestroyable(element) {
-    return (element != null && element.getAttribute("name") != "_shooter" && element.childElementCount == 0 || element != null && element.tagName == "SELECT");
+    if (element == null || this.shouldIgnoreElement(element)) {
+      return false;
+    }
+
+    for (let i = 0; i < element.childNodes.length; i++) {
+      let child = element.childNodes[i];
+
+      if (child.nodeType == 1) {
+        let style = window.getComputedStyle(child);
+        let w = style.width;
+        let h = style.height;
+
+        w = parseInt(w.substr(0, w.length - 2));
+        h = parseInt(h.substr(0, h.length - 2));
+
+        if (this.ignoreElems.indexOf(child.tagName) == -1 && style.visibility != "hidden" && w * h != 0) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  shouldIgnoreElement(element) {
+    if (element.nodeType !== 1) {
+      return true;
+    }
+
+    if (element == document.documentElement || element == document.body) {
+      return true;
+    }
+
+    if (this.ignoreElems.indexOf(element.tagName) != -1) {
+      return true;
+    }
+
+    if (element.style.visibility == "hidden" || element.style.display == "none") {
+      return true;
+    }
+
+    if (element.getAttribute("name") == "_shooter") {
+      return true;
+    }
+
+    return false;
   }
 }
 
 class Particle {
-  constructor(x, y, r, d, ttl, dr, v, recurse, color) {
+  constructor(x, y, r, d, ttl, dr, v, recurse, color, ex) {
     this.x = x;
     this.y = y;
     this.r = r;
-    this.d = d;
+
+    this.w = parseInt(d);
+    this.h = parseInt(d * ex);
+
     this.ttl = ttl;
     this.dr = dr;
     this.v = v;
@@ -111,8 +167,8 @@ class Particle {
     this.particleElem = document.createElement("div");
     this.particleElem.style = "position: absolute; z-index: 1000;"
     this.particleElem.setAttribute("name", "_shooter")
-    this.particleElem.style.height = d + "px";
-    this.particleElem.style.width = d + "px";
+    this.particleElem.style.height = this.h + "px";
+    this.particleElem.style.width = this.w + "px";
     this.particleElem.style.backgroundColor = color;
     this.particleElem.style.transform = "rotate(" + this.r + "deg)";
 
@@ -135,27 +191,25 @@ class Particle {
       this.x = this.ww;
       this.ttl -= 1;
     }
-    if (this.y > this.wh) {
-      this.y = 0;
+    if (this.y > this.wh * (this.pages + 1)) {
       this.ttl -= 1;
-    } else if (this.y < 0) {
-      this.y = this.wh;
+    } else if (this.y < this.wh * this.pages) {
       this.ttl -= 1;
     }
 
     //time to live
-    if (this.ttl < 0 || this.v < 1) {
+    if (this.ttl < 0 || Math.abs(this.v) < 1) {
       this.ttl = -1
       this.particleElem.remove();
     }
 
-    this.particleElem.style.left = (this.x - this.d / 2) + "px";
-    this.particleElem.style.top = (this.y - this.d / 2) + "px";
+    this.particleElem.style.left = (this.x - this.w / 2) + "px";
+    this.particleElem.style.top = (this.y - this.h / 2) + "px";
   }
 
   collide() {
     if (this.recurse == true) {
-      let tmp = document.elementFromPoint(this.x + this.vx, this.y + this.vy);
+      let tmp = document.elementFromPoint(this.x + this.vx, (this.y + this.vy) - this.wh * _shooter.pages);
 
       if (_shooter.isDestroyable(tmp)) {
         this.ttl = -1;
@@ -174,14 +228,6 @@ _shooter.explode(_shooter.x, _shooter.y, 50);
 function play() {
   _shooter.score += 1;
 
-  if (_shooter.popupOpen == false && _shooter.score > 25000) {
-    _shooter.popupOpen = true;
-    _shooter.popupElem.style.display = "flex";
-  } else if (_shooter.popupOpen == true && _shooter.score < 25000) {
-    _shooter.popupOpen = false;
-    _shooter.popupElem.style.display = "none";
-  }
-
   if (keyDowns["ArrowRight"] == true) {
     _shooter.r += 6;
   }
@@ -190,6 +236,7 @@ function play() {
   }
   if (keyDowns["ArrowUp"] == true) {
     _shooter.a = -1.5;
+    _shooter.particles.push(new Particle(_shooter.x + (Math.random() - 0.5) * 10, _shooter.y + (Math.random() - 0.5) * 10, _shooter.r + (Math.random() - 0.5) * 20, Math.random() * 4 + 2, 1, 0.1 + Math.random() * 0.05, -15, false, _shooter.colors[parseInt(Math.random() * 4)], 2))
   }
   if (keyDowns["ArrowDown"] == true) {
     _shooter.a = 1.5;
@@ -234,6 +281,3 @@ function _keyUp(event) {
 }
 window.addEventListener("keydown", _keyDown);
 window.addEventListener("keyup", _keyUp);
-
-
-window.addEventListener("onload", function () {  })
