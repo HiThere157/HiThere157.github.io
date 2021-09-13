@@ -16,8 +16,12 @@ class _Shooter {
     this.wh = window.innerHeight;
     this.ww = window.innerWidth;
     this.pages = 0;
-    this.htmlHeight = window.getComputedStyle(document.getElementsByTagName("html")[0]).height
+    this.htmlHeight = window.getComputedStyle(document.getElementsByTagName("html")[0]).height;
     this.htmlHeight = parseInt(this.htmlHeight.substr(0, this.htmlHeight.length - 2));
+
+    if (this.htmlHeight < this.wh) {
+      this.htmlHeight = this.wh;
+    }
 
     this.colors = ["#bb0e0e", "#e99d11", "#d4b60d", "#c03737"];
     this.particles = [];
@@ -28,7 +32,7 @@ class _Shooter {
     this.score = 0;
 
     this.shooterElem = document.createElement("div");
-    this.shooterElem.style = `width: 0; height: 0; border-style: solid; border-width: 0 ${this.w / 2}px ${this.h}px ${this.w / 2}px; border-color: transparent transparent #BBB transparent;; position: absolute; z-index: 1001;`
+    this.shooterElem.style = `width: 0; height: 0; border-style: solid; border-width: 0 ${this.w / 2}px ${this.h}px ${this.w / 2}px; border-color: transparent transparent #BBB transparent;; position: absolute; z-index: 10001;`
     this.shooterElem.setAttribute("name", "_shooter");
 
     document.getElementsByTagName("html")[0].style.overflow = "hidden";
@@ -165,7 +169,7 @@ class Particle {
     this.vy = 0;
 
     this.particleElem = document.createElement("div");
-    this.particleElem.style = "position: absolute; z-index: 1000;"
+    this.particleElem.style = "position: absolute; z-index: 10000;"
     this.particleElem.setAttribute("name", "_shooter")
     this.particleElem.style.height = this.h + "px";
     this.particleElem.style.width = this.w + "px";
@@ -198,7 +202,7 @@ class Particle {
     }
 
     //time to live
-    if (this.ttl < 0 || Math.abs(this.v) < 1) {
+    if (this.ttl < 0 || Math.abs(this.v) < 1 || this.y < 0 || this.y > _shooter.htmlHeight) {
       this.ttl = -1
       this.particleElem.remove();
     }
@@ -222,17 +226,14 @@ class Particle {
   }
 }
 
-var _shooter = new _Shooter(150, 150, 40, 30);
-_shooter.explode(_shooter.x, _shooter.y, 50);
-
 function play() {
   _shooter.score += 1;
 
   if (keyDowns["ArrowRight"] == true) {
-    _shooter.r += 6;
+    _shooter.r = (_shooter.r + 6) % 360;
   }
   if (keyDowns["ArrowLeft"] == true) {
-    _shooter.r += -6;
+    _shooter.r = (_shooter.r - 6) % 360;
   }
   if (keyDowns["ArrowUp"] == true) {
     _shooter.a = -1.5;
@@ -270,7 +271,20 @@ function play() {
   }
 }
 
-setInterval(play, 20);
+var _shooter;
+function _start() {
+  if (_shooter == undefined) {
+    _shooter = new _Shooter(150, 150, 40, 30);  
+    setInterval(play, 20);
+  }else{
+    _shooter.x = 150;
+    _shooter.y = 150;
+  }
+  
+  window.scroll(0, 0);
+  _shooter.explode(_shooter.x, _shooter.y, 50);
+}
+_start();
 
 var keyDowns = {};
 function _keyDown(event) {
