@@ -274,13 +274,13 @@ function play() {
 var _shooter;
 function _start() {
   if (_shooter == undefined) {
-    _shooter = new _Shooter(150, 150, 40, 30);  
+    _shooter = new _Shooter(150, 150, 40, 30);
     setInterval(play, 20);
-  }else{
+  } else {
     _shooter.x = 150;
     _shooter.y = 150;
   }
-  
+
   window.scroll(0, 0);
   _shooter.explode(_shooter.x, _shooter.y, 50);
 }

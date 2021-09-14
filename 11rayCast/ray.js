@@ -12,13 +12,19 @@ function isbetween(x, a, b) {
   return x >= tmpA && x <= tmpB
 }
 
+function setRays(n) {
+  vectors = [];
+  for (var a = 0; a < Math.PI * 2; a += Math.PI / n) {
+    vectors.push(createVector(Math.sin(a), Math.cos(a)));
+  }
+}
+
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight - 5);
   background("#000");
+  stroke("#777");
 
-  for (var a = 0; a < Math.PI * 2; a += Math.PI / 150) {
-    vectors.push(createVector(Math.sin(a), Math.cos(a)));
-  }
+  setRays(700);
 
   walls.push([[500, 100], createVector(-400, 600)]);
   walls.push([[50, 100], createVector(500, 100)]);
@@ -28,8 +34,6 @@ function setup() {
 
 function draw() {
   background("#000");
-  strokeWeight(1);
-  stroke("#777");
 
   var solutions = {};
   walls.forEach(wall => {
@@ -48,7 +52,7 @@ function draw() {
       var y = mouseY + s * vy;
 
       if (isbetween(x, wx, wx + wvx) && isbetween(y, wy, wy + wvy) && s > 0) {
-        circle(x, y, 3);
+        //circle(x, y, 3);
         if (solutions[i] == undefined) {
           solutions[i] = [[x, y]];
         } else {
@@ -60,13 +64,11 @@ function draw() {
 
   for (let i = 0; i < vectors.length; i++) {
     if (solutions[i] == undefined) {
-      stroke("#888");
       line(mouseX, mouseY, mouseX + vectors[i].x * 9999, mouseY + vectors[i].y * 9999);
     } else {
-      stroke("#777");
       if (solutions[i].length == 1) {
         line(mouseX, mouseY, solutions[i][0][0], solutions[i][0][1]);
-        
+
       } else {
         var d = [];
         solutions[i].forEach(solution => {
