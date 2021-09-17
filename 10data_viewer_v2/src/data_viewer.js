@@ -1252,7 +1252,7 @@ window.onresize = () => { updateAll(true); }
 window.onload = () => {
   importData();
 
-  let date = new Date;
+  let date = new Date();
   let hrs = date.getHours()
 
   if (hrs >= 20 || hrs <= 8) {

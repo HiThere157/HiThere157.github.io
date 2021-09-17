@@ -4,12 +4,16 @@
 <head>
   <title>Data Viewer v2</title>
   <html lang="en">
+  <meta charset="UTF-8">
+  <meta name="author" content="HiThere157">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="data_viewer.css">
   <script src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.1"></script>
 
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="icon" type="image/png" href="icons/16px.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="icons/32px.png" sizes="32x32">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
@@ -278,7 +282,8 @@
       <select class="data_select" name="module_I" onchange="selected_Module(this)"></select>
       <select class="data_select" name="molule_Idataset" onchange="selected_Module(this)"
         style="display: none;"></select>
-      <input name="molule_IN" placeholder="Round to n" type="number" onchange="selected_Module(this)" style="width: 80px;">
+      <input name="molule_IN" placeholder="Round to n" type="number" onchange="selected_Module(this)"
+        style="width: 80px;">
     </div>
     <div class="IO_main">
       <!--Placeholder-->
@@ -292,11 +297,13 @@
       </div>
       <p>
         <span>Cut Start:</span>
-        <input id="cut_start" placeholder="Start index (inc.); def. 0" type="number" onchange="selected_Module(this, true)">
+        <input id="cut_start" placeholder="Start index (inc.); def. 0" type="number"
+          onchange="selected_Module(this, true)">
       </p>
       <p>
         <span>Cut End:</span>
-        <input id="cut_end" placeholder="End index (inc.); def. len" type="number" onchange="selected_Module(this, true)">
+        <input id="cut_end" placeholder="End index (inc.); def. len" type="number"
+          onchange="selected_Module(this, true)">
       </p>
       <p class="flexClass">
         <label for="cut_nan">Replace Leading Values with NaN</label>
@@ -316,7 +323,8 @@
       <select class="data_select" name="module_Ix" id="module_Ix_fit" onchange="selected_Module(this)"></select>
       <span>yAxis:</span>
       <select class="data_select" name="module_I" id="module_I_fit" onchange="selected_Module(this)"></select>
-      <input name="molule_IN" placeholder="Round to n" type="number" onchange="selected_Module(this)" style="width: 80px;">
+      <input name="molule_IN" placeholder="Round to n" type="number" onchange="selected_Module(this)"
+        style="width: 80px;">
     </div>
     <!--Placeholder-->
     <div class="IO" style="display: none;">
@@ -364,7 +372,8 @@
       <select class="data_select" name="module_Ix" id="molule_Ix_gen" onchange="selected_Module(this)"></select>
       <span>Type:</span>
       <select class="data_select" name="fGen_types" id="molule_fGen_types" onchange="selected_Module(this)"></select>
-      <input name="molule_IN" placeholder="Round to n" type="number" onchange="selected_Module(this)" style="width: 80px;">
+      <input name="molule_IN" placeholder="Round to n" type="number" onchange="selected_Module(this)"
+        style="width: 80px;">
     </div>
     <!--Placeholder-->
     <div class="IO" style="display: none;">
@@ -384,7 +393,8 @@
       </div>
       <p>
         <span>MaxY:</span>
-        <input style="width: 80px;" id="max_y" placeholder="def. none" type="number" onchange="selected_Module(this, true)">
+        <input style="width: 80px;" id="max_y" placeholder="def. none" type="number"
+          onchange="selected_Module(this, true)">
         <span>xInterval:</span>
         <input style="width: 80px;" id="x_interval" placeholder="def. 0,100,1" onchange="selected_Module(this, true)">
       </p>
@@ -395,17 +405,22 @@
       </p>
       <p name="gen_ps">
         <span>a = </span>
-        <input class="gen_input" id="gen_a" placeholder="def. 1" type="number" onchange="selected_Module(this, true)"></input>
+        <input class="gen_input" id="gen_a" placeholder="def. 1" type="number"
+          onchange="selected_Module(this, true)"></input>
         <span>b = </span>
-        <input class="gen_input" id="gen_b" placeholder="def. 1" type="number" onchange="selected_Module(this, true)"></input>
+        <input class="gen_input" id="gen_b" placeholder="def. 1" type="number"
+          onchange="selected_Module(this, true)"></input>
         <span>c = </span>
-        <input class="gen_input" id="gen_c" placeholder="def. 1" type="number" onchange="selected_Module(this, true)"></input>
+        <input class="gen_input" id="gen_c" placeholder="def. 1" type="number"
+          onchange="selected_Module(this, true)"></input>
       </p>
       <p name="gen_ps">
         <span>d = </span>
-        <input class="gen_input" id="gen_d" placeholder="def. 0" type="number" onchange="selected_Module(this, true)"></input>
+        <input class="gen_input" id="gen_d" placeholder="def. 0" type="number"
+          onchange="selected_Module(this, true)"></input>
         <span>e = </span>
-        <input class="gen_input" id="gen_e" placeholder="def. 0" type="number" onchange="selected_Module(this, true)"></input>
+        <input class="gen_input" id="gen_e" placeholder="def. 0" type="number"
+          onchange="selected_Module(this, true)"></input>
       </p>
       <div name="mod_out"></div>
     </div>
@@ -421,7 +436,8 @@
       <span>Input:</span>
       <select name="module_I" onchange="selected_Module(this)"></select>
       <select name="molule_Idataset" onchange="selected_Module(this)" style="display: none;"></select>
-      <input name="molule_IN" placeholder="Round to n" type="number" onchange="selected_Module(this)" style="width: 80px;">
+      <input name="molule_IN" placeholder="Round to n" type="number" onchange="selected_Module(this)"
+        style="width: 80px;">
     </div>
     <div class="IO_main" style="overflow-y: visible;">
       <!--Placeholder-->
@@ -631,7 +647,8 @@
           <button onclick="logVars()">Log global Vars</button>
         </div>
         <div class="misc_container">
-          <span id="openConsoleSpan" class="flexClass" style="color: red; display: none;">Open Console with <kbd>CTRL</kbd> +
+          <span id="openConsoleSpan" class="flexClass" style="color: red; display: none;">Open Console with
+            <kbd>CTRL</kbd> +
             <kbd>SHIFT</kbd> + <kbd>I</kbd></span>
         </div>
 
@@ -658,14 +675,16 @@
       <select class="data_select" name="module_I" onchange="selected_Module(this)"></select>
       <select class="data_select" name="molule_Idataset" onchange="selected_Module(this)" style="display: none;"
         disabled></select>
-      <input name="molule_IN" placeholder="Round to n" type="number" onchange="selected_Module(this)" style="width: 80px;">
+      <input name="molule_IN" placeholder="Round to n" type="number" onchange="selected_Module(this)"
+        style="width: 80px;">
     </div>
     <div class="IO_main">
       <div name="mod_main" class="mod_main">
         <span class="mod_text" name="mod_text"></span>
         <span name="mod_parent" style="display: none;"></span>
         <span name="mod_param" style="display: none;"></span>
-        <input name="mod_input" placeholder="Input n" type="number" onchange="selected_Module(this, true)" style="width: 85px;">
+        <input name="mod_input" placeholder="Input n" type="number" onchange="selected_Module(this, true)"
+          style="width: 85px;">
         <input id="repeat_id" name="repeat_input" type="checkbox" onchange="selected_Module(this, true)"
           style="display: none;" disabled>
         <label for="repeat_id" name="repeat_label" style="display: none;">Repeat</label>
