@@ -1,58 +1,57 @@
-body {    
-    margin: 0 !important;
-    padding: 0 !important;
-    background-color: #000000;
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #000000;
 }
 
 table {
-    background-color: #000000;
-    border-spacing: 0;
+  background-color: #000000;
+  border-spacing: 0;
 }
 
 td {
-    border-radius: 2px;
-    width: 10px;
-    height: 10px;
+  border-radius: 2px;
+  width: 10px;
+  height: 10px;
 }
 
 span {
-    color: #222;
+  color: #222;
 }
 
 td.dead {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 td.live {
-    background-color: #525252;
+  background-color: #525252;
 }
 
 .control_container {
-    position: absolute;
-    left: 10px;
-    top: 10px;
-
-    /*Unselectable*/
-    -moz-user-select: -moz-none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -o-user-select: none;
-    user-select: none;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  /*Unselectable*/
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 
 .control_icon {
-    margin: 2px;
-    height: 30px;
-    width: 30px;
-    background-color: #222;
-    border-radius: 5px;
-    display: inline-block;
-    background-repeat: no-repeat;
-    background-position: center;
-    transition: 0.3s;
-    border: 1px solid #000000;
+  margin: 2px;
+  height: 30px;
+  width: 30px;
+  background-color: #222;
+  border-radius: 5px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: 0.3s;
+  border: 1px solid #000000;
 }
 
 .control_icon:hover {
-    background-color: #cacaca;
+  background-color: #cacaca;
 }
