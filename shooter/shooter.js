@@ -61,7 +61,13 @@ class _Shooter {
     }
     if (this.y > this.wh * (this.pages + 1)) {
       this.pages += 1;
+      let scrollY = window.scrollY;
       window.scroll(0, this.wh * this.pages);
+      if (window.scrollY - scrollY < 300) {
+        this.pages -= 1;
+        window.scroll(0, scrollY);
+        this.y = this.pages * this.wh;
+      }
 
     } else if (this.y < this.wh * this.pages) {
       this.pages -= 1;
