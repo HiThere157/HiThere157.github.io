@@ -58,15 +58,6 @@ function initialize() {
 
 function setClass(element, param, i, j) {
   element.setAttribute("class", param)
-  if (param == "dead") {
-    if (i + j > rows + cols / 2) {
-      element.style.backgroundColor = "";
-    }
-  }else if(param == "live"){
-    if (i + j > rows + cols / 2) {
-      element.style.backgroundColor = "red";
-    }
-  }
 }
 
 // Lay out the board
