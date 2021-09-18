@@ -16,12 +16,6 @@ class _Shooter {
     this.wh = window.innerHeight;
     this.ww = window.innerWidth;
     this.pages = 0;
-    this.htmlHeight = window.getComputedStyle(document.getElementsByTagName("html")[0]).height;
-    this.htmlHeight = parseInt(this.htmlHeight.substr(0, this.htmlHeight.length - 2));
-
-    if (this.htmlHeight < this.wh) {
-      this.htmlHeight = this.wh;
-    }
 
     this.colors = ["#bb0e0e", "#e99d11", "#d4b60d", "#c03737"];
     this.particles = [];
@@ -66,12 +60,8 @@ class _Shooter {
       this.x = this.ww;
     }
     if (this.y > this.wh * (this.pages + 1)) {
-      if (this.y < this.htmlHeight) {
-        this.pages += 1;
-        window.scroll(0, this.wh * this.pages);
-      } else {
-        this.y = this.wh * _shooter.pages;
-      }
+      this.pages += 1;
+      window.scroll(0, this.wh * this.pages);
 
     } else if (this.y < this.wh * this.pages) {
       this.pages -= 1;
@@ -202,7 +192,7 @@ class Particle {
     }
 
     //time to live
-    if (this.ttl < 0 || Math.abs(this.v) < 1 || this.y < 0 || this.y > _shooter.htmlHeight) {
+    if (this.ttl < 0 || Math.abs(this.v) < 1 || this.y < 0) {
       this.ttl = -1
       this.particleElem.remove();
     }
@@ -250,14 +240,14 @@ function play() {
     }
   }
 
-  if (keyDowns["f"] == true) {
-    if (_shooter.score > 25000) {
-      _shooter.score -= 25000;
-      for (let i = 0; i < 10; i++) {
-        _shooter.explode(parseInt(Math.random() * _shooter.ww), parseInt(Math.random() * _shooter.wh), 15);
-      }
-    }
-  }
+  // if (keyDowns["f"] == true) {
+  //   if (_shooter.score > 25000) {
+  //     _shooter.score -= 25000;
+  //     for (let i = 0; i < 10; i++) {
+  //       _shooter.explode(parseInt(Math.random() * _shooter.ww), parseInt(Math.random() * _shooter.wh), 15);
+  //     }
+  //   }
+  // }
 
   _shooter.updatePos();
 
@@ -272,10 +262,11 @@ function play() {
 }
 
 var _shooter;
+var IntervalId;
 function _start() {
   if (_shooter == undefined) {
     _shooter = new _Shooter(150, 150, 40, 30);
-    setInterval(play, 20);
+    IntervalId = setInterval(play, 20);
   } else {
     _shooter.x = 150;
     _shooter.y = 150;
@@ -289,6 +280,18 @@ _start();
 var keyDowns = {};
 function _keyDown(event) {
   keyDowns[event.key] = true;
+
+  if (event.key == "F8") {
+    // _start();
+  } else if (event.key == "F9") {
+    _shooter.shooterElem.remove();
+    _shooter.particles.forEach(particle => {
+      particle.particleElem.remove();
+    });
+    clearInterval(IntervalId);
+    _shooter = undefined;
+    document.getElementsByTagName("html")[0].style.overflow = "visible";
+  }
 }
 function _keyUp(event) {
   delete keyDowns[event.key];
