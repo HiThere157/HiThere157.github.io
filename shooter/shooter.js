@@ -26,7 +26,7 @@ class _Shooter {
     this.score = 0;
 
     this.shooterElem = document.createElement("div");
-    this.shooterElem.style = `width: 0; height: 0; border-style: solid; border-width: 0 ${this.w / 2}px ${this.h}px ${this.w / 2}px; border-color: transparent transparent #BBB transparent;; position: absolute; z-index: 10001;`
+    this.shooterElem.style = `width: 0; height: 0; border-style: solid; border-width: 0 ${this.w / 2}px ${this.h}px ${this.w / 2}px; border-color: transparent transparent #BBB transparent; position: absolute; z-index: 10001;`
     this.shooterElem.setAttribute("name", "_shooter");
 
     document.getElementsByTagName("html")[0].style.overflow = "hidden";
@@ -84,12 +84,12 @@ class _Shooter {
   }
 
   shoot() {
-    this.particles.push(new Particle(this.x, this.y, this.r, 4, 5, 0, 20, true, "#F00", 5));
+    this.particles.push(new _Particle(this.x, this.y, this.r, 4, 5, 0, 20, true, "#F00", 5));
   }
 
   explode(x, y, n) {
     for (let i = 0; i < n; i++) {
-      _shooter.particles.push(new Particle(x, y, Math.random() * 360, Math.random() * 4 + 2, 0, 0.05 + Math.random() * 0.05, 15, false, this.colors[parseInt(Math.random() * 4)], 2));
+      _shooter.particles.push(new _Particle(x, y, Math.random() * 360, Math.random() * 4 + 2, 0, 0.05 + Math.random() * 0.05, 15, false, this.colors[parseInt(Math.random() * 4)], 2));
     }
   }
 
@@ -143,7 +143,7 @@ class _Shooter {
   }
 }
 
-class Particle {
+class _Particle {
   constructor(x, y, r, d, ttl, dr, v, recurse, color, ex) {
     this.x = x;
     this.y = y;
@@ -233,7 +233,7 @@ function play() {
   }
   if (keyDowns["ArrowUp"] == true) {
     _shooter.a = -1.5;
-    _shooter.particles.push(new Particle(_shooter.x + (Math.random() - 0.5) * 10, _shooter.y + (Math.random() - 0.5) * 10, _shooter.r + (Math.random() - 0.5) * 20, Math.random() * 4 + 2, 1, 0.1 + Math.random() * 0.05, -15, false, _shooter.colors[parseInt(Math.random() * 4)], 2))
+    _shooter.particles.push(new _Particle(_shooter.x + (Math.random() - 0.5) * 10, _shooter.y + (Math.random() - 0.5) * 10, _shooter.r + (Math.random() - 0.5) * 20, Math.random() * 4 + 2, 1, 0.1 + Math.random() * 0.05, -15, false, _shooter.colors[parseInt(Math.random() * 4)], 2))
   }
   if (keyDowns["ArrowDown"] == true) {
     _shooter.a = 1.5;
