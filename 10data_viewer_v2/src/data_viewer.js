@@ -174,7 +174,7 @@ function removeAllOptions(element) {
 function setupDropdown(name, options, append = 0, remove = false, mod = true) {
   let s = false;
   if (name == "yAxis_dropdown" || name.substring(0, name.length - 1) == "column_dropdown" || name == "module_I" || name == "modAxis_dropdown" || name == "molule_Idataset") {
-    options.unshift("-Select-");
+    options.unshift(default_dropdownText);
     s = true;
   } else if (name == "xAxis_dropdown" || name == "module_Ix") {
     options.unshift("N");
@@ -221,9 +221,10 @@ function setupDropdown(name, options, append = 0, remove = false, mod = true) {
     options.shift();
   }
 }
-setupDropdown("top_dropdown", ["-Select-", "Graph", "Scatter", "Pie Chart", "Table", "Overview"]);
-setupDropdown("bottom_dropdown", [["-Select-", "Min Max", "Delta", "Abs", "Gaussian Average", "Index"], ["-Select-", "Log", "Exp", "Root", "Add/Sub", "Mul", "Div", "Pow"], ["-Select-", "n-Fit", "xFlip", "Cut"], ["-Select-", "Calculator", "Function Gen", "Noise Gen", "Downloads", "Misc"]]);
-setupDropdown("fGen_types", ["-Select-", "Linear", "Poly", "Exp", "Log", "Sin", "Cos", "Tan"]);
+var default_dropdownText = "-Select-";
+setupDropdown("top_dropdown", [default_dropdownText, "Graph", "Scatter", "Pie Chart", "Table", "Overview"]);
+setupDropdown("bottom_dropdown", [[default_dropdownText, "Min Max", "Delta", "Abs", "Gaussian Average", "Index"], [default_dropdownText, "Log", "Exp", "Root", "Add/Sub", "Mul", "Div", "Pow"], [default_dropdownText, "n-Fit", "xFlip", "Cut"], [default_dropdownText, "Calculator", "Function Gen", "Noise Gen", "Downloads", "Misc"]]);
+setupDropdown("fGen_types", [default_dropdownText, "Linear", "Poly", "Exp", "Log", "Sin", "Cos", "Tan"]);
 
 //contains 3 google Chart charts; sets data for chart
 class Chart {
@@ -1215,6 +1216,7 @@ function logVars() {
   console.group(label1);
   console.info(`-> ${CC.magenta}(General) ${CC.cyan}(${logType(datasets)})`, "'datasets': ", datasets);
   console.info(`-> ${CC.magenta}(General) ${CC.cyan}(${logType(default_nDigigts)})`, "'default_nDigigts': ", default_nDigigts);
+  console.info(`-> ${CC.magenta}(General) ${CC.cyan}(${logType(default_dropdownText)})`, "'default_dropdownText': ", default_dropdownText);
   console.info(`-> ${CC.magenta}(Hotkeys) ${CC.cyan}(${logType(keyDowns)})`, "'keyDowns': ", keyDowns);
   console.info(`-> ${CC.magenta}(Hotkeys) ${CC.cyan}(${logType(layouts)})`, "'layouts': ", layouts);
   console.info(`-> ${CC.magenta}(Save Chart) ${CC.cyan}(${logType(resolution)})`, "'resolution': ", resolution);

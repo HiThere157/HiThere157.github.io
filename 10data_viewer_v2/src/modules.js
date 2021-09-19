@@ -488,7 +488,7 @@ function Fgen(nDigits, modOut) {
   let type = document.getElementById("molule_fGen_types").value;
   let type_span = document.getElementById("gen_function");
 
-  if (type == "-Select-") {
+  if (type == default_dropdownText) {
     modOut.style.opacity = 0.5;
   } else {
     modOut.style.opacity = 1;
