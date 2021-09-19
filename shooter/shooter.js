@@ -281,14 +281,13 @@ function _start() {
   window.scroll(0, 0);
   _shooter.explode(_shooter.x, _shooter.y, 50);
 }
-_start();
 
 var keyDowns = {};
 function _keyDown(event) {
   keyDowns[event.key] = true;
 
   if (event.key == "F8") {
-    // _start();
+    _start();
   } else if (event.key == "F9") {
     _shooter.shooterElem.remove();
     _shooter.particles.forEach(particle => {
@@ -304,3 +303,4 @@ function _keyUp(event) {
 }
 window.addEventListener("keydown", _keyDown);
 window.addEventListener("keyup", _keyUp);
+_start();
