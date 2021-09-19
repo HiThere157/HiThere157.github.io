@@ -204,7 +204,7 @@ function draw() {
 
   if (mobile) {
     noStroke();
-    fill(255, 0, 0, 50);
+    fill(255, 0, 0, 20);
     rect(w * 0.2, 0, w * 0.6, h * 0.25);
     rect(w * 0.2, h - h * 0.25, w * 0.6, h * 0.25);
     rect(0, h * 0.25, w * 0.4, h * 0.5);
