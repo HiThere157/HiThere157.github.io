@@ -11,7 +11,7 @@ function click_icon(elem) {
   }
 }
 
-var list = { "icon0": ["Game of Life", "/4gol/game_of_life.html"], "icon1": ["Maze Generator", "/6maze/maze.html"], "icon2": ["Mine Sweeper", "/9mineSweeper/mineSweeper.html"], "icon3": ["Ray Cast", "/11rayCast/ray.html"], "icon4": ["HTML Shooter", "shooter/shooter.js"], "icon13": ["DataViewer v2", "/10data_viewer_v2/data_viewer.html"] }
+var list = { "icon0": ["Game of Life", "/4gol/game_of_life.html"], "icon1": ["Maze Generator", "/6maze/maze.html"], "icon2": ["Mine Sweeper", "/9mineSweeper/mineSweeper.html"], "icon3": ["Snake", "/13snake/snake.html"], "icon4": ["Ray Cast", "/11rayCast/ray.html"], "icon4": ["HTML Shooter", "shooter/shooter.js"], "icon13": ["DataViewer v2", "/10data_viewer_v2/data_viewer.html"] }
 var key = Object.keys(list);
 
 function refresh_Icons() {
