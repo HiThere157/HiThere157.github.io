@@ -1,11 +1,33 @@
-var resolution = 50;
-var startFood = 4;
-var speed = 10;
+var gameVars = {
+  "resolution": 50,
+  "startFood": 4,
+  "speed": 10,
+
+  "columns": undefined,
+  "rows": undefined
+}
+
+let getParam = window.location.search.substr(1).split("&");
+let gameVarKeys = Object.keys(gameVars);
+getParam.forEach(param => {
+  let tmp = param.split("=");
+  if(gameVarKeys.indexOf(tmp[0]) != -1){
+    gameVars[tmp[0]] = parseInt(tmp[1]);
+  }
+});
 
 var w = window.innerWidth;
 var h = window.innerHeight;
-var columns = parseInt(w / resolution);
-var rows = parseInt(parseInt(h / 10) * 10 / resolution);
+var resolution = gameVars["resolution"];
+var speed = gameVars["speed"];
+
+if(gameVars["columns"] == undefined || gameVars["rows"] == undefined){
+  var columns = parseInt(w / resolution);
+  var rows = parseInt(parseInt(h / 10) * 10 / resolution);
+}else{
+  var columns = gameVars["columns"];
+  var rows = gameVars["rows"];
+}
 
 class Tile {
   constructor(x, y) {
@@ -47,7 +69,7 @@ class Snake {
   }
 }
 var snake = new Snake(0, 4, 4);
-for (let i = 0; i < startFood; i++) {
+for (let i = 0; i < gameVars["startFood"]; i++) {
   snake.spawnFood();
 }
 

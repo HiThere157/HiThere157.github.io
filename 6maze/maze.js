@@ -1,15 +1,38 @@
-var player;
+var gameVars = {
+  "resolution": 50,
+  "horizontalBias": 1,
 
-var tiles = [];
-var visitedN = 0;
-var resolution = 50;
-//vertival/horizontal = 1/4 => 4x horizontal
-var horizontalBias = 1;
+  "columns": undefined,
+  "rows": undefined
+}
+
+let getParam = window.location.search.substr(1).split("&");
+let gameVarKeys = Object.keys(gameVars);
+getParam.forEach(param => {
+  let tmp = param.split("=");
+  if(gameVarKeys.indexOf(tmp[0]) != -1){
+    gameVars[tmp[0]] = parseInt(tmp[1]);
+  }
+});
+
 var w = window.innerWidth;
 var h = window.innerHeight;
-var columns = parseInt(w / resolution);
-var rows = parseInt(parseInt(h / 10) * 10 / resolution);
+var resolution = gameVars["resolution"];
+var horizontalBias = gameVars["horizontalBias"];
+
+if(gameVars["columns"] == undefined || gameVars["rows"] == undefined){
+  var columns = parseInt(w / resolution);
+  var rows = parseInt(parseInt(h / 10) * 10 / resolution);
+}else{
+  var columns = gameVars["columns"];
+  var rows = gameVars["rows"];
+}
+
+var player;
 var mobile = false;
+var tiles = [];
+var visitedN = 0;
+//vertival/horizontal = 1/4 => 4x horizontal
 
 class Tile {
   constructor(x, y, p) {

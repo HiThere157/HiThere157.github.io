@@ -1,25 +1,41 @@
-var tiles = [];
-var resolution = 40;
+var gameVars = {
+  "resolution": 40,
+  "mines": 0.12,
+
+  "columns": undefined,
+  "rows": undefined
+}
+
+let getParam = window.location.search.substr(1).split("&");
+let gameVarKeys = Object.keys(gameVars);
+getParam.forEach(param => {
+  let tmp = param.split("=");
+  if(gameVarKeys.indexOf(tmp[0]) != -1){
+    gameVars[tmp[0]] = parseInt(tmp[1]);
+  }
+});
+
+var w = window.innerWidth;
+var h = window.innerHeight;
+var resolution = gameVars["resolution"];
+var mines = gameVars["mines"];
+
+if(gameVars["columns"] == undefined || gameVars["rows"] == undefined){
+  var columns = parseInt(w / resolution);
+  var rows = parseInt(parseInt(h / 10) * 10 / resolution);
+}else{
+  var columns = gameVars["columns"];
+  var rows = gameVars["rows"];
+}
+
 if (/Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
   resolution *= 2;
 }
-
+var tiles = [];
 var xOff_popup = 0;
 var yOff_popup = 0;
 var playing = true;
 var mUp = false;
-//vertival/horizontal = 1/4 => 4x horizontal
-var mines = 0.12;
-var columns = parseInt(window.innerWidth / resolution);
-var rows = parseInt(parseInt(window.innerHeight / 10) * 10 / resolution);
-
-
-var params = window.location.search.substr(1).split(",");
-if (params.length == 3) {
-  resolution = params[0];
-  columns = params[1];
-  rows = params[2];
-}
 
 function checkGame() {
   let remaining = 0;

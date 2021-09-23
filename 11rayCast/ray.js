@@ -2,6 +2,20 @@ var vectors = [];
 var walls = [];
 var pos = [[], []];
 
+var gameVars = {
+  "rays": 700,
+}
+
+let getParam = window.location.search.substr(1).split("&");
+let gameVarKeys = Object.keys(gameVars);
+getParam.forEach(param => {
+  let tmp = param.split("=");
+  if(gameVarKeys.indexOf(tmp[0]) != -1){
+    gameVars[tmp[0]] = parseInt(tmp[1]);
+  }
+});
+var rays = gameVars["rays"];
+
 function isbetween(x, a, b) {
   let tmpA = a;
   let tmpB = b;
@@ -24,7 +38,7 @@ function setup() {
   background("#000");
   stroke("#777");
 
-  setRays(700);
+  setRays(rays);
 
   walls.push([[500, 100], createVector(-400, 600)]);
   walls.push([[50, 100], createVector(500, 100)]);
