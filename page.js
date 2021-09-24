@@ -1,9 +1,19 @@
-function click_icon(elem) {
+function click_icon(elem, hover = false) {
+  if(elem == undefined || list[elem.id] == undefined){
+    document.getElementById("backgroundIFrame").src = "";
+    return
+  }
+
   let href = list[elem.id][1].split(".");
 
   if (href[href.length - 1] == "html") {
-    window.location.href = href.join(".");
-  } else if (href[href.length - 1] == "js") {
+    if(hover == false){
+      window.location.href = href.join(".");
+    }else{
+      document.getElementById("backgroundIFrame").src = href.join(".");
+    }
+
+  } else if (href[href.length - 1] == "js" && hover == false) {
     let tmp = document.createElement("script");
     tmp.src = href.join(".");
 
@@ -11,7 +21,7 @@ function click_icon(elem) {
   }
 }
 
-var list = { "icon0": ["Game of Life", "/4gol/game_of_life.html"], "icon1": ["Maze Generator", "/6maze/maze.html"], "icon2": ["Mine Sweeper", "/9mineSweeper/mineSweeper.html"], "icon3": ["Snake", "/13snake/snake.html"], "icon4": ["Ray Cast", "/11rayCast/ray.html"], "icon4": ["HTML Shooter", "shooter/shooter.js"], "icon13": ["DataViewer v2", "/10data_viewer_v2/data_viewer.html"] }
+var list = { "icon0": ["Game of Life", "/4gol/game_of_life.html"], "icon1": ["Maze Generator", "/6maze/maze.html"], "icon2": ["Mine Sweeper", "/9mineSweeper/mineSweeper.html"], "icon3": ["Snake", "/13snake/snake.html"], "icon4": ["Ray Cast", "/11rayCast/ray.html"], "icon5": ["HTML Shooter", "shooter/shooter.js"], "icon13": ["DataViewer v2", "/10data_viewer_v2/data_viewer.html"] }
 var key = Object.keys(list);
 
 function refresh_Icons() {
@@ -28,6 +38,8 @@ function setupIcons() {
     var iconId = "icon" + j.toString();
     iconDiv.className = "main_icons";
     iconDiv.onclick = function () { click_icon(this); };
+    iconDiv.onmouseover = function () { click_icon(this, true); };
+    iconDiv.onmouseleave = function () { click_icon(undefined, true); };
     iconDiv.id = iconId;
 
     var iconI = document.createElement("p");
