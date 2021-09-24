@@ -11,7 +11,7 @@ let getParam = window.location.search.substr(1).split("&");
 let gameVarKeys = Object.keys(gameVars);
 getParam.forEach(param => {
   let tmp = param.split("=");
-  if(gameVarKeys.indexOf(tmp[0]) != -1){
+  if (gameVarKeys.indexOf(tmp[0]) != -1) {
     gameVars[tmp[0]] = parseInt(tmp[1]);
   }
 });
@@ -21,10 +21,10 @@ var h = window.innerHeight;
 var resolution = gameVars["resolution"];
 var speed = gameVars["speed"];
 
-if(gameVars["columns"] == undefined || gameVars["rows"] == undefined){
+if (gameVars["columns"] == undefined || gameVars["rows"] == undefined) {
   var columns = parseInt(w / resolution);
   var rows = parseInt(parseInt(h / 10) * 10 / resolution);
-}else{
+} else {
   var columns = gameVars["columns"];
   var rows = gameVars["rows"];
 }
@@ -116,9 +116,11 @@ function draw() {
 
     if (tiles[snake.y * columns + snake.x] == undefined || tiles[snake.y * columns + snake.x].counter > 0 || snake.x < 0 || snake.x > columns - 1) {
       running = false;
-      alert("You Lost!");
       snake.x -= snake.vx;
       snake.y -= snake.vy;
+      alert("You Lost!");
+      window.location.reload();
+
     } else if (tiles[snake.y * columns + snake.x].food) {
       tiles[snake.y * columns + snake.x].food = false;
       snake.spawnFood();
