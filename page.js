@@ -1,6 +1,6 @@
 function click_icon(elem, hover = false) {
   if(elem == undefined || list[elem.id] == undefined){
-    document.getElementById("backgroundIFrame").src = "";
+    // document.getElementById("backgroundIFrame").src = "";
     return
   }
 
@@ -10,7 +10,7 @@ function click_icon(elem, hover = false) {
     if(hover == false){
       window.location.href = href.join(".");
     }else{
-      document.getElementById("backgroundIFrame").src = href.join(".");
+      // document.getElementById("backgroundIFrame").src = href.join(".");
     }
 
   } else if (href[href.length - 1] == "js" && hover == false) {
