@@ -66,9 +66,13 @@ class Snake {
 
   setTitle() {
     document.title = `Score: ${this.score}/${columns * rows}`;
+    if (this.score >= columns * rows) {
+      alert("You Won!");
+      window.location.reload();
+    }
   }
 }
-var snake = new Snake(0, 4, 4);
+var snake = new Snake(0, 1, 1);
 for (let i = 0; i < gameVars["startFood"]; i++) {
   snake.spawnFood();
 }
