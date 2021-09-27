@@ -343,11 +343,17 @@
         <label name="repeat_label">Repeat</label>
       </div>
       <p>
-        <span class="mod_text">n. Order:</span>
-        <input id="fit_n" placeholder="1-2; default 1" type="number" onchange="selected_Module(this, true)">
+        <span>Type:</span>
+        <select id="fit_type" onchange="selected_Module(this, true)">
+          <option>Poly</option>
+          <option>Exp</option>
+          <option>Log</option>
+        </select>
+        <label>Parameter:</label>
+        <input id="fit_n" placeholder="1" type="number" onchange="selected_Module(this, true)" style="width: 85px;">
       </p>
       <p>
-        <span>y = ax^2 + bx + c</span>
+        <span id="fit_function">y = ax^2 + bx + c</span>
       </p>
       <p>
         <span>a = </span>

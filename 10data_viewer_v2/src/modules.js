@@ -615,31 +615,31 @@ function Fgen(nDigits, modOut) {
     });
 
   } else if (type == "Exp") {
-    type_span.innerText = "y= a * b^[c * (x - d)] + e";
+    type_span.innerText = "y = a * b^[c * (x - d)] + e";
     x.forEach(n => {
       tmp.push(Number((a * Math.pow(b, (c * (n - d))) + e).toFixed(nDigits)));
     });
 
   } else if (type == "Log") {
-    type_span.innerText = "y= a * log(b, [c * (x - d)]) + e";
+    type_span.innerText = "y = a * log(b, [c * (x - d)]) + e";
     x.forEach(n => {
       tmp.push(Number((a * Math.log(c * (n - d)) / Math.log(b) + e).toFixed(nDigits)));
     });
 
   } else if (type == "Sin") {
-    type_span.innerText = "y= a * sin[b * (x - c)] + d";
+    type_span.innerText = "y = a * sin[b * (x - c)] + d";
     x.forEach(n => {
       tmp.push(Number((a * Math.sin(b * (n - c)) + d).toFixed(nDigits)));
     });
 
   } else if (type == "Cos") {
-    type_span.innerText = "y= a * cos[b * (x - c)] + d";
+    type_span.innerText = "y = a * cos[b * (x - c)] + d";
     x.forEach(n => {
       tmp.push(Number((a * Math.cos(b * (n - c)) + d).toFixed(nDigits)));
     });
 
   } else if (type == "Tan") {
-    type_span.innerText = "y= a * tan[b * (x - c)] + d";
+    type_span.innerText = "y = a * tan[b * (x - c)] + d";
     x.forEach(n => {
       tmp.push(Number((a * Math.tan(b * (n - c)) + d).toFixed(nDigits)));
     });
@@ -998,7 +998,7 @@ function selected_Module(element, depth = false) {
   //datasetData => selected data with the selcond input dropdown
   //minLen => len of shortest dataset
   let returned = false;
-  if (data != undefined || operation == "function_gen") {
+  if (data != undefined || operation == "function_gen" || operation == "n-fit") {
     if (operation == "min_max") {
       returned = Min_Max(data, nDigits);
 
