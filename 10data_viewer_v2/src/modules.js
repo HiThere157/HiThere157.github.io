@@ -558,15 +558,19 @@ function Fgen(nDigits, modOut) {
     x_interval_set = true;
   }
 
+  x_interval[0] = Number(x_interval[0])
+  x_interval[1] = Number(x_interval[1])
+  x_interval[2] = Number(x_interval[2])
+
   x = [];
   if (x_data == null) {
     if (x_interval[2] != 0) {
-      for (let i = Number(x_interval[0]); i < Number(x_interval[1]); i += Number(x_interval[2])) {
+      for (let i = x_interval[0]; i < x_interval[1]; i += x_interval[2]) {
         x.push(Number(i.toFixed(nDigits)));
       }
     } else {
-      for (let i = 0; i < Number(x_interval[0]); i++) {
-        x.push(Number(Number(x_interval[1]).toFixed(nDigits)));
+      for (let i = 0; i < x_interval[0]; i++) {
+        x.push(Number(x_interval[1].toFixed(nDigits)));
       }
     }
 
@@ -574,7 +578,7 @@ function Fgen(nDigits, modOut) {
     if (x_interval[2] != 0) {
       x_data.values.forEach(value => {
         if (x_interval_set == true) {
-          if (value >= Number(x_interval[0]) && value <= Number(x_interval[1])) {
+          if (value >= x_interval[0] && value <= x_interval[1]) {
             x.push(value);
           }
         } else {
@@ -583,7 +587,7 @@ function Fgen(nDigits, modOut) {
       });
     } else {
       for (let i = 0; i < x_data.values.length; i++) {
-        x.push(Number(Number(x_interval[1]).toFixed(nDigits)));
+        x.push(Number(x_interval[1].toFixed(nDigits)));
       }
     }
   }
@@ -662,9 +666,9 @@ function Fgen(nDigits, modOut) {
     }
   }
 
-
-  if (Number(x_interval[2]) != 1 && Number(x_interval[2] != 0)) {
-    ret.push(x)
+  if (x_interval[2] != 0) {
+    if (x_interval[2] != 1 || x_interval[0] != 0)
+      ret.push(x)
   }
 
   return ret;
@@ -1037,6 +1041,7 @@ function selected_Module(element, depth = false) {
 
     } else if (operation == "n-fit") {
       document.getElementById("loading_icon").style.display = "inline-block";
+      document.getElementById("fit_calc").disabled = true;
       setTimeout(Fit, 750, ...[id, operation, nDigits]);
       returned = true;
 

@@ -320,10 +320,10 @@
   <div class="module" name="module" id="n-fit">
     <div class="IO">
       <span>xAxis:</span>
-      <select class="data_select" name="module_Ix" id="module_Ix_fit" onchange="selected_Module(this)"></select>
+      <select class="data_select" name="module_Ix" id="module_Ix_fit" onchange="resetButton()"></select>
       <span>yAxis:</span>
-      <select class="data_select" name="module_I" id="module_I_fit" onchange="selected_Module(this)"></select>
-      <input name="molule_IN" placeholder="Round to n" type="number" onchange="selected_Module(this)"
+      <select class="data_select" name="module_I" id="module_I_fit" onchange="resetButton()"></select>
+      <input name="molule_IN" placeholder="Round to n" type="number" onchange="resetButton()"
         style="width: 80px;">
     </div>
     <!--Placeholder-->
@@ -344,16 +344,16 @@
       </div>
       <p>
         <span>Type:</span>
-        <select id="fit_type" onchange="selected_Module(this, true)">
+        <select id="fit_type" onchange="resetButton()">
           <option>Poly</option>
           <option>Exp</option>
           <option>Log</option>
         </select>
         <label>Parameter:</label>
-        <input id="fit_n" placeholder="1" type="number" onchange="selected_Module(this, true)" style="width: 85px;">
+        <input id="fit_n" value=1 type="number" onchange="resetButton()" style="width: 85px;">
       </p>
       <p>
-        <span id="fit_function">y = ax^2 + bx + c</span>
+        <span id="fit_function">y = ax^3 + bx^2 + cx + d</span>
       </p>
       <p>
         <span>a = </span>
@@ -362,7 +362,12 @@
         <span id="fit_b">0</span>
         <span>, c = </span>
         <span id="fit_c">0</span>
+        <span>, d = </span>
+        <span id="fit_d">0</span>
       </p>
+      <div>
+        <button id="fit_calc" onclick="selected_Module(this, true)">CALC!</button>
+      </div>
       <div id="loading_icon" class="loading_icon" style="display: none;"></div>
       <div name="mod_out"></div>
     </div>

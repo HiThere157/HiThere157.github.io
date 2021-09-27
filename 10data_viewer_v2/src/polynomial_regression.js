@@ -14,6 +14,10 @@ function removeNaN(x, y) {
   return [tmpX, tmpY, tmp];
 }
 
+function resetButton(){
+  document.getElementById("fit_calc").disabled = false;
+}
+
 function Fit(id, operation, nDigits) {
   let type = document.getElementById("fit_type").value;
   let type_span = document.getElementById("fit_function");
@@ -24,7 +28,7 @@ function Fit(id, operation, nDigits) {
   let yData = datasets.dataSet_list[yAxis - 1];
   let xData = datasets.dataSet_list[xAxis - 1];
 
-  let n = document.getElementById("fit_n").innerText;
+  let n = document.getElementById("fit_n").value;
   let name = "";
 
   let x_vals = [];
@@ -56,7 +60,7 @@ function Fit(id, operation, nDigits) {
   }
 
   if (type == "Poly") {
-    type_span.innerText = "y = ax^2 + bx + c";
+    type_span.innerText = "y = ax^3 + bx^2 + cx + d";
 
   } else if (type == "Exp") {
     type_span.innerText = "y = e^(ax^2 + bx + c)";
@@ -85,7 +89,6 @@ function Fit(id, operation, nDigits) {
 
   let removedIndex;
   [x_vals, y_vals, removedIndex] = removeNaN(x_vals, y_vals);
-  console.log(x_vals, y_vals)
 
   if (dataType[0] == "number" && dataType[1] == "number") {
     let koeff = [];
@@ -126,7 +129,7 @@ function Fit(id, operation, nDigits) {
       ys.dispose();
     }
 
-    let elements = [document.getElementById("fit_c"), document.getElementById("fit_b"), document.getElementById("fit_a")];
+    let elements = [document.getElementById("fit_d"), document.getElementById("fit_c"), document.getElementById("fit_b"), document.getElementById("fit_a")];
 
     for (let i = 0; i < koeff.length; i++) {
       let tmp = koeff[i].dataSync();
@@ -162,5 +165,4 @@ function Fit(id, operation, nDigits) {
   }
 
   document.getElementById("loading_icon").style.display = "none";
-  console.log(removedIndex)
 }

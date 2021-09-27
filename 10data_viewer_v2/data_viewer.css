@@ -147,7 +147,7 @@ body::after {
 
 .loading_icon {
   display: inline-block;
-  margin-top: 20px;
+  margin-top: 10px;
   height: 24px;
   width: 24px;
   background-image: url(icons/rotate_icon.svg);
