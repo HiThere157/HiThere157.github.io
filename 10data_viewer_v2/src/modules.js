@@ -1066,12 +1066,12 @@ function selected_Module(element, depth = false) {
 }
 
 function onReturn(id, operation, returned) {
-  if (returned.length != 0 && returned != false && returned != true) {
+  if (returned != undefined && returned.length != 0 && returned != false && returned != true) {
     document.getElementsByName("mod_out")[id - slot_offset[id]].innerHTML = makeTableHTML(returned[0]);
     document.getElementsByName("mod_parent")[id - slot_offset[id]].innerText = returned[2];
 
     if (isNaN(returned[3]) == false) {
-      returned[3] = returned[3].toFixed(3);
+      returned[3] = Number(returned[3].toFixed(3));
     }
 
     document.getElementsByName("mod_param")[id - slot_offset[id]].innerText = returned[3];

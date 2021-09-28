@@ -52,8 +52,10 @@
             </button>
             <label for="formatOutput">CSV Format</label>
             <input id="formatOutput" type="checkbox" onchange="exportField(true)">
+            <label for="selectAllSets">Select All</label>
+            <input id="selectAllSets" type="checkbox" onchange="selectAllData(this)">
           </div>
-          <textarea id="dataExport" rows="3" onchange="parseData(this)" spellcheck="false" readonly></textarea>
+          <textarea id="dataExport" rows="3" spellcheck="false" readonly></textarea>
         </div>
         <div id="dataExportTable" class="export_item" style="overflow-y: auto; text-align: center;"></div>
       </div>
@@ -323,8 +325,7 @@
       <select class="data_select" name="module_Ix" id="module_Ix_fit" onchange="resetButton()"></select>
       <span>yAxis:</span>
       <select class="data_select" name="module_I" id="module_I_fit" onchange="resetButton()"></select>
-      <input name="molule_IN" placeholder="Round to n" type="number" onchange="resetButton()"
-        style="width: 80px;">
+      <input name="molule_IN" placeholder="Round to n" type="number" onchange="resetButton()" style="width: 80px;">
     </div>
     <!--Placeholder-->
     <div class="IO" style="display: none;">
@@ -349,11 +350,11 @@
           <option>Exp</option>
           <option>Log</option>
         </select>
-        <label>Parameter:</label>
+        <label>Order:</label>
         <input id="fit_n" value=1 type="number" onchange="resetButton()" style="width: 85px;">
       </p>
       <p>
-        <span id="fit_function">y = ax^3 + bx^2 + cx + d</span>
+        <span id="fit_function">y = ax^2 + bx + c</span>
       </p>
       <p>
         <span>a = </span>
@@ -362,11 +363,9 @@
         <span id="fit_b">0</span>
         <span>, c = </span>
         <span id="fit_c">0</span>
-        <span>, d = </span>
-        <span id="fit_d">0</span>
       </p>
       <div>
-        <button id="fit_calc" onclick="selected_Module(this, true)">CALC!</button>
+        <button id="fit_calc" onclick="selected_Module(this, true)">Execute!</button>
       </div>
       <div id="loading_icon" class="loading_icon" style="display: none;"></div>
       <div name="mod_out"></div>

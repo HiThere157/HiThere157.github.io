@@ -3,7 +3,7 @@ var buttonData = [];
 var skip_row = false;
 
 //show, update the export table TR; on data change
-function exportTable() {
+function exportTable(state = undefined) {
   let exportArray = [["Name", "Show", "", "Name", "Show"]];
 
   let tmp = [];
@@ -13,6 +13,14 @@ function exportTable() {
       add_ = "";
     } else {
       add_ = "checked";
+    }
+
+    if (state != undefined) {
+      if (state == false) {
+        add_ = "";
+      } else {
+        add_ = "checked";
+      }
     }
 
     tmp.push(datasets.dataSet_names[i]);
@@ -32,6 +40,13 @@ function exportTable() {
 
   document.getElementById("dataExportTable").innerHTML = makeTableHTML(exportArray);
 }
+
+//de-/select all datasets in the export table
+function selectAllData(element) {
+  exportTable(element.checked);
+  exportField(false, false, false);
+}
+document.getElementById("selectAllSets").indeterminate = true;
 
 //adds current dataField value as GET param
 function addGetParam() {
@@ -59,10 +74,15 @@ function getGET(remove = false) {
 }
 
 //updates the data export textfield TR; onchange checkboxes in the export table and format checkbox
-function exportField(override = false, csvFile = false) {
+function exportField(override = false, csvFile = false, setCheckbox = true) {
   if (csvFile == false) {
     document.getElementById("copyButton").className = "";
     document.getElementById("exportButton").className = "";
+  }
+
+  let selectAllSetsElem = document.getElementById("selectAllSets");
+  if (override == false && csvFile == false && setCheckbox == true) {
+    selectAllSetsElem.indeterminate = true;
   }
 
   let fieldElement = document.getElementById("dataExport");
@@ -109,6 +129,14 @@ function exportField(override = false, csvFile = false) {
         dataString.push([datasets.dataSet_list[index].values]);
       });
     }
+  }
+
+  if (indexes.length == 0) {
+    selectAllSetsElem.checked = false;
+    selectAllSetsElem.indeterminate = false;
+  } else if (indexes.length == datasets.dataSet_names.length) {
+    selectAllSetsElem.checked = true;
+    selectAllSetsElem.indeterminate = false;
   }
 
   if (csvFile == true) {

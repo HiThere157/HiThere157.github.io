@@ -14,13 +14,22 @@ function removeNaN(x, y) {
   return [tmpX, tmpY, tmp];
 }
 
-function resetButton(){
+function resetButton() {
   document.getElementById("fit_calc").disabled = false;
+
+  let type = document.getElementById("fit_type").value;
+  let type_span = document.getElementById("fit_function");
+  if (type == "Poly") {
+    type_span.innerText = "y = ax^2 + bx + c";
+  } else if (type == "Exp") {
+    type_span.innerText = "y = e^(ax^2 + bx + c)";
+  } else if (type == "Log") {
+    type_span.innerText = "y = ln(ax^2 + bx + c)";
+  }
 }
 
 function Fit(id, operation, nDigits) {
   let type = document.getElementById("fit_type").value;
-  let type_span = document.getElementById("fit_function");
 
   let xAxis = document.getElementById("module_Ix_fit").selectedIndex;
   let yAxis = document.getElementById("module_I_fit").selectedIndex;
@@ -59,29 +68,22 @@ function Fit(id, operation, nDigits) {
     dataType[1] = "number";
   }
 
-  if (type == "Poly") {
-    type_span.innerText = "y = ax^3 + bx^2 + cx + d";
-
-  } else if (type == "Exp") {
-    type_span.innerText = "y = e^(ax^2 + bx + c)";
-
+  if (type == "Exp") {
     if (yAxis != 0) {
       let tmp = [];
 
       y_vals.forEach(value => {
-        tmp.push(Math.log(value));
+        tmp.push(Number(Math.log(value).toFixed(nDigits)));
       });
       y_vals = tmp;
     }
 
   } else if (type == "Log") {
-    type_span.innerText = "y = ln(ax^2 + bx + c)";
-
     if (yAxis != 0) {
       let tmp = [];
 
       y_vals.forEach(value => {
-        tmp.push(Math.exp(value));
+        tmp.push(Number(Math.exp(value).toFixed(nDigits)));
       });
       y_vals = tmp;
     }
@@ -128,8 +130,9 @@ function Fit(id, operation, nDigits) {
       var curveY = ys.dataSync();
       ys.dispose();
     }
+    console.log(x_vals, y_vals, curveY)
 
-    let elements = [document.getElementById("fit_d"), document.getElementById("fit_c"), document.getElementById("fit_b"), document.getElementById("fit_a")];
+    let elements = [document.getElementById("fit_c"), document.getElementById("fit_b"), document.getElementById("fit_a")];
 
     for (let i = 0; i < koeff.length; i++) {
       let tmp = koeff[i].dataSync();
@@ -149,6 +152,7 @@ function Fit(id, operation, nDigits) {
 
       tmp.push(Number(tmpY.toFixed(nDigits)));
     }
+    console.log(tmp)
 
     removedIndex.forEach(index => {
       tmp.splice(index, 0, NaN);
