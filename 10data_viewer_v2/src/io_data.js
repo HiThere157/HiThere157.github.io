@@ -44,7 +44,7 @@ function exportTable(state = undefined) {
 //de-/select all datasets in the export table
 function selectAllData(element) {
   exportTable(element.checked);
-  exportField(false, false, false);
+  exportField();
 }
 document.getElementById("selectAllSets").indeterminate = true;
 
@@ -74,16 +74,13 @@ function getGET(remove = false) {
 }
 
 //updates the data export textfield TR; onchange checkboxes in the export table and format checkbox
-function exportField(override = false, csvFile = false, setCheckbox = true) {
+function exportField(override = false, csvFile = false) {
   if (csvFile == false) {
     document.getElementById("copyButton").className = "";
     document.getElementById("exportButton").className = "";
   }
 
   let selectAllSetsElem = document.getElementById("selectAllSets");
-  if (override == false && csvFile == false && setCheckbox == true) {
-    selectAllSetsElem.indeterminate = true;
-  }
 
   let fieldElement = document.getElementById("dataExport");
   let dataString = [];
@@ -137,6 +134,8 @@ function exportField(override = false, csvFile = false, setCheckbox = true) {
   } else if (indexes.length == datasets.dataSet_names.length) {
     selectAllSetsElem.checked = true;
     selectAllSetsElem.indeterminate = false;
+  } else {
+    selectAllSetsElem.indeterminate = true;
   }
 
   if (csvFile == true) {
