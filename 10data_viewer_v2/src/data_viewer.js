@@ -1244,6 +1244,11 @@ function logVars() {
   console.info(`-> ${CC.magenta}(Calculator) ${CC.cyan}(${logType(calcs)})`, "'calcs': ", calcs);
   console.groupEnd(label3)
 
+  let label4 = `${CC.red}polynomial_regression.js:`;
+  console.group(label4)
+  console.info(`-> ${CC.magenta}(n-Fit) ${CC.cyan}(${logType(fit_iterations)})`, "'fit_iterations': ", fit_iterations);
+  console.groupEnd(label4)
+
   document.getElementById("openConsoleSpan").style.display = "";
 }
 

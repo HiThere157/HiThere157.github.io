@@ -28,6 +28,7 @@ function resetButton() {
   }
 }
 
+var fit_iterations = 2000;
 function Fit(id, operation, nDigits) {
   let type = document.getElementById("fit_type").value;
 
@@ -118,7 +119,7 @@ function Fit(id, operation, nDigits) {
       return ys;
     }
 
-    for (let i = 0; i < 2000; i++) {
+    for (let i = 0; i < fit_iterations; i++) {
       tf.tidy(() => {
         if (x_vals.length > 0) {
           const ys = tf.tensor1d(y_vals);

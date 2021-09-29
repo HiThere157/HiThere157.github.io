@@ -95,6 +95,19 @@ function changeRound(element) {
   updateAll();
 }
 
+function changeIterations(element){
+  //sync value bewteen module template and actual module
+  document.getElementsByName("iterations_input").forEach(element => {
+    element.value = document.getElementById("iterations_input").value;
+  });
+
+  fit_iterations = parseInt(element.value);
+  if (fit_iterations < 0) {
+    fit_iterations = 0;
+    element.value = 0;
+  }
+}
+
 //change csv delimiter
 function changeDelimiter(element) {
   //sync value bewteen module template and actual module
