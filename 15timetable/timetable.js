@@ -108,7 +108,7 @@ function setBar() {
 }
 
 var date = new Date();
-document.getElementById("header").innerText = "Date: " + [date.getDate(), date.getMonth(), date.getFullYear()].join(".");
+document.getElementById("header").innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
 
 var getParam = filterText(window.location.search.substr(1)).split("&");
 if (getParam == "OF10S2") {
