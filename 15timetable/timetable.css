@@ -5,7 +5,7 @@
   --accent-color: green;
   --time-bar: red;
   --width: 70%;
-  --bar-height: 0px;
+  --bar-height: 0;
 }
 
 html, body {

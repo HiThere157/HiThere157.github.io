@@ -89,7 +89,7 @@ function getAbsoluteY(element, addOwnHeight = false) {
   } while (element);
 
   return top;
-};
+}
 
 function setBar() {
   var date = new Date();
@@ -99,6 +99,7 @@ function setBar() {
   let tableHeight = getAbsoluteY(document.getElementById("R" + times.length), true) - tableTop;
 
   let minsNow = getMinutes([date.getHours(), date.getMinutes()].join(":"));
+  // let minsNow = getMinutes("13:25");
   let minsMax = getMinutes(startEndTimes[startEndTimes.length - 1][1]);
   let minsMin = getMinutes(startEndTimes[0][0]);
 
@@ -111,7 +112,7 @@ function setBar() {
 
 var getParam = filterText(window.location.search.substr(1)).split("&");
 if (getParam == "OF10S2") {
-  getParam = "15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,AP,Mittagspause,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&pause&7:50".split("&");
+  getParam = "15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&pause&7:50".split("&");
 }
 
 var times = getParam[0].split(",").map(time => parseInt(time));
