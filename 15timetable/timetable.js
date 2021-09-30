@@ -96,8 +96,7 @@ function setBar() {
   let tableTop = getAbsoluteY(document.getElementById("R1"));
   let tableHeight = getAbsoluteY(document.getElementById("R" + times.length), true) - tableTop;
 
-  // let minsNow = getMinutes([date.getHours(), date.getMinutes()].join(":"));
-  let minsNow = getMinutes("14:55");
+  let minsNow = getMinutes([date.getHours(), date.getMinutes()].join(":"));
   let minsMax = getMinutes(startEndTimes[startEndTimes.length - 1][1]);
   let minsMin = getMinutes(startEndTimes[0][0]);
 
