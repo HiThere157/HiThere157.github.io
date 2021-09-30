@@ -9,7 +9,6 @@ function makeTableHTML(Array) {
       }
 
       let _add = "";
-
       if (i > 0 && j > 0 && tmp != "") {
         _add = " class=format"
       }
@@ -55,7 +54,7 @@ function addTimes(time, add) {
 
   if (newMins == 60) {
     newMins = 0;
-    hrs += 1
+    hrs += 1;
   } else if (newMins > 60) {
     newMins -= 60;
     hrs += 1;
@@ -70,7 +69,7 @@ function getMinutes(time) {
   let hrs = parseInt(tmp[0]);
   let min = parseInt(tmp[1]);
 
-  return hrs * 60 + min
+  return hrs * 60 + min;
 }
 
 function getLongestArray(array) {
@@ -93,6 +92,9 @@ function getAbsoluteY(element, addOwnHeight = false) {
 };
 
 function setBar() {
+  var date = new Date();
+  document.getElementById("header").innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
+
   let tableTop = getAbsoluteY(document.getElementById("R1"));
   let tableHeight = getAbsoluteY(document.getElementById("R" + times.length), true) - tableTop;
 
@@ -106,9 +108,6 @@ function setBar() {
   }
   document.documentElement.style.setProperty("--bar-height", tableHeight / perc + tableTop + "px");
 }
-
-var date = new Date();
-document.getElementById("header").innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
 
 var getParam = filterText(window.location.search.substr(1)).split("&");
 if (getParam == "OF10S2") {
@@ -144,7 +143,7 @@ for (let i = 1; i < schedule.length; i++) {
     if (j > 0) {
       if (schedule[i][j] == schedule[i][j - 1]) {
         tmpElem.style.setProperty("--w", "0");
-        tmpElem.innerText = ""
+        tmpElem.innerText = "";
         document.getElementById("R" + (j)).getElementsByTagName("td")[i].style.setProperty("--h", "110%");
       }
     }
