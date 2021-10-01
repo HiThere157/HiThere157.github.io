@@ -1,4 +1,4 @@
-function makeTableHTML(Array) {
+function makeTableHTML(Array, n) {
   let result = "<table>";
   for (let i = 0; i < Array.length; i++) {
     result += "<tr id=R" + i + ">";
@@ -12,8 +12,12 @@ function makeTableHTML(Array) {
       if (i > 0 && j > 0 && tmp != "") {
         _add = " class=format"
       }
+      let _nSpan = "";
+      if (j == 0 && i > 0) {
+        _nSpan = "<span class=nSpan>" + n[i - 1] + "</span>";
+      }
 
-      result += "<td" + _add + ">" + tmp.toString() + "</td>";
+      result += "<td" + _add + ">" + tmp.toString() + _nSpan + "</td>";
     }
     result += "</tr>";
   }
@@ -21,18 +25,8 @@ function makeTableHTML(Array) {
   return result;
 }
 
-function filterText(str) {
-  let ret = decodeURI(str).trim();
-  let filter = ["\r", "<", ">", '"'];
-
-  filter.forEach(val => {
-    ret = ret.replaceAll(val[0], "");
-  });
-  return ret;
-}
-
 function transpose(array) {
-  let shape = [getLongestArray(array), array.length];
+  let shape = [times.length, array.length];
   let ret = [["Times", "Mon", "Tue", "Wed", "Thu", "Fri"]];
 
   for (let j = 0; j < shape[0]; j++) {
@@ -43,6 +37,11 @@ function transpose(array) {
     ret.push(newRow);
   }
   return ret;
+}
+
+function fillZero(str) {
+  let tmp = "0" + str;
+  return tmp.substr(tmp.length - 2, 2)
 }
 
 function addTimes(time, add) {
@@ -60,8 +59,7 @@ function addTimes(time, add) {
     hrs += 1;
   }
 
-  let tmpR = "0" + newMins;
-  return [hrs, tmpR.substr(tmpR.length - 2, 2)].join(":");
+  return [hrs, fillZero(newMins)].join(":");
 }
 
 function getMinutes(time) {
@@ -70,11 +68,6 @@ function getMinutes(time) {
   let min = parseInt(tmp[1]);
 
   return hrs * 60 + min;
-}
-
-function getLongestArray(array) {
-  let lengths = array.map(val => val.length);
-  return Math.max(...lengths);
 }
 
 function getAbsoluteY(element, addOwnHeight = false) {
@@ -87,13 +80,12 @@ function getAbsoluteY(element, addOwnHeight = false) {
     top += element.offsetTop || 0;
     element = element.offsetParent;
   } while (element);
-
   return top;
 }
 
 function setBar() {
   var date = new Date();
-  document.getElementById("header").innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
+  document.getElementById("header").innerHTML = "<span>Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".") + "</span><span>Time: " + [date.getHours(), fillZero(date.getMinutes())].join(":") + "</span>";
 
   let tableTop = getAbsoluteY(document.getElementById("R1"));
   let tableHeight = getAbsoluteY(document.getElementById("R" + times.length), true) - tableTop;
@@ -110,39 +102,56 @@ function setBar() {
   document.documentElement.style.setProperty("--bar-height", tableHeight / perc + tableTop + "px");
 }
 
-var getParam = filterText(window.location.search.substr(1)).split("&");
+var getParam = window.location.search.substr(1).replaceAll("<", "").replaceAll(">", "").split("&");
 if (getParam == "OF10S2") {
-  getParam = "15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&pause&7:50".split("&");
+  //lesson length (delimited by ,) & Days/Lessons (delimited by ; and lessons by ,) & breaks & start time & Lessons with their color (delimited by , and :)
+  getParam = "15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0,IT-Systeme:180,AP:130,Politik:200,Ethik/Reli:300,BwP:90,Deutsch:120,IT-Technik:260".split("&");
 }
 
 var times = getParam[0].split(",").map(time => parseInt(time));
 var schedule = getParam[1].split(";").map(day => day.split(","));
-var breakName = getParam[2];
+var breaks = (parseInt(getParam[2]) >>> 0).toString(2).split("").reverse().join("");
 var startTime = getParam[3];
+var hues = getParam[4].split(",").map(hue => hue.split(":"));
 
 //calculate lesson times & make the html table
+var nLesson = [];
+for (let i = 0, t = 0; i < times.length; i++) {
+  if (breaks[i] != "1") {
+    t += 1;
+    nLesson.push(t);
+  } else {
+    nLesson.push("");
+  }
+}
 var startEndTimes = [["", startTime]];
 for (let i = 0; i < times.length; i++) {
   startEndTimes.push([startEndTimes[i][1], addTimes(startEndTimes[i][1], times[i])]);
 }
 startEndTimes.shift();
 schedule.unshift(startEndTimes.map(val => val.join(" - ")));
-document.getElementById("main").innerHTML = makeTableHTML(transpose(schedule));
+document.getElementById("main").innerHTML = makeTableHTML(transpose(schedule), nLesson);
 
 //scale td with lesson length
 for (let i = 0; i < times.length; i++) {
   document.getElementById("R" + (i + 1)).style.height = 1.5 * times[i] / 15 + "em";
 }
 
-//set all break 'lessons' to a different color
+//set all lessons to a different color
+let colors = {}
+hues.forEach(hue => {
+  colors[hue[0].toLowerCase()] = hue[1];
+});
 for (let i = 1; i < schedule.length; i++) {
   for (let j = 0; j < schedule[i].length; j++) {
     let tmpElem = document.getElementById("R" + (j + 1)).getElementsByTagName("td")[i];
-    if (schedule[i][j].toLowerCase().indexOf(breakName) != -1) {
-      tmpElem.style.setProperty("--c", "#ff0");
+    let tmp = schedule[i][j].toLowerCase();
+    if (colors[tmp] != undefined) {
+      tmpElem.style.setProperty("--c", colors[tmp]);
     }
-    if (j > 0) {
-      if (schedule[i][j] == schedule[i][j - 1]) {
+
+    if (j > 1) {
+      if (tmp == schedule[i][j - 1].toLowerCase()) {
         tmpElem.style.setProperty("--w", "0");
         tmpElem.innerText = "";
         document.getElementById("R" + (j)).getElementsByTagName("td")[i].style.setProperty("--h", "110%");
@@ -152,4 +161,4 @@ for (let i = 1; i < schedule.length; i++) {
 }
 
 setBar();
-setInterval(setBar, 1000 * 60);
+setInterval(setBar, 1000 * 10);
