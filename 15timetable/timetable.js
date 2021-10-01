@@ -41,7 +41,7 @@ function transpose(array) {
 
 function fillZero(str) {
   let tmp = "0" + str;
-  return tmp.substr(tmp.length - 2, 2)
+  return tmp.substr(tmp.length - 2, 2);
 }
 
 function addTimes(time, add) {
@@ -83,6 +83,18 @@ function getAbsoluteY(element, addOwnHeight = false) {
   return top;
 }
 
+function changeSlider(value) {
+  let headerElem = document.getElementById("header");
+  headerElem.innerHTML = "<span style='background-color: var(--pimary-background); border-radius: 3px'>" + value + "</span>";
+  headerElem.style.height = "2em";
+  headerElem.style.backgroundColor = "hsl(" + value + ", 100%, 40%)";
+  headerElem.style.justifyContent = "space-around";
+}
+
+function addGet(param) {
+  document.location.search = param;
+}
+
 function setBar() {
   var date = new Date();
   document.getElementById("header").innerHTML = "<span>Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".") + "</span><span>Time: " + [date.getHours(), fillZero(date.getMinutes())].join(":") + "</span>";
@@ -103,9 +115,31 @@ function setBar() {
 }
 
 var getParam = window.location.search.substr(1).replaceAll("<", "").replaceAll(">", "").split("&");
-if (getParam == "OF10S2") {
+var saved = {
   //lesson length (delimited by ,) & Days/Lessons (delimited by ; and lessons by ,) & breaks & start time & Lessons with their color (delimited by , and :)
-  getParam = "15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0,IT-Systeme:180,AP:130,Politik:200,Ethik/Reli:300,BwP:90,Deutsch:120,IT-Technik:260".split("&");
+  "OF10S2": "15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0,IT-Systeme:180,AP:130,Politik:200,Ethik/Reli:300,BwP:90,Deutsch:120,IT-Technik:260".split("&")
+}
+if (saved[getParam] != undefined) {
+  getParam = saved[getParam];
+
+} else if (getParam == "") {
+  let headerElem = document.getElementById("header");
+  headerElem.innerHTML = Object.keys(saved).map(key => "<u onclick=addGet('" + key + "')>" + key + "</u>").join("");
+  headerElem.style.height = "2em";
+  headerElem.style.justifyContent = "space-around";
+
+} else if (getParam == "Hue") {
+  let slider = document.createElement("input");
+  slider.type = "range";
+  slider.min = 0;
+  slider.max = 360;
+  slider.step = 1;
+  slider.value = 0;
+  slider.style = "width: 100%;"
+  slider.onchange = function () { changeSlider(this.value); };
+
+  document.getElementById("main").appendChild(slider);
+  changeSlider(0);
 }
 
 var times = getParam[0].split(",").map(time => parseInt(time));
@@ -138,7 +172,7 @@ for (let i = 0; i < times.length; i++) {
 }
 
 //set all lessons to a different color
-let colors = {}
+let colors = {};
 hues.forEach(hue => {
   colors[hue[0].toLowerCase()] = hue[1];
 });
@@ -161,4 +195,5 @@ for (let i = 1; i < schedule.length; i++) {
 }
 
 setBar();
-setInterval(setBar, 1000 * 10);
+window.onresize = setBar;
+setInterval(setBar, 1000 * 5);

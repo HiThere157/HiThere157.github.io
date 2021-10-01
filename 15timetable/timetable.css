@@ -5,7 +5,7 @@
   --accent-color: 120;
   --time-bar: red;
   --width: 70%;
-  --bar-height: 0;
+  --bar-height: -100px;
 }
 
 html, body {
@@ -35,6 +35,11 @@ td {
   --c: var(--accent-color);
   --h: calc(100% - 0.2em);
   --w: 0.3em;
+}
+
+u {
+  padding: 0 0.3em;
+  cursor: pointer;
 }
 
 tr:nth-child(1)>*::after {
@@ -111,7 +116,7 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
 
 .nSpan {
   position: absolute;
-  top: 50%; 
+  top: 50%;
   right: 0.2em;
   font-size: xx-large;
   transform: translateY(-50%);
@@ -124,6 +129,7 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
   text-align: left;
   background-color: hsla(var(--c), 100%, 40%, 0.15);
 }
+
 .format:hover {
   background-color: hsla(var(--c), 100%, 40%, 0.4);
 }
