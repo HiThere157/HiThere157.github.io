@@ -123,6 +123,9 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
   text-align: left;
   background-color: hsla(var(--c), 100%, 40%, 0.15);
 }
+.format:hover {
+  background-color: hsla(var(--c), 100%, 40%, 0.4);
+}
 
 .format::before {
   content: "";
