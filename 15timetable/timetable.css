@@ -111,8 +111,9 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
 
 .nSpan {
   position: absolute;
+  top: 50%; 
   right: 0.2em;
-  top: 50%;
+  font-size: xx-large;
   transform: translateY(-50%);
 }
 
