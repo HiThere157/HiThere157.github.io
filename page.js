@@ -1,5 +1,5 @@
 function click_icon(elem, hover = false) {
-  if(elem == undefined || list[elem.id] == undefined){
+  if (elem == undefined || list[elem.id] == undefined) {
     // document.getElementById("backgroundIFrame").src = "";
     return
   }
@@ -7,9 +7,9 @@ function click_icon(elem, hover = false) {
   let href = list[elem.id][1].split(".");
 
   if (href[href.length - 1] == "html") {
-    if(hover == false){
+    if (hover == false) {
       window.location.href = href.join(".");
-    }else{
+    } else {
       // document.getElementById("backgroundIFrame").src = href.join(".");
     }
 
@@ -21,13 +21,13 @@ function click_icon(elem, hover = false) {
   }
 }
 
-var list = { "icon0": ["Game of Life", "/4gol/index.html"], "icon1": ["Maze Generator", "/6maze/index.html"], "icon2": ["Mine Sweeper", "/9mineSweeper/index.html"], "icon3": ["Snake", "/13snake/index.html"], "icon4": ["Ray Cast", "/11rayCast/index.html"], "icon5": ["HTML Shooter", "shooter/shooter.js"], "icon13": ["DataViewer v2", "/10data_viewer_v2/data_viewer.html"] }
+var list = { "icon0": ["Game of Life", "/4gol/index.html"], "icon1": ["Maze Generator", "/6maze/index.html"], "icon2": ["Mine Sweeper", "/9mineSweeper/index.html"], "icon3": ["Snake", "/13snake/index.html"], "icon4": ["Ray Cast", "/11rayCast/index.html"], "icon5": ["HTML Shooter", "shooter/shooter.js"], "icon12": ["Timetable", "/15timetable/index.html"], "icon13": ["DataViewer v2", "/10data_viewer_v2/data_viewer.html"] }
 var key = Object.keys(list);
 
 function refresh_Icons() {
   for (var i = 0; i < key.length; i++) {
     document.getElementsByName(key[i])[0].innerText = list[key[i]][0];
-    document.getElementsByName(key[i] + "_i")[0].innerText = key[i].substring(4,key[i].length);
+    document.getElementsByName(key[i] + "_i")[0].innerText = key[i].substring(4, key[i].length);
   }
 }
 
