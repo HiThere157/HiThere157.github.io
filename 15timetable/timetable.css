@@ -53,6 +53,7 @@ tr:nth-child(1)>*::after {
 
 tr:nth-child(1)>*:nth-child(1) {
   width: 9em;
+  min-width: 8em;
 }
 
 tr:nth-child(1)>*, tr:nth-child(2)>* {
@@ -78,6 +79,7 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
   display: flex;
   height: 1em;
   width: var(--width);
+  min-width: 15em;
   padding: 0.1em;
   font-size: xx-large;
   border-radius: 3px;
@@ -100,6 +102,7 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
   width: 0.3em;
   height: 0.3em;
   background-color: var(--time-bar);
+  transition: 1s;
   z-index: 2;
 }
 
@@ -111,6 +114,7 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
   height: 0.1em;
   width: calc(var(--width) + 2em);
   background-color: var(--time-bar);
+  transition: 1s;
   z-index: 2;
 }
 
@@ -157,7 +161,7 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 0.6em;
   background-color: transparent;
 }
 
