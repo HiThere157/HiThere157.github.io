@@ -162,6 +162,7 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
 
 ::-webkit-scrollbar {
   width: 0.6em;
+  height: 0.6em;
   background-color: transparent;
 }
 
