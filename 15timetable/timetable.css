@@ -8,6 +8,10 @@
   --bar-height: -100px;
 }
 
+::selection {
+  background-color: hsla(0, 0%, 13%, 0.8);
+}
+
 html, body {
   height: 100%;
   padding: 0;
@@ -86,6 +90,7 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
   align-items: center;
   justify-content: space-between;
   background-color: var(--secondary-background);
+  user-select: none;
 }
 
 .main {
