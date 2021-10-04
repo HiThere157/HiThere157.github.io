@@ -14,7 +14,7 @@ function makeTableHTML(Array, n) {
       }
       let _nSpan = "";
       if (j == 0 && i > 0) {
-        _nSpan = "<span class=nSpan>" + n[i - 1] + "</span>";
+        _nSpan = "<span class=mr>" + n[i - 1] + "</span>";
       }
 
       result += "<td" + _add + ">" + tmp.toString() + _nSpan + "</td>";
@@ -95,14 +95,55 @@ function addGet(param) {
   document.location.search = param;
 }
 
+var m = false;
+function lmDm() {
+  let btn = document.getElementById("lmDm_Btn");
+  m = !m;
+  if (m == true) {
+    var _add = ["-lm", 0];
+    btn.style.backgroundImage = "url(icons/moon_icon.svg)";
+    document.documentElement.style.setProperty("--opacity", 0.3);
+  } else {
+    var _add = ["-dm", 1];
+    document.documentElement.style.setProperty("--opacity", 0.15);
+    btn.style.backgroundImage = "url(icons/sun_icon.svg)";
+  }
+
+  ["--pimary-background", "--secondary-background", "--font-color"].forEach(element => {
+    document.documentElement.style.setProperty(element, getComputedStyle(document.body).getPropertyValue(element + _add[0]));
+  });
+
+  [...document.getElementsByClassName("Btn_container")[0].children].forEach(element => {
+    element.style.webkitFilter = "invert(" + _add[1] + ")";
+  });
+}
+
+var sn = false;
+function showNames() {
+  let btn = document.getElementById("names_Btn");
+  sn = !sn;
+  if (sn == true) {
+    var _add = "block";
+    btn.style.backgroundImage = "url(icons/eye_off_icon.svg)";
+  } else {
+    var _add = "none";
+    btn.style.backgroundImage = "url(icons/eye_icon.svg)";
+  }
+
+  [...document.getElementsByClassName("br")].forEach(element => {
+    element.style.display = _add;
+  });
+}
+
 function setBar() {
   var date = new Date();
-  document.getElementById("header").innerHTML = "<span>Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".") + "</span><span>Time: " + [date.getHours(), fillZero(date.getMinutes())].join(":") + "</span>";
+  document.getElementById("date_span").innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
+  document.getElementById("time_span").innerText = "Time: " + [date.getHours(), fillZero(date.getMinutes())].join(":");
 
   let tableTop = getAbsoluteY(document.getElementById("R1"));
   let tableHeight = getAbsoluteY(document.getElementById("R" + times.length), true) - tableTop;
 
-  let minsNow = getMinutes([date.getHours(), date.getMinutes()].join(":"));
+  let minsNow = getMinutes(date.getHours() + ":" + date.getMinutes());
   // let minsNow = getMinutes("13:25");
   let minsMax = getMinutes(startEndTimes[startEndTimes.length - 1][1]);
   let minsMin = getMinutes(startEndTimes[0][0]);
@@ -117,7 +158,7 @@ function setBar() {
 var getParam = window.location.search.substr(1).replaceAll("<", "").replaceAll(">", "").split("&");
 var saved = {
   //lesson length (delimited by ,) & Days/Lessons (delimited by ; and lessons by ,) & breaks & start time & Lessons with their color (delimited by , and :)
-  "OF10S2": "15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0,IT-Systeme:180,AP:130,Politik:200,Ethik/Reli:300,BwP:90,Deutsch:120,IT-Technik:260".split("&")
+  "OF10S2": "15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0:Fr. Klingspor,IT-Systeme:180:Hr. Elter,AP:130:Hr. Schmidt+Hr. Unger,Politik:200:Hr. Berberich,Ethik/Reli:300:??,BwP:80:Hr. Geheeb,Deutsch:120:Hr. Foltin,IT-Technik:260:Hr. Geheeb+Hr. Zimmermann".split("&")
 }
 if (saved[getParam] != undefined) {
   getParam = saved[getParam];
@@ -128,7 +169,7 @@ if (saved[getParam] != undefined) {
   headerElem.style.height = "2em";
   headerElem.style.justifyContent = "space-around";
 
-} else if (getParam == "Hue") {
+} else if (getParam == "param") {
   let slider = document.createElement("input");
   slider.type = "range";
   slider.min = 0;
@@ -146,7 +187,10 @@ var times = getParam[0].split(",").map(time => parseInt(time));
 var schedule = getParam[1].split(";").map(day => day.split(","));
 var breaks = (parseInt(getParam[2]) >>> 0).toString(2).split("").reverse().join("");
 var startTime = getParam[3];
-var hues = getParam[4].split(",").map(hue => hue.split(":"));
+params = [];
+if (getParam[4] != undefined) {
+  params = getParam[4].split(",").map(param => param.split(":"));
+}
 
 //calculate lesson times & make the html table
 var nLesson = [];
@@ -171,10 +215,12 @@ for (let i = 0; i < times.length; i++) {
   document.getElementById("R" + (i + 1)).style.height = 1.5 * times[i] / 15 + "em";
 }
 
-//set all lessons to a different color
+//set all lessons to a different color & teacher
 let colors = {};
-hues.forEach(hue => {
-  colors[hue[0].toLowerCase()] = hue[1];
+let teachers = {};
+params.forEach(param => {
+  colors[param[0].toLowerCase()] = param[1];
+  teachers[param[0].toLowerCase()] = param[2];
 });
 for (let i = 1; i < schedule.length; i++) {
   for (let j = 0; j < schedule[i].length; j++) {
@@ -183,11 +229,14 @@ for (let i = 1; i < schedule.length; i++) {
     if (colors[tmp] != undefined) {
       tmpElem.style.setProperty("--c", colors[tmp]);
     }
+    if (teachers[tmp] != undefined) {
+      tmpElem.innerHTML += "<span class=br>" + teachers[tmp].replaceAll("+", "<br>") + "<span>";
+    }
 
     if (j > 1) {
       if (tmp == schedule[i][j - 1].toLowerCase()) {
         tmpElem.style.setProperty("--w", "0");
-        tmpElem.innerText = "";
+        tmpElem.innerHTML = "";
         document.getElementById("R" + (j)).getElementsByTagName("td")[i].style.setProperty("--h", "110%");
       }
     }

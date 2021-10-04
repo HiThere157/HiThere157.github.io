@@ -1,15 +1,18 @@
 :root {
-  --pimary-background: hsl(0, 0%, 20%);
-  --secondary-background: hsl(0, 0%, 15%);
-  --font-color: hsl(0, 0%, 80%);
+  --pimary-background: var(--pimary-background-dm);
+  --pimary-background-dm: hsl(0, 0%, 20%);
+  --pimary-background-lm: hsl(0, 0%, 80%);
+  --secondary-background: var(--secondary-background-dm);
+  --secondary-background-dm: hsl(0, 0%, 15%);
+  --secondary-background-lm: hsl(0, 0%, 70%);
+  --font-color: var(--font-color-dm);
+  --font-color-dm: hsl(0, 0%, 80%);
+  --font-color-lm: hsl(0, 0%, 20%);
   --accent-color: 120;
   --time-bar: red;
   --width: 70%;
   --bar-height: -100px;
-}
-
-::selection {
-  background-color: hsla(0, 0%, 13%, 0.8);
+  --opacity: 0.15;
 }
 
 html, body {
@@ -123,7 +126,7 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
   z-index: 2;
 }
 
-.nSpan {
+.mr {
   position: absolute;
   top: 50%;
   right: 0.2em;
@@ -131,16 +134,24 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
   transform: translateY(-50%);
 }
 
+.br {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  right: 0.2em;
+  font-size: large;
+}
+
 .format {
   position: relative;
   height: 0;
   padding: 0.1em 0.5em;
   text-align: left;
-  background-color: hsla(var(--c), 100%, 40%, 0.15);
+  background-color: hsla(var(--c), 100%, 40%, var(--opacity));
 }
 
 .format:hover {
-  background-color: hsla(var(--c), 100%, 40%, 0.4);
+  background-color: hsla(var(--c), 100%, 40%, calc(var(--opacity)*2));
 }
 
 .format::before {
@@ -163,6 +174,35 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
   width: var(--w);
   background-color: hsl(var(--c), 100%, 40%);
   z-index: 1;
+}
+
+.Btn_container {
+  display: flex;
+  column-gap: 0.3em;
+}
+
+.Btn_container>* {
+  filter: invert(1);
+  height: 2rem;
+  width: 2rem;
+  padding: 0.3rem;
+  border-radius: 5px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: hsla(0, 0%, 0%, 0.15);
+  transition: 50ms;
+}
+
+.Btn_container>*:hover {
+  background-color: hsla(0, 0%, 0%, 0.25);
+}
+
+#lmDm_Btn {
+  background-image: url(icons/sun_icon.svg);
+}
+
+#names_Btn {
+  background-image: url(icons/eye_icon.svg);
 }
 
 ::-webkit-scrollbar {
