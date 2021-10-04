@@ -169,7 +169,7 @@ if (saved[getParam] != undefined) {
   headerElem.style.height = "2em";
   headerElem.style.justifyContent = "space-around";
 
-} else if (getParam == "param") {
+} else if (getParam == "hue") {
   let slider = document.createElement("input");
   slider.type = "range";
   slider.min = 0;
