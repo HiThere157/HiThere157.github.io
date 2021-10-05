@@ -1,10 +1,10 @@
 :root {
   --pimary-background: var(--pimary-background-dm);
   --pimary-background-dm: hsl(0, 0%, 20%);
-  --pimary-background-lm: hsl(0, 0%, 80%);
+  --pimary-background-lm: hsl(0, 0%, 100%);
   --secondary-background: var(--secondary-background-dm);
   --secondary-background-dm: hsl(0, 0%, 15%);
-  --secondary-background-lm: hsl(0, 0%, 70%);
+  --secondary-background-lm: hsl(0, 0%, 85%);
   --font-color: var(--font-color-dm);
   --font-color-dm: hsl(0, 0%, 80%);
   --font-color-lm: hsl(0, 0%, 20%);
