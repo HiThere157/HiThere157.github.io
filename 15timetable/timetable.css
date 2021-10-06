@@ -135,7 +135,6 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
 }
 
 .br {
-  display: none;
   position: absolute;
   bottom: 0;
   right: 0.2em;
@@ -202,7 +201,7 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
 }
 
 #names_Btn {
-  background-image: url(icons/eye_icon.svg);
+  background-image: url(icons/eye_off_icon.svg);
 }
 
 ::-webkit-scrollbar {

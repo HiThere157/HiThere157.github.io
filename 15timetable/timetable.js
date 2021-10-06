@@ -118,7 +118,7 @@ function lmDm() {
   });
 }
 
-var sn = false;
+var sn = true;
 function showNames() {
   let btn = document.getElementById("names_Btn");
   sn = !sn;
@@ -155,7 +155,8 @@ function setBar() {
   document.documentElement.style.setProperty("--bar-height", tableHeight / perc + tableTop + "px");
 }
 
-var getParam = window.location.search.substr(1).replaceAll("<", "").replaceAll(">", "").split("&");
+var getParams = window.location.search.substr(1).replaceAll("<", "").replaceAll(">", "").split("&");
+var getParam = getParams[0];
 var saved = {
   //lesson length (delimited by ,) & Days/Lessons (delimited by ; and lessons by ,) & breaks & start time & Lessons with their color (delimited by , and :)
   "OF10S2": "15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0:Fr. Klingspor,IT-Systeme:180:Hr. Elter,AP:130:Hr. Schmidt+Hr. Unger,Politik:200:Hr. Berberich,Ethik/Reli:300:Fr. Beckmann+Fr. Hoffmann,BwP:80:Hr. Geheeb,Deutsch:120:Hr. Foltin,IT-Technik:260:Hr. Geheeb+Hr. Zimmermann".split("&")
@@ -181,6 +182,15 @@ if (saved[getParam] != undefined) {
 
   document.getElementById("main").appendChild(slider);
   changeSlider(0);
+}
+
+if (getParams[1] != undefined) {
+  if (getParams[1].indexOf("h") != -1) {
+    setTimeout(showNames, 0);
+  }
+  if (getParams[1].indexOf("l") != -1) {
+    setTimeout(lmDm, 0);
+  }
 }
 
 var times = getParam[0].split(",").map(time => parseInt(time));
