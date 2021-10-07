@@ -140,13 +140,13 @@ function setBar() {
   document.getElementById("date_span").innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
   document.getElementById("time_span").innerText = "Time: " + [date.getHours(), fillZero(date.getMinutes())].join(":");
 
-  // document.getElementById("R0").getElementsByTagName("td")[date.getDay()].style.color = "#C00";
+  document.getElementById("main").style.setProperty("--bar-width", getComputedStyle(document.getElementById("R0")).width)
 
   let tableTop = getAbsoluteY(document.getElementById("R1"));
   let tableHeight = getAbsoluteY(document.getElementById("R" + times.length), true) - tableTop;
 
-  // let minsNow = getMinutes(date.getHours() + ":" + date.getMinutes());
-  let minsNow = getMinutes("8:50");
+  let minsNow = getMinutes(date.getHours() + ":" + date.getMinutes());
+  // let minsNow = getMinutes("8:50");
   let minsMax = getMinutes(startEndTimes[startEndTimes.length - 1][1]);
   let minsMin = getMinutes(startEndTimes[0][0]);
 
