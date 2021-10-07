@@ -96,7 +96,7 @@ function addGet(param) {
 }
 
 var m = false;
-function lmDm() {
+function changeMode() {
   let btn = document.getElementById("lmDm_Btn");
   m = !m;
   if (m == true) {
@@ -140,11 +140,13 @@ function setBar() {
   document.getElementById("date_span").innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
   document.getElementById("time_span").innerText = "Time: " + [date.getHours(), fillZero(date.getMinutes())].join(":");
 
+  // document.getElementById("R0").getElementsByTagName("td")[date.getDay()].style.color = "#C00";
+
   let tableTop = getAbsoluteY(document.getElementById("R1"));
   let tableHeight = getAbsoluteY(document.getElementById("R" + times.length), true) - tableTop;
 
-  let minsNow = getMinutes(date.getHours() + ":" + date.getMinutes());
-  // let minsNow = getMinutes("13:25");
+  // let minsNow = getMinutes(date.getHours() + ":" + date.getMinutes());
+  let minsNow = getMinutes("8:50");
   let minsMax = getMinutes(startEndTimes[startEndTimes.length - 1][1]);
   let minsMin = getMinutes(startEndTimes[0][0]);
 
@@ -189,7 +191,7 @@ if (getParams[1] != undefined) {
     setTimeout(showNames, 0);
   }
   if (getParams[1].indexOf("l") != -1) {
-    setTimeout(lmDm, 0);
+    setTimeout(changeMode, 0);
   }
 }
 
@@ -201,8 +203,6 @@ params = [];
 if (getParam[4] != undefined) {
   params = getParam[4].split(",").map(param => param.split(":"));
 }
-
-console.log(getParam)
 
 //calculate lesson times & make the html table
 var nLesson = [];

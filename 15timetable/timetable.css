@@ -9,7 +9,7 @@
   --font-color-dm: hsl(0, 0%, 80%);
   --font-color-lm: hsl(0, 0%, 20%);
   --accent-color: 120;
-  --time-bar: red;
+  --accent-color2: red;
   --width: 70%;
   --bar-height: -100px;
   --opacity: 0.15;
@@ -109,7 +109,7 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
   left: calc((100% - var(--width))/2 - 1em);
   width: 0.3em;
   height: 0.3em;
-  background-color: var(--time-bar);
+  background-color: var(--accent-color2);
   transition: 1s;
   z-index: 2;
 }
@@ -121,7 +121,7 @@ tr:nth-child(1)>*, tr:nth-child(2)>* {
   left: calc((100% - var(--width))/2 - 1em);
   height: 0.1em;
   width: calc(var(--width) + 2em);
-  background-color: var(--time-bar);
+  background-color: var(--accent-color2);
   transition: 1s;
   z-index: 2;
 }
