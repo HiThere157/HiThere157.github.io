@@ -6,18 +6,14 @@ function copyObj(obj) {
     });
     return newArray;
   } else if (typeof obj == "object") {
-    let keys = Object.getOwnPropertyNames(obj);
     let newObj = {};
-    keys.forEach(key => {
-      let tmp = copyObj(obj[key])
-      newObj[key] = tmp;
+    Object.getOwnPropertyNames(obj).forEach(key => {
+      newObj[key] = copyObj(obj[key]);
     });
 
     let proto = Object.getPrototypeOf(obj);
-    let protoKeys = Object.getOwnPropertyNames(proto);
     let newProto = {};
-
-    protoKeys.forEach(protoKey => {
+    Object.getOwnPropertyNames(proto).forEach(protoKey => {
       if (protoKey != "constructor") {
         newProto[protoKey] = proto[protoKey];
       }
@@ -25,7 +21,6 @@ function copyObj(obj) {
 
     Object.setPrototypeOf(newObj, newProto);
     return newObj;
-  } else {
-    return obj;
   }
+  return obj;
 }
