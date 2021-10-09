@@ -141,7 +141,9 @@ function setBar() {
   document.getElementById("time_span").innerText = "Time: " + [date.getHours(), fillZero(date.getMinutes())].join(":");
 
   document.getElementById("main").style.setProperty("--bar-width", getComputedStyle(document.getElementById("R0")).width)
-  document.getElementById("R0").getElementsByTagName("td")[date.getDay()].style.setProperty("--accent-color", "0")
+  if(date.getDay() < 6){
+    document.getElementById("R0").getElementsByTagName("td")[date.getDay()].style.setProperty("--accent-color", "0")
+  }
 
   let tableTop = getAbsoluteY(document.getElementById("R1"));
   let tableHeight = getAbsoluteY(document.getElementById("R" + times.length), true) - tableTop;
