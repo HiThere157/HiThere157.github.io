@@ -128,10 +128,10 @@ function setupControlButtons() {
 function modeButtonHandler() {
   console.log(mode)
   if (mode) {
-    document.getElementById("mode_button").style.backgroundImage = "url('icons/navigation_icon.svg')"
+    document.getElementById("mode_button").style.backgroundImage = "url('icons/mouse_pointer_icon.svg')"
     mode = false;
   } else {
-    document.getElementById("mode_button").style.backgroundImage = "url('icons/mouse_pointer_icon.svg')"
+    document.getElementById("mode_button").style.backgroundImage = "url('icons/navigation_icon.svg')"
     mode = true;
   }
 }
