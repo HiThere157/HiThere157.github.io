@@ -9,6 +9,7 @@ var cols = parseInt(width / resolution);
 document.getElementById("gridContainer").style.paddingTop = (parseInt((height % resolution) / 2)).toString() + "px";
 
 var playing = false;
+var mode = true;
 
 var grid = new Array(rows);
 var nextGrid = new Array(rows);
@@ -75,8 +76,8 @@ function createTable() {
       var cell = document.createElement("td");
       cell.setAttribute("id", i + "_" + j);
       cell.setAttribute("class", "dead");
-      //cell.onclick = cellClickHandler;
-      cell.onmouseover = cellClickHandler;
+      cell.onclick = function () { cellClickHandler(this, false) };
+      cell.onmouseover = function () { cellClickHandler(this, true) };
       tr.appendChild(cell);
     }
     table.appendChild(tr);
@@ -84,20 +85,21 @@ function createTable() {
   gridContainer.appendChild(table);
 }
 
-function cellClickHandler() {
-  var rowcol = this.id.split("_");
-  var row = rowcol[0];
-  var col = rowcol[1];
+function cellClickHandler(elem, button_mode) {
+  if (button_mode == mode) {
+    var rowcol = elem.id.split("_");
+    var row = rowcol[0];
+    var col = rowcol[1];
 
-  var classes = this.getAttribute("class");
-  if (classes.indexOf("live") > -1) {
-    this.setAttribute("class", "dead");
-    grid[row][col] = 0;
-  } else {
-    this.setAttribute("class", "live");
-    grid[row][col] = 1;
+    var classes = elem.getAttribute("class");
+    if (classes.indexOf("live") > -1) {
+      elem.setAttribute("class", "dead");
+      grid[row][col] = 0;
+    } else {
+      elem.setAttribute("class", "live");
+      grid[row][col] = 1;
+    }
   }
-
 }
 
 function updateView() {
@@ -117,9 +119,21 @@ function setupControlButtons() {
   document.getElementById("play_pause_button").onclick = function () { startButtonHandler(); };
   document.getElementById("clear_button").onclick = function () { clearButtonHandler(); };
   document.getElementById("random_button").onclick = function () { randomButtonHandler(); };
+  document.getElementById("mode_button").onclick = function () { modeButtonHandler(); };
 
   randomButtonHandler()
   startButtonHandler()
+}
+
+function modeButtonHandler() {
+  console.log(mode)
+  if (mode) {
+    document.getElementById("mode_button").style.backgroundImage = "url('icons/navigation_icon.svg')"
+    mode = false;
+  } else {
+    document.getElementById("mode_button").style.backgroundImage = "url('icons/mouse_pointer_icon.svg')"
+    mode = true;
+  }
 }
 
 function randomButtonHandler() {
@@ -140,12 +154,10 @@ function randomButtonHandler() {
 // start/pause/continue the game
 function startButtonHandler() {
   if (playing) {
-    console.log("Pause the game");
     document.getElementById("play_pause_button").style.backgroundImage = "url('icons/play_icon.svg')"
     playing = false;
     clearTimeout(timer);
   } else {
-    console.log("Continue the game");
     document.getElementById("play_pause_button").style.backgroundImage = "url('icons/pause_icon.svg')"
     playing = true;
     play();
@@ -153,14 +165,7 @@ function startButtonHandler() {
 }
 
 function clearButtonHandler() {
-  console.log("Cleared the grid");
-
-  //playing = false;
-  //clearTimeout(timer);
-
   var cellsList = document.getElementsByClassName("live");
-  // convert to array first, otherwise, you're working on a live node list
-  // and the update doesn't work!
   var cells = [];
   for (var i = 0; i < cellsList.length; i++) {
     cells.push(cellsList[i]);
