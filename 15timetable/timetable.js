@@ -136,13 +136,14 @@ function showNames() {
 }
 
 function setBar() {
-  var date = new Date();
+  let date = new Date();
+  let day = date.getDay();
   document.getElementById("date_span").innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
   document.getElementById("time_span").innerText = "Time: " + [date.getHours(), fillZero(date.getMinutes())].join(":");
 
-  document.getElementById("main").style.setProperty("--bar-width", getComputedStyle(document.getElementById("R0")).width)
-  if(date.getDay() < 6){
-    document.getElementById("R0").getElementsByTagName("td")[date.getDay()].style.setProperty("--accent-color", "0")
+  document.getElementById("main").style.setProperty("--bar-width", getComputedStyle(document.getElementById("R0")).width);
+  if(day > 0 && day < 6){
+    document.getElementById("R0").getElementsByTagName("td")[day].style.setProperty("--accent-color", "0");
   }
 
   let tableTop = getAbsoluteY(document.getElementById("R1"));
