@@ -140,9 +140,9 @@ function makeMove(from, to, color) {
       if (piece.toLowerCase() == "k") {
         castling = [false, false];
       }
-      if (pos[0] == 7 && pos[1] == 0) {
+      if (from[0] == 7 && from[1] == 0) {
         castling[0] = false;
-      } else if (pos[0] == 7 && pos[1] == 7) {
+      } else if (from[0] == 7 && from[1] == 7) {
         castling[1] = false;
       }
 
