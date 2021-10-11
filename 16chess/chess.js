@@ -55,11 +55,13 @@ var board = [
   ["p", "p", "p", "p", "p", "p", "p", "p"],
   ["", "", "", "", "", "", "", ""],
   ["", "", "", "", "", "", "", ""],
-  ["R", "B", "Q", "r", "", "", "", ""],
+  ["", "", "", "", "", "", "", ""],
   ["", "", "", "", "", "", "", ""],
   ["P", "P", "P", "P", "P", "P", "P", "P"],
   ["R", "N", "B", "Q", "K", "B", "N", "R"],
 ]
+
+var castling = [true, true];
 
 var lookupTable = {
   "": "",
@@ -110,7 +112,7 @@ function setBoard(rev = undefined) {
   document.getElementById("board").innerHTML = TBoard;
   [...document.getElementsByClassName("piece")].forEach(element => { dragElement(element) });
 }
-// setBoard(false)
+setBoard(false);
 
 /* check for legal move */
 function makeMove(from, to, color) {
@@ -123,14 +125,25 @@ function makeMove(from, to, color) {
   if (move && color == "" + reverse && to != color) {
     let piece = board[Math.abs((7 * reverse) - from[0])][Math.abs((7 * reverse) - from[1])];
 
-    if (getLegal(piece.toLowerCase(), from).indexOf(to.join()) != -1) {
+    if (connection != undefined && getLegal(piece.toLowerCase(), from).indexOf(to.join()) != -1) {
 
+      /* auto promote */
       if (piece.toLowerCase() == "p" && (to[0] == 7 || to[0] == 0)) {
         piece = "Q";
 
         if (piece == piece.toLowerCase()) {
           piece = "q";
         }
+      }
+
+      /* castling */
+      if (piece.toLowerCase() == "k") {
+        castling = [false, false];
+      }
+      if (pos[0] == 7 && pos[1] == 0) {
+        castling[0] = false;
+      } else if (pos[0] == 7 && pos[1] == 7) {
+        castling[1] = false;
       }
 
       board[Math.abs((7 * reverse) - to[0])][Math.abs((7 * reverse) - to[1])] = piece;
@@ -142,8 +155,56 @@ function makeMove(from, to, color) {
   }
   setBoard();
 }
-function getLegal(p, pos) {
-  ret = [];
+
+function getKing() {
+  for (let i = 0; i < 8; i++) {
+    for (let j = 0; j < 8; j++) {
+      let piece = board[Math.abs((7 * reverse) - i)][Math.abs((7 * reverse) - j)];
+      if (piece.toLowerCase() == "k" && (piece == piece.toUpperCase()) != reverse) {
+        return [i, j];
+      }
+    }
+  }
+}
+
+function copyBoard(b) {
+  let newBoard = [];
+  if (typeof b == "object") {
+    b.forEach(br => {
+      newBoard.push(copyBoard(br));
+    })
+    return newBoard;
+
+  }
+  return b;
+}
+
+function isCheck(b) {
+  let pieces = ["k", "p", "r", "b", "q", "k"];
+  let check = false;
+
+  if (reverse != false) {
+    pieces = pieces.map(p => p.toUpperCase());
+  }
+
+  pieces.forEach(p => {
+    getLegal(p.toLowerCase(), getKing(), reverse, true, false).forEach(moveStr => {
+      let move = moveStr.split(",");
+      move[0] = parseInt(move[0])
+      move[1] = parseInt(move[1])
+
+      let attacker = b[Math.abs((7 * reverse) - move[0])][Math.abs((7 * reverse) - move[1])];
+
+      if (attacker == p) {
+        check = true;
+      }
+    })
+  })
+
+  return check
+}
+
+function getLegal(p, pos, rev = reverse, skipCheck = false, recurse = true) {
   directions = [];
   radius = 9;
 
@@ -152,7 +213,6 @@ function getLegal(p, pos) {
     if (p == "p" && (pos[0] == 6 || pos[0] == 1)) {
       radius = 2;
     }
-    console.log(radius)
   }
 
   if (["r", "q", "k"].indexOf(p) != -1) {
@@ -164,16 +224,38 @@ function getLegal(p, pos) {
   }
 
   if (p == "p") {
-    directions.push([-1, 0])
+    directions.push([-1, 0], [-1, 1], [-1, -1]);
   } else if (p == "n") {
-    directions.push(...[[2, 1], [2, -1], [-2, 1], [-2, -1], [1, 2], [1, -2], [-1, 2], [-1, -2]])
+    directions.push(...[[2, 1], [2, -1], [-2, 1], [-2, -1], [1, 2], [1, -2], [-1, 2], [-1, -2]]);
   }
 
-  return checkMove(pos, directions, radius);
+  let ret = [];
+  checkMove(pos, directions, radius, p, rev, skipCheck).forEach(moveStr => {
+    let move = moveStr.split(",");
+    move[0] = parseInt(move[0]);
+    move[1] = parseInt(move[1]);
+
+    let tmpBoard = copyBoard(board);
+    let piece = tmpBoard[Math.abs((7 * reverse) - pos[0])][Math.abs((7 * reverse) - pos[1])];
+    tmpBoard[Math.abs((7 * reverse) - move[0])][Math.abs((7 * reverse) - move[1])] = piece;
+    tmpBoard[Math.abs((7 * reverse) - pos[0])][Math.abs((7 * reverse) - pos[1])] = "";
+
+    if (recurse) {
+      if (isCheck(tmpBoard) == false) {
+        ret.push(moveStr);
+      }
+    } else {
+      ret.push(moveStr);
+    }
+
+  })
+
+  return ret;
 }
 
-function checkMove(pos, directions, radius) {
+function checkMove(pos, directions, radius, p, rev, skipCheck = false) {
   let ret = []
+  let dId = 0;
 
   directions.forEach(pre => {
     let n = 0, i = pos[0], j = pos[1], di = pre[0], dj = pre[1];
@@ -187,19 +269,42 @@ function checkMove(pos, directions, radius) {
       var onBoard = (i >= 0) && (i < 8) && (j >= 0) && (j < 8);
 
       if (onBoard) {
-        let tp = board[Math.abs((7 * reverse) - i)][Math.abs((7 * reverse) - j)]
+        let tp = board[Math.abs((7 * rev) - i)][Math.abs((7 * rev) - j)]
 
-        var samePiece = ((tp == tp.toUpperCase()) != reverse & tp != "");
-        var oppPiece = (tp == tp.toUpperCase()) == reverse;
+        var samePiece = ((tp == tp.toUpperCase()) != rev && tp != "");
+        var oppPiece = (tp == tp.toUpperCase()) == rev && tp != "";
 
-        if (!samePiece) {
-          ret.push([i, j].join());
+        if (skipCheck == false) {
+          if (p == "p") {
+            if (dId == 0) {
+              if (!samePiece && !oppPiece) {
+                ret.push([i, j].join());
+              }
+            } else {
+              if (!samePiece && tp != "" && n == 1) {
+                ret.push([i, j].join());
+              }
+            }
+
+          } else {
+            if (!samePiece) {
+              ret.push([i, j].join());
+            }
+          }
+
+        } else {
+          if (p == "p") {
+            if (dId != 0) {
+              ret.push([i, j].join());
+            }
+          } else {
+            ret.push([i, j].join());
+          }
         }
       }
     } while (onBoard && !samePiece && !oppPiece && n < radius);
+    dId += 1;
   })
-
-  console.log(ret)
   return ret;
 }
 
