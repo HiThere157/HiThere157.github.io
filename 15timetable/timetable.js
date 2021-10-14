@@ -143,7 +143,9 @@ function setBar() {
 
   document.getElementById("main").style.setProperty("--bar-width", getComputedStyle(document.getElementById("R0")).width);
   if (day > 0 && day < 6) {
-    document.getElementById("R0").getElementsByTagName("td")[day].style.setProperty("--accent-color", "0");
+    let activeElem = document.getElementById("R0").getElementsByTagName("td")[day];
+    activeElem.style.setProperty("--accent-color", "0");
+    activeElem.style.zIndex = 2;
   }
 
   let tableTop = getAbsoluteY(document.getElementById("R1"));
