@@ -102,10 +102,10 @@ function changeMode() {
   if (m == true) {
     var _add = ["-lm", 0];
     btn.style.backgroundImage = "url(icons/moon_icon.svg)";
-    document.documentElement.style.setProperty("--opacity", 0.3);
+    document.documentElement.style.setProperty("--opacity", 0.35);
   } else {
     var _add = ["-dm", 1];
-    document.documentElement.style.setProperty("--opacity", 0.15);
+    document.documentElement.style.setProperty("--opacity", 0.2);
     btn.style.backgroundImage = "url(icons/sun_icon.svg)";
   }
 
@@ -196,6 +196,10 @@ if (getParams[1] != undefined) {
   }
   if (getParams[1].indexOf("l") != -1) {
     setTimeout(changeMode, 0);
+  }
+  if(getParams[1].indexOf("t") != -1) {
+    document.documentElement.style.setProperty("--pimary-background", "#0c0c1d");
+    document.documentElement.style.setProperty("--secondary-background", "#191934");
   }
 }
 
