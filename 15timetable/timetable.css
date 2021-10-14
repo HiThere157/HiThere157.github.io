@@ -1,10 +1,10 @@
 :root {
   --pimary-background: var(--pimary-background-dm);
-  --pimary-background-dm: hsl(0, 0%, 20%);
+  --pimary-background-dm: hsl(215, 28%, 8%);
   --pimary-background-lm: hsl(0, 0%, 100%);
   /**/
   --secondary-background: var(--secondary-background-dm);
-  --secondary-background-dm: hsl(0, 0%, 15%);
+  --secondary-background-dm: hsl(215, 22%, 12%);
   --secondary-background-lm: hsl(0, 0%, 85%);
   /**/
   --font-color: var(--font-color-dm);
@@ -26,6 +26,15 @@ html, body {
   font-size: small;
   color: var(--font-color);
   background-color: var(--pimary-background);
+}
+
+body::after {
+  /* preload SVGs */
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  content: url(icons/eye_icon.svg) url(icons/eye_off_icon.svg) url(icons/moon_icon.svg) url(icons/sun_icon.svg);
 }
 
 table {

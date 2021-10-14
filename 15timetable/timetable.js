@@ -142,7 +142,7 @@ function setBar() {
   document.getElementById("time_span").innerText = "Time: " + [date.getHours(), fillZero(date.getMinutes())].join(":");
 
   document.getElementById("main").style.setProperty("--bar-width", getComputedStyle(document.getElementById("R0")).width);
-  if(day > 0 && day < 6){
+  if (day > 0 && day < 6) {
     document.getElementById("R0").getElementsByTagName("td")[day].style.setProperty("--accent-color", "0");
   }
 
@@ -176,7 +176,7 @@ if (saved[getParam] != undefined) {
   headerElem.style.height = "2em";
   headerElem.style.justifyContent = "space-around";
 
-} else if (getParam == "hue") {
+} else if (getParam == "Hue") {
   let slider = document.createElement("input");
   slider.type = "range";
   slider.min = 0;
@@ -184,7 +184,7 @@ if (saved[getParam] != undefined) {
   slider.step = 1;
   slider.value = 0;
   slider.style = "width: 100%;"
-  slider.onchange = function () { changeSlider(this.value); };
+  slider.oninput = function () { changeSlider(this.value); };
 
   document.getElementById("main").appendChild(slider);
   changeSlider(0);
@@ -197,11 +197,10 @@ if (getParams[1] != undefined) {
   if (getParams[1].indexOf("l") != -1) {
     setTimeout(changeMode, 0);
   }
-  if(getParams[1].indexOf("t") != -1) {
-    document.documentElement.style.setProperty("--pimary-background", "#0c0c1d");
-    document.documentElement.style.setProperty("--secondary-background", "#191934");
-  }
 }
+
+document.getElementById("lmDm_Btn").onclick = changeMode;
+document.getElementById("names_Btn").onclick = showNames;
 
 var times = getParam[0].split(",").map(time => parseInt(time));
 var schedule = getParam[1].split(";").map(day => day.split(","));
