@@ -113,8 +113,8 @@ function changeMode() {
     document.documentElement.style.setProperty(element, getComputedStyle(document.body).getPropertyValue(element + _add[0]));
   });
 
-  [...document.getElementsByClassName("Btn_container")[0].children].forEach(element => {
-    element.style.webkitFilter = "invert(" + _add[1] + ")";
+  ["lmDm_Btn", "names_Btn"].forEach(element => {
+    document.getElementById(element).style.filter = "invert(" + _add[1] + ")";
   });
 }
 
