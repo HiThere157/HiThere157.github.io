@@ -144,7 +144,7 @@ function setBar() {
   document.getElementById("main").style.setProperty("--bar-width", getComputedStyle(document.getElementById("R0")).width);
   if (day > 0 && day < 6) {
     let activeElem = document.getElementById("R0").getElementsByTagName("td")[day];
-    activeElem.style.setProperty("--accent-color", "0");
+    activeElem.style.setProperty("--c", "0");
     activeElem.style.zIndex = 2;
   }
 
@@ -152,7 +152,7 @@ function setBar() {
   let tableHeight = getAbsoluteY(document.getElementById("R" + times.length), true) - tableTop;
 
   let minsNow = getMinutes(date.getHours() + ":" + date.getMinutes());
-  // let minsNow = getMinutes("8:50");
+  // let minsNow = getMinutes("11:50");
   let minsMax = getMinutes(startEndTimes[startEndTimes.length - 1][1]);
   let minsMin = getMinutes(startEndTimes[0][0]);
 
@@ -199,6 +199,13 @@ if (getParams[1] != undefined) {
   }
   if (getParams[1].indexOf("l") != -1) {
     setTimeout(changeMode, 0);
+  }
+  if (getParams[1].indexOf("g") != -1) {
+    setTimeout(function () {
+      [...document.getElementById("R0").childNodes, ...document.getElementsByClassName("format"), document.getElementById("main")].forEach(element => {
+        element.classList.add("neon");
+      }, 0);
+    })
   }
 }
 
