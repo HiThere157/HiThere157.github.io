@@ -133,7 +133,7 @@ u {
   position: absolute;
   left: calc((100% - var(--width))/2 - 1em);
   background-color: hsl(var(--c), 100%, 50%);
-  transition: 0.5s;
+  transition: 1s;
   z-index: 2;
 }
 
@@ -204,7 +204,6 @@ u {
   background-position: center;
   background-repeat: no-repeat;
   background-color: hsla(0, 0%, 0%, 0.15);
-  transition: 50ms;
 }
 
 .header>div>*:hover {
