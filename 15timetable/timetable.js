@@ -221,20 +221,20 @@ function setBar() {
     //check for following lessons
     for (let i = lessonIndex + 1; i < startEndTimes.length; i++) {
       if (schedule[day][i] == lessonName) {
-        endT = startEndTimes[i][1]
+        endT = startEndTimes[i][1];
         totalT += times[i];
       } else {
-        break
+        break;
       }
     }
 
     //check for previous lessons
     for (let i = lessonIndex - 1; i >= 0; i--) {
       if (schedule[day][i] == lessonName) {
-        startT = startEndTimes[i][1]
+        startT = startEndTimes[i][0];
         totalT += times[i];
       } else {
-        break
+        break;
       }
     }
 
