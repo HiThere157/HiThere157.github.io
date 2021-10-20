@@ -180,11 +180,9 @@ var footer_progInfo = document.getElementById("progInfo");
 var footer_progBar = document.getElementById("footer_bar");
 
 //executed every 1000ms, update bar height, footer progress and header info
-var n = 0;
 function setBar() {
-  n += 1;
   let date = new Date();
-  let day = date.getDay() - 2;
+  let day = date.getDay();
   header_date_span.innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
   header_time_span.innerText = "Time: " + [date.getHours(), fillZero(date.getMinutes())].join(":");
 
@@ -199,8 +197,8 @@ function setBar() {
   let tableTop = getAbsoluteY(document.getElementById("R1"));
   let tableHeight = getAbsoluteY(document.getElementById("R" + times.length), true) - tableTop;
 
-  // let minsNow = getMinutes(date.getHours() + ":" + date.getMinutes());
-  let minsNow = getMinutes("7:50") + n;
+  let minsNow = getMinutes(date.getHours() + ":" + date.getMinutes());
+  // let minsNow = getMinutes("7:50");
   let minsMax = getMinutes(startEndTimes[startEndTimes.length - 1][1]);
   let minsMin = getMinutes(startEndTimes[0][0]);
 
@@ -223,7 +221,7 @@ function setBar() {
     let remainingT = getMinutes(endT) - minsNow;
     lessonName = schedule[day][lessonIndex];
 
-    if (lessonName != undefined) {
+    if (lessonName != undefined && lessonName != "") {
       footer_progInfo.innerText = lessonName + " - " + remainingT + " min. remaining"
       footer_progBar.style.width = (1 - remainingT / times[lessonIndex]) * 100 + "%";
       footer_progBar.style.setProperty("--c", colors[lessonName.toLowerCase()]);
@@ -231,7 +229,7 @@ function setBar() {
   }
 
   //hide footer if no lesson
-  if (lessonIndex == -1 || lessonName == undefined) {
+  if (lessonIndex == -1 || lessonName == undefined || lessonName == "") {
     document.getElementById("footer").style.display = "none";
   } else {
     document.getElementById("footer").style.display = "flex";
