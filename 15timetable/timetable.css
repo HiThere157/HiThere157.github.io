@@ -14,6 +14,7 @@
   --bar-height: -100px;
   --opacity: 0.2;
   --width: 70%;
+  --angle: 0deg;
 }
 
 html, body {
@@ -38,7 +39,7 @@ body::after {
 
 table {
   width: 100%;
-  padding-bottom: 2em;
+  padding-bottom: 4em;
 }
 
 tr {
@@ -135,6 +136,65 @@ u {
   background-color: hsl(var(--c), 100%, 50%);
   transition: 1s;
   z-index: 2;
+}
+
+#footer {
+  display: flex;
+  position: fixed;
+  width: 100%;
+  height: 3em;
+  min-width: 70em;
+  bottom: 0;
+  background-color: var(--secondary-background);
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 1s;
+  z-index: 3;
+}
+
+.closed {
+  transform: translateY(100%);
+  --angle: 0deg;
+}
+
+.open {
+  transform: translateY(0);
+  --angle: 180deg;
+}
+
+#footer>span {
+  font-size: xx-large;
+  margin: 0 0.5em;
+  z-index: 4;
+}
+
+#footer_bar {
+  --c: 120;
+  position: absolute;
+  width: 0%;
+  height: 100%;
+  background-color: hsla(var(--c), 100%, 40%, calc(var(--opacity)*2));
+  transition: width 3s;
+}
+
+#openClose_footer {
+  position: absolute;
+  width: 5em;
+  height: 1.25em;
+  top: 0;
+  left: 50%;
+  filter: invert(1);
+  transform: translate(-50%, -100%) rotateX(var(--angle));
+  background-color: hsla(0, 0%, 0%, 0.2);
+  background-image: url(icons/chevron_up_icon.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  user-select: none;
+}
+
+#openClose_footer:hover {
+  background-color: hsla(0, 0%, 0%, 0.4);
 }
 
 .mr {

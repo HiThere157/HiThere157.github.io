@@ -1,3 +1,4 @@
+//make HTML table from array
 function makeTableHTML(Array, n) {
   let result = "<table>";
   for (let i = 0; i < Array.length; i++) {
@@ -25,6 +26,7 @@ function makeTableHTML(Array, n) {
   return result;
 }
 
+//transpose an array
 function transpose(array) {
   let shape = [times.length, array.length];
   let ret = [["Times", "Mon", "Tue", "Wed", "Thu", "Fri"]];
@@ -39,11 +41,13 @@ function transpose(array) {
   return ret;
 }
 
+//7:5 => 7:05
 function fillZero(str) {
   let tmp = "0" + str;
   return tmp.substr(tmp.length - 2, 2);
 }
 
+//add two HH:mm times
 function addTimes(time, add) {
   let tmp = time.split(":");
   let hrs = parseInt(tmp[0]);
@@ -62,6 +66,7 @@ function addTimes(time, add) {
   return [hrs, fillZero(newMins)].join(":");
 }
 
+//HH:mm to Minutes
 function getMinutes(time) {
   let tmp = time.split(":");
   let hrs = parseInt(tmp[0]);
@@ -70,6 +75,7 @@ function getMinutes(time) {
   return hrs * 60 + min;
 }
 
+//absolute Y Position of an Element
 function getAbsoluteY(element, addOwnHeight = false) {
   let top = 0;
   if (addOwnHeight == true) {
@@ -83,6 +89,7 @@ function getAbsoluteY(element, addOwnHeight = false) {
   return top;
 }
 
+//on slider Change (Hue)
 function changeSlider(value) {
   let headerElem = document.getElementById("header");
   headerElem.innerHTML = "<span style='background-color: var(--pimary-background); border-radius: 3px'>" + value + "</span>";
@@ -91,18 +98,21 @@ function changeSlider(value) {
   headerElem.style.justifyContent = "space-around";
 }
 
+//add a Get Parameter
 function addGet(param) {
   document.location.search = param;
 }
 
-var m = false;
+//toggle theme / mode
+var lightMode = false;
 function changeMode() {
   let btn = document.getElementById("lmDm_Btn");
-  m = !m;
-  if (m == true) {
+  lightMode = !lightMode;
+  if (lightMode) {
     var _add = ["-lm", 0];
     btn.style.backgroundImage = "url(icons/moon_icon.svg)";
     document.documentElement.style.setProperty("--opacity", 0.35);
+
   } else {
     var _add = ["-dm", 1];
     document.documentElement.style.setProperty("--opacity", 0.2);
@@ -113,18 +123,20 @@ function changeMode() {
     document.documentElement.style.setProperty(element, getComputedStyle(document.body).getPropertyValue(element + _add[0]));
   });
 
-  ["lmDm_Btn", "names_Btn"].forEach(element => {
+  ["lmDm_Btn", "names_Btn", "openClose_footer"].forEach(element => {
     document.getElementById(element).style.filter = "invert(" + _add[1] + ")";
   });
 }
 
-var sn = true;
-function showNames() {
+//toggle teacher names
+var showNames = true;
+function toggleNames() {
   let btn = document.getElementById("names_Btn");
-  sn = !sn;
-  if (sn == true) {
+  showNames = !showNames;
+  if (showNames) {
     var _add = "block";
     btn.style.backgroundImage = "url(icons/eye_off_icon.svg)";
+
   } else {
     var _add = "none";
     btn.style.backgroundImage = "url(icons/eye_icon.svg)";
@@ -135,12 +147,48 @@ function showNames() {
   });
 }
 
-function setBar() {
-  let date = new Date();
-  let day = date.getDay();
-  document.getElementById("date_span").innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
-  document.getElementById("time_span").innerText = "Time: " + [date.getHours(), fillZero(date.getMinutes())].join(":");
+//toggle teacher names
+var showFooter = false;
+function toggleFooter() {
+  showFooter = !showFooter;
+  if (showFooter) {
+    var _add = "open";
 
+  } else {
+    var _add = "closed";
+  }
+  document.getElementById("footer").classList = _add;
+}
+
+//get Index in startEndTimes of current Time
+function getLessonIndex(mins) {
+  for (let i = 0; i < startEndTimes.length; i++) {
+    if (getMinutes(startEndTimes[i][0]) <= mins && getMinutes(startEndTimes[i][1]) > mins) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+//elements used in setBar
+var header_date_span = document.getElementById("date_span");
+var header_time_span = document.getElementById("time_span");
+
+var footer_start_span = document.getElementById("startT");
+var footer_end_span = document.getElementById("endT");
+var footer_progInfo = document.getElementById("progInfo");
+var footer_progBar = document.getElementById("footer_bar");
+
+//executed every 1000ms, update bar height, footer progress and header info
+var n = 0;
+function setBar() {
+  n += 1;
+  let date = new Date();
+  let day = date.getDay() - 2;
+  header_date_span.innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
+  header_time_span.innerText = "Time: " + [date.getHours(), fillZero(date.getMinutes())].join(":");
+
+  //calc bar height
   document.getElementById("main").style.setProperty("--bar-width", getComputedStyle(document.getElementById("R0")).width);
   if (day > 0 && day < 6) {
     let activeElem = document.getElementById("R0").getElementsByTagName("td")[day];
@@ -151,8 +199,8 @@ function setBar() {
   let tableTop = getAbsoluteY(document.getElementById("R1"));
   let tableHeight = getAbsoluteY(document.getElementById("R" + times.length), true) - tableTop;
 
-  let minsNow = getMinutes(date.getHours() + ":" + date.getMinutes());
-  // let minsNow = getMinutes("11:50");
+  // let minsNow = getMinutes(date.getHours() + ":" + date.getMinutes());
+  let minsNow = getMinutes("7:50") + n;
   let minsMax = getMinutes(startEndTimes[startEndTimes.length - 1][1]);
   let minsMin = getMinutes(startEndTimes[0][0]);
 
@@ -161,14 +209,44 @@ function setBar() {
     perc = (minsMax - minsMin) / (minsNow - minsMin);
   }
   document.documentElement.style.setProperty("--bar-height", tableHeight / perc + tableTop + "px");
+
+  //progress bar footer
+  let lessonIndex = getLessonIndex(minsNow);
+  let lessonName = undefined;
+
+  if (lessonIndex != -1) {
+    let startT = startEndTimes[lessonIndex][0];
+    let endT = startEndTimes[lessonIndex][1];
+
+    footer_start_span.innerText = startT;
+    footer_end_span.innerText = endT;
+    let remainingT = getMinutes(endT) - minsNow;
+    lessonName = schedule[day][lessonIndex];
+
+    if (lessonName != undefined) {
+      footer_progInfo.innerText = lessonName + " - " + remainingT + " min. remaining"
+      footer_progBar.style.width = (1 - remainingT / times[lessonIndex]) * 100 + "%";
+      footer_progBar.style.setProperty("--c", colors[lessonName.toLowerCase()]);
+    }
+  }
+
+  //hide footer if no lesson
+  if (lessonIndex == -1 || lessonName == undefined) {
+    document.getElementById("footer").style.display = "none";
+  } else {
+    document.getElementById("footer").style.display = "flex";
+  }
 }
 
+//get current Get Parameter
 var getParams = decodeURIComponent(window.location.search.substr(1)).replaceAll("<", "").replaceAll(">", "").split("?");
 var getParam = getParams[0].split("&");
 var saved = {
   //lesson length (delimited by ,) & Days/Lessons (delimited by ; and lessons by ,) & breaks & start time & Lessons with their color (delimited by , and :)
   "OF10S2": "15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0:Fr. Klingspor,IT-Systeme:180:Hr. Elter,AP:130:Hr. Schmidt+Fr. Hippeli,Politik:200:Hr. Berberich,Ethik/Reli:300:Fr. Beckmann+Fr. Hoffmann,BwP:80:Hr. Geheeb,Deutsch:120:Hr. Foltin,IT-Technik:260:Hr. Geheeb (KL)+Hr. Zimmermann"
 }
+
+//check for preProgrammed tables or special sites 
 if (saved[getParam] != undefined) {
   document.title = getParam + " | Timetable";
   getParam = saved[getParam].split("&");
@@ -193,9 +271,10 @@ if (saved[getParam] != undefined) {
   changeSlider(0);
 }
 
+//check for aditional Get parameters for predefined modes
 if (getParams[1] != undefined) {
   if (getParams[1].indexOf("h") != -1) {
-    setTimeout(showNames, 0);
+    setTimeout(toggleNames, 0);
   }
   if (getParams[1].indexOf("l") != -1) {
     setTimeout(changeMode, 0);
@@ -209,9 +288,12 @@ if (getParams[1] != undefined) {
   }
 }
 
+//set button handlers
 document.getElementById("lmDm_Btn").onclick = changeMode;
-document.getElementById("names_Btn").onclick = showNames;
+document.getElementById("names_Btn").onclick = toggleNames;
+document.getElementById("openClose_footer").onclick = toggleFooter;
 
+//decode Get parameter into Timetable
 var times = getParam[0].split(",").map(time => parseInt(time));
 var schedule = getParam[1].split(";").map(day => day.split(","));
 var breaks = (parseInt(getParam[2]) >>> 0).toString(2).split("").reverse().join("");
@@ -221,7 +303,7 @@ if (getParam[4] != undefined) {
   params = getParam[4].split(",").map(param => param.split(":"));
 }
 
-//calculate lesson times & make the html table
+//calculate lesson times and make the html table
 var nLesson = [];
 for (let i = 0, t = 0; i < times.length; i++) {
   if (breaks[i] != "1") {
