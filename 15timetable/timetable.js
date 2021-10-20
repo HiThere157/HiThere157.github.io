@@ -215,15 +215,36 @@ function setBar() {
   if (lessonIndex != -1) {
     let startT = startEndTimes[lessonIndex][0];
     let endT = startEndTimes[lessonIndex][1];
+    lessonName = schedule[day][lessonIndex];
+    let totalT = times[lessonIndex];
+
+    //check for following lessons
+    for (let i = lessonIndex + 1; i < startEndTimes.length; i++) {
+      if (schedule[day][i] == lessonName) {
+        endT = startEndTimes[i][1]
+        totalT += times[i];
+      } else {
+        break
+      }
+    }
+
+    //check for previous lessons
+    for (let i = lessonIndex - 1; i >= 0; i--) {
+      if (schedule[day][i] == lessonName) {
+        startT = startEndTimes[i][1]
+        totalT += times[i];
+      } else {
+        break
+      }
+    }
 
     footer_start_span.innerText = startT;
     footer_end_span.innerText = endT;
     let remainingT = getMinutes(endT) - minsNow;
-    lessonName = schedule[day][lessonIndex];
 
     if (lessonName != undefined && lessonName != "") {
       footer_progInfo.innerText = lessonName + " - " + remainingT + " min. remaining"
-      footer_progBar.style.width = (1 - remainingT / times[lessonIndex]) * 100 + "%";
+      footer_progBar.style.width = (1 - remainingT / totalT) * 100 + "%";
       footer_progBar.style.setProperty("--c", colors[lessonName.toLowerCase()]);
     }
   }
