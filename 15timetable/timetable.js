@@ -180,9 +180,10 @@ var footer_progInfo = document.getElementById("progInfo");
 var footer_progBar = document.getElementById("footer_bar");
 
 //executed every 1000ms, update bar height, footer progress and header info
-function setBar() {
+function setBar(time = undefined, nDay = undefined) {
   let date = new Date();
-  let day = date.getDay();
+  let day = nDay || date.getDay();
+
   header_date_span.innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
   header_time_span.innerText = "Time: " + [date.getHours(), fillZero(date.getMinutes())].join(":");
 
@@ -199,6 +200,11 @@ function setBar() {
 
   let minsNow = getMinutes(date.getHours() + ":" + date.getMinutes());
   // let minsNow = getMinutes("7:50");
+
+  if (time != undefined) {
+    minsNow = getMinutes(time);
+  }
+
   let minsMax = getMinutes(startEndTimes[startEndTimes.length - 1][1]);
   let minsMin = getMinutes(startEndTimes[0][0]);
 
@@ -375,4 +381,4 @@ for (let i = 1; i < schedule.length; i++) {
 
 setBar();
 window.onresize = setBar;
-setInterval(setBar, 1000 * 5);
+var intervalID = setInterval(setBar, 1000 * 5);
