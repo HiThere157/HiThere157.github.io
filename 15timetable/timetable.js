@@ -218,7 +218,7 @@ function setBar(time = undefined, nDay = undefined) {
   let lessonIndex = getLessonIndex(minsNow);
   let lessonName = undefined;
 
-  if (lessonIndex != -1) {
+  if (lessonIndex != -1 && day > 0 && day < 6) {
     let startT = startEndTimes[lessonIndex][0];
     let endT = startEndTimes[lessonIndex][1];
     lessonName = schedule[day][lessonIndex];
