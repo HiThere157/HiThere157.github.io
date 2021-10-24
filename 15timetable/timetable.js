@@ -180,9 +180,11 @@ var footer_progInfo = document.getElementById("progInfo");
 var footer_progBar = document.getElementById("footer_bar");
 
 //executed every 1000ms, update bar height, footer progress and header info
-function setBar(time = undefined, nDay = undefined) {
+var setTime = undefined;
+var setDay = undefined;
+function setBar() {
   let date = new Date();
-  let day = nDay || date.getDay();
+  let day = setDay || date.getDay();
 
   header_date_span.innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
   header_time_span.innerText = "Time: " + [date.getHours(), fillZero(date.getMinutes())].join(":");
@@ -198,13 +200,7 @@ function setBar(time = undefined, nDay = undefined) {
   let tableTop = getAbsoluteY(document.getElementById("R1"));
   let tableHeight = getAbsoluteY(document.getElementById("R" + times.length), true) - tableTop;
 
-  let minsNow = getMinutes(date.getHours() + ":" + date.getMinutes());
-  // let minsNow = getMinutes("7:50");
-
-  if (time != undefined) {
-    minsNow = getMinutes(time);
-  }
-
+  let minsNow = getMinutes(setTime || date.getHours() + ":" + date.getMinutes());
   let minsMax = getMinutes(startEndTimes[startEndTimes.length - 1][1]);
   let minsMin = getMinutes(startEndTimes[0][0]);
 
@@ -267,7 +263,7 @@ function setBar(time = undefined, nDay = undefined) {
 var getParams = decodeURIComponent(window.location.search.substr(1)).replaceAll("<", "").replaceAll(">", "").split("?");
 var getParam = getParams[0].split("&");
 var saved = {
-  //lesson length (delimited by ,) & Days/Lessons (delimited by ; and lessons by ,) & breaks & start time & Lessons with their color (delimited by , and :)
+  //lesson length (delimited by ,) & Days/Lessons (delimited by ; and lessons by ,) & don not count & start time & Lessons with their color (delimited by , and :)
   "OF10S2": "15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0:Fr. Klingspor,IT-Systeme:180:Hr. Elter,AP:130:Hr. Schmidt+Fr. Hippeli,Politik:200:Hr. Berberich,Ethik/Reli:300:Fr. Beckmann+Fr. Hoffmann,BwP:80:Hr. Geheeb,Deutsch:120:Hr. Foltin,IT-Technik:260:Hr. Geheeb (KL)+Hr. Zimmermann"
 }
 
@@ -381,4 +377,4 @@ for (let i = 1; i < schedule.length; i++) {
 
 setBar();
 window.onresize = setBar;
-var intervalID = setInterval(setBar, 1000 * 5);
+var intervalID = setInterval(setBar, 1000);

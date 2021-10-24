@@ -61,24 +61,14 @@ u {
   cursor: pointer;
 }
 
-#R0>*::after {
-  content: "";
-  position: absolute;
-  display: block;
-  bottom: 0.1em;
-  height: 0.15em;
-  left: -0.2em;
-  width: calc(100% + 0.4em);
-  background-color: hsl(var(--c), 100%, 35%);
+::-webkit-scrollbar {
+  width: 0.6em;
+  height: 0.6em;
 }
 
-#R0>*:nth-child(1) {
-  width: 9em;
-  min-width: 8em;
-}
-
-#R0>*, tr:nth-child(2)>* {
-  border: 0;
+::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  background-color: hsl(0, 0%, 60%);
 }
 
 .container {
@@ -109,6 +99,27 @@ u {
   user-select: none;
 }
 
+.header>div {
+  display: flex;
+  column-gap: 0.2em;
+}
+
+.button {
+  filter: invert(1);
+  height: 2rem;
+  width: 2rem;
+  padding: 0.3rem;
+  cursor: pointer;
+  border-radius: 5px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: hsla(0, 0%, 0%, 0.15);
+}
+
+.button:hover {
+  background-color: hsla(0, 0%, 0%, 0.25);
+}
+
 .main {
   min-height: 80%;
   width: 100%;
@@ -136,6 +147,26 @@ u {
   background-color: hsl(var(--c), 100%, 50%);
   transition: 1s;
   z-index: 2;
+}
+
+#R0>*::after {
+  content: "";
+  position: absolute;
+  display: block;
+  bottom: 0.1em;
+  height: 0.15em;
+  left: -0.2em;
+  width: calc(100% + 0.4em);
+  background-color: hsl(var(--c), 100%, 35%);
+}
+
+#R0>*:nth-child(1) {
+  width: 9em;
+  min-width: 8em;
+}
+
+#R0>*, tr:nth-child(2)>* {
+  border: 0;
 }
 
 #footer {
@@ -249,41 +280,10 @@ u {
   box-shadow: 0 0 0.1em hsl(var(--c), 100%, 40%), 0 0 0.6em hsl(var(--c), 100%, 40%);
 }
 
-.header>div {
-  display: flex;
-  column-gap: 0.2em;
-}
-
-.header>div>* {
-  filter: invert(1);
-  height: 2rem;
-  width: 2rem;
-  padding: 0.3rem;
-  cursor: pointer;
-  border-radius: 5px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: hsla(0, 0%, 0%, 0.15);
-}
-
-.header>div>*:hover {
-  background-color: hsla(0, 0%, 0%, 0.25);
-}
-
 #lmDm_Btn {
   background-image: url(icons/sun_icon.svg);
 }
 
 #names_Btn {
   background-image: url(icons/eye_off_icon.svg);
-}
-
-::-webkit-scrollbar {
-  width: 0.6em;
-  height: 0.6em;
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 100px;
-  background-color: hsl(0, 0%, 60%);
 }
