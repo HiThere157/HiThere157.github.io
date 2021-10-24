@@ -149,6 +149,10 @@ u {
   z-index: 2;
 }
 
+#R0 {
+  user-select: none;
+}
+
 #R0>*::after {
   content: "";
   position: absolute;
@@ -251,7 +255,7 @@ u {
   background-color: hsla(var(--c), 100%, 40%, var(--opacity));
 }
 
-.format:hover {
+.format:hover, ::selection {
   background-color: hsla(var(--c), 100%, 40%, calc(var(--opacity)*2.25));
 }
 
