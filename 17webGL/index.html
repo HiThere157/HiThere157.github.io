@@ -12,14 +12,24 @@
       margin: 0;
       padding: 0;
     }
+    #credits {
+      position: absolute;
+      bottom: 0;
+      padding: 0.1rem;
+      user-select: none;
+      background-color: #33333377;
+    }
   </style>
   <script src="https://threejs.org/build/three.js"></script>
   <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+  <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
 </head>
 
 <body>
+  <span id="credits"></span>
   <script src="webgl.js"></script>
+  <script src="getFunctions.js"></script>
 </body>
 
 </html>

@@ -1,89 +1,104 @@
 document.body.onload = init;
-function init() {
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
+var obj;
 
-  const renderer = new THREE.WebGLRenderer();
+var settings = {
+  "castle": { cam: [-30, 50, 60], scale: [0.5, 0.5, 0.5], pos: [0, -20, 0], shadowD: 100, selfShadow: true, credits: '"stylised sky player home dioroma" (https://skfb.ly/P6nF) by Sander Vander Meiren is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).' },
+  "gun": { cam: [-20, 15, 120], scale: [0.15, 0.15, 0.15], pos: [0, -50, 0], shadowD: 300, selfShadow: false, credits: '"RAINIER AK - 3D" (https://skfb.ly/6ynGy) by skartemka is licensed under Creative Commons Attribution-NonCommercial (http://creativecommons.org/licenses/by-nc/4.0/).' }
+}
+
+var modelName = window.location.search.substr(1) || "castle";
+
+function init() {
+  if(settings[modelName] == undefined){
+    return 0;
+  }
+  
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 30000);
+  const gltfLoader = new THREE.GLTFLoader();
+  
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x2785c4, 0.5);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   document.body.appendChild(renderer.domElement);
+  
+  gltfLoader.load("assets/" + modelName + "/scene.gltf", function (gltf) {
+    document.getElementById("credits").innerText = settings[modelName].credits;
+    model = gltf.scene;
+    model.scale.set(...settings[modelName].scale);
+    model.position.set(...settings[modelName].pos);
+    
+    if (settings[modelName].selfShadow) {
+      model.traverse(function (node) {
+        if (node.isMesh) {
+          node.castShadow = true;
+          node.receiveShadow = true;
+        }
+      });
+    }
 
-  const cube1 = getBox(1);
-  const plane1 = getPlane(10);
-  const light = getDLight(0, 10, 0, 1024);
+    scene.add(gltf.scene);
+  });
 
-  scene.add(cube1);
-  scene.add(plane1);
+  const light = getDLight(-70, 200, 250, settings[modelName].shadowD);
   scene.add(light);
+  const Alight = getALight(0.7);
+  scene.add(Alight);
 
-  camera.position.z = 5;
-  camera.position.y = 5;
+  camera.position.set(...settings[modelName].cam);
   camera.lookAt(0, 0, 0);
 
-  cube1.position.y = 2;
-  cube1.castShadow = true;
-  plane1.rotation.x = Math.PI / 2;
-  plane1.receiveShadow = true;
+  //add helpers
+  const shadowHelper = new THREE.CameraHelper(light.shadow.camera);
+  const axesHelper = new THREE.AxesHelper(50);
+  scene.add(shadowHelper);
+  scene.add(axesHelper);
+  axesHelper.visible = false;
+  shadowHelper.name = "shadowHelper";
+  axesHelper.name = "axesHelper";
 
-  scene.add(new THREE.CameraHelper(light.shadow.camera));
-  scene.add(new THREE.AxesHelper(5));
-  // scene.add(new THREE.CameraHelper(camera));
-  // scene.add(new THREE.DirectionalLightHelper(light, 5));
-
+  //GUI
   const gui = new dat.GUI();
-  const obj = {
+  obj = {
+    helperShadowVis: true,
+    helperAxesVis: false,
     res: reset = () => {
-      light.position.set(0, 10, 0)
+      light.position.set(-70, 200, 250);
+      light.intensity = 0.9;
+    },
+    hS: helpShadow = () => {
+      this.helperShadowVis = !this.helperShadowVis;
+      scene.getObjectByName("shadowHelper").visible = this.helperShadowVis;
+    },
+    hA: helpAxes = () => {
+      this.helperAxesVis = !this.helperAxesVis;
+      scene.getObjectByName("axesHelper").visible = this.helperAxesVis;
     }
   }
-  const lightFolder = gui.addFolder('Light');
-  lightFolder.add(light.position, 'x', -15, 15).listen();
-  lightFolder.add(light.position, 'y', 0, 25).listen();
-  lightFolder.add(light.position, 'z', -15, 15).listen();
+  const lightFolder = gui.addFolder("Light");
+  lightFolder.add(light.position, "x", -500, 500).listen();
+  lightFolder.add(light.position, "y", -500, 500).listen();
+  lightFolder.add(light.position, "z", -500, 500).listen();
+  lightFolder.add(light, "intensity", 0, 1).listen();
+  lightFolder.add(obj, "res").name("Reset");
   lightFolder.open();
 
-  gui.add(obj, "res").name("Reset");
+  const AlightFolder = gui.addFolder("Ambient Light");
+  AlightFolder.add(Alight, "intensity", 0, 1)
+  AlightFolder.open()
 
+  const helperFolder = gui.addFolder("Helpers");
+  helperFolder.add(obj, "hS").name("Toogle Shadow Helper")
+  helperFolder.add(obj, "hA").name("Toogle Axes Helper")
+  helperFolder.open()
+
+  //rederer & controls
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   const render = () => {
-    cube1.rotation.x += 0.005;
-    cube1.rotation.y += 0.005;
-
-    // light.position.x = 15 * Math.sin(renderer.info.render.frame / 360 * Math.PI * 0.2);
-
     requestAnimationFrame(render);
     renderer.render(scene, camera);
   }
   render();
 }
-
-function getBox(w, h = undefined, d = undefined) {
-  var geometry = new THREE.BoxGeometry(w, h || w, d || w);
-  var material = new THREE.MeshLambertMaterial({ color: 0x00ffaa });
-
-  return new THREE.Mesh(geometry, material);
-}
-
-function getPlane(w, d = undefined) {
-  var geometry = new THREE.PlaneGeometry(w, d || w);
-
-  var material = new THREE.MeshLambertMaterial({
-    color: 0x0095dd,
-    side: THREE.DoubleSide
-  });
-
-  return new THREE.Mesh(geometry, material);
-}
-
-function getDLight(x, y, z, shadowRes = 512) {
-  var light = new THREE.PointLight(0xffffff, 0.75, 0, 2);
-  light.position.set(x, y, z);
-  light.castShadow = true;
-
-  light.shadow.mapSize.width = shadowRes;
-  light.shadow.mapSize.height = shadowRes;
-
-  return light;
-}
-
