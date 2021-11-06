@@ -2,8 +2,8 @@ document.body.onload = init;
 var obj;
 
 var settings = {
-  "castle": { cam: [-30, 50, 60], scale: [0.5, 0.5, 0.5], pos: [0, -20, 0], shadowD: 100, selfShadow: true, credits: '"stylised sky player home dioroma" (https://skfb.ly/P6nF) by Sander Vander Meiren is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).' },
-  "gun": { cam: [-20, 15, 120], scale: [0.15, 0.15, 0.15], pos: [0, -50, 0], shadowD: 300, selfShadow: false, credits: '"RAINIER AK - 3D" (https://skfb.ly/6ynGy) by skartemka is licensed under Creative Commons Attribution-NonCommercial (http://creativecommons.org/licenses/by-nc/4.0/).' }
+  "castle": { cam: [-30, 50, 60], scale: [0.5, 0.5, 0.5], pos: [0, -20, 0], shadowD: 100, selfShadow: true, credits: '"stylised sky player home dioroma" (<u>https://skfb.ly/P6nF</u>) by Sander Vander Meiren is licensed under Creative Commons Attribution (<u>http://creativecommons.org/licenses/by/4.0/</u>).' },
+  "gun": { cam: [-20, 15, 120], scale: [0.15, 0.15, 0.15], pos: [0, -50, 0], shadowD: 300, selfShadow: false, credits: '"RAINIER AK - 3D" (<u>https://skfb.ly/6ynGy</u>) by skartemka is licensed under Creative Commons Attribution-NonCommercial (<u>http://creativecommons.org/licenses/by-nc/4.0/</u>).' }
 }
 
 var modelName = window.location.search.substr(1) || "castle";
@@ -25,7 +25,7 @@ function init() {
   document.body.appendChild(renderer.domElement);
   
   gltfLoader.load("assets/" + modelName + "/scene.gltf", function (gltf) {
-    document.getElementById("credits").innerText = settings[modelName].credits;
+    document.getElementById("credits").innerHTML = settings[modelName].credits;
     model = gltf.scene;
     model.scale.set(...settings[modelName].scale);
     model.position.set(...settings[modelName].pos);
