@@ -22,9 +22,12 @@ function click_icon(elem, hover = false) {
 }
 
 var list = {
-  "icon0": ["Game of Life", "/4gol/index.html"], "icon1": ["Maze Generator", "/6maze/index.html"],
-  "icon2": ["Mine Sweeper", "/9mineSweeper/index.html"], "icon3": ["Snake", "/13snake/index.html"],
-  "icon4": ["Ray Cast", "/11rayCast/index.html"], "icon5": ["WebGL", "/17webGL/index.html"],
+  "icon0": ["Game of Life", "/4gol/"], "icon1": ["Maze Generator", "/6maze/"],
+  "icon2": ["Mine Sweeper", "/9mineSweeper/"], "icon3": ["Snake", "/13snake/"],
+
+  "icon7": ["Ray Cast", "/11rayCast/"], "icon8": ["WebGL", "/17webGL/"],
+  "icon9": ["Marching Squares", "/19mSquares/"],
+
   "icon12": ["HTML Shooter", "shooter/shooter.js"], "icon13": ["DataViewer v2", "/10data_viewer_v2/data_viewer.html"]
 }
 var key = Object.keys(list);

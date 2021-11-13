@@ -2,19 +2,13 @@ var vectors = [];
 var walls = [];
 var pos = [[], []];
 
-var gameVars = {
-  "rays": 700,
+var settings = {
+  rays: 700
 }
 
-let getParam = window.location.search.substr(1).split("&");
-let gameVarKeys = Object.keys(gameVars);
-getParam.forEach(param => {
-  let tmp = param.split("=");
-  if(gameVarKeys.indexOf(tmp[0]) != -1){
-    gameVars[tmp[0]] = parseInt(tmp[1]);
-  }
-});
-var rays = gameVars["rays"];
+const gui = new dat.GUI();
+gui.domElement.parentElement.style.zIndex = 1;
+gui.add(settings, "rays", 10, 1500).onChange(() => { setRays() });
 
 function isbetween(x, a, b) {
   let tmpA = a;
@@ -26,9 +20,9 @@ function isbetween(x, a, b) {
   return x >= tmpA && x <= tmpB
 }
 
-function setRays(n) {
+function setRays() {
   vectors = [];
-  for (var a = 0; a < Math.PI * 2; a += Math.PI / n) {
+  for (var a = 0; a < Math.PI * 2; a += Math.PI / settings.rays) {
     vectors.push(createVector(Math.sin(a), Math.cos(a)));
   }
 }
@@ -38,7 +32,7 @@ function setup() {
   background("#000");
   stroke("#777");
 
-  setRays(rays);
+  setRays();
 
   walls.push([[500, 100], createVector(-400, 600)]);
   walls.push([[50, 100], createVector(500, 100)]);

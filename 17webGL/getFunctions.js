@@ -25,7 +25,7 @@ function getPLight(x, y, z) {
 }
 
 function getDLight(x, y, z, d) {
-  var light = new THREE.DirectionalLight(0xffffff, 0.9);
+  var light = new THREE.DirectionalLight(0xffffff, sceneSettings.lightIntensity);
   light.position.set(x, y, z);
   light.castShadow = true;
 
@@ -42,5 +42,5 @@ function getDLight(x, y, z, d) {
 }
 
 function getALight(intensity) {
-  return new THREE.AmbientLight(0x404040, intensity);
+  return new THREE.AmbientLight(0x505050, intensity);
 }
