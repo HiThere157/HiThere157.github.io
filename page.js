@@ -1,19 +1,10 @@
-function click_icon(elem, hover = false) {
-  if (elem == undefined || list[elem.id] == undefined) {
-    // document.getElementById("backgroundIFrame").src = "";
-    return
-  }
-
+function click_icon(elem) {
   let href = list[elem.id][1].split(".");
 
-  if (href[href.length - 1] == "html") {
-    if (hover == false) {
-      window.location.href = href.join(".");
-    } else {
-      // document.getElementById("backgroundIFrame").src = href.join(".");
-    }
+  if (href[href.length - 1] == "html" || href.length == 1) {
+    window.location.href = href.join(".");
 
-  } else if (href[href.length - 1] == "js" && hover == false) {
+  } else if (href[href.length - 1] == "js") {
     let tmp = document.createElement("script");
     tmp.src = href.join(".");
 
@@ -46,8 +37,6 @@ function setupIcons() {
     var iconId = "icon" + j.toString();
     iconDiv.className = "main_icons";
     iconDiv.onclick = function () { click_icon(this); };
-    iconDiv.onmouseover = function () { click_icon(this, true); };
-    iconDiv.onmouseleave = function () { click_icon(undefined, true); };
     iconDiv.id = iconId;
 
     var iconI = document.createElement("p");
