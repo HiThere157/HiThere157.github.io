@@ -5,8 +5,8 @@ var settings = {
   res: 20,
   threshold: 0.5,
   freq: 5,
-  dx: 0,
-  dy: 0,
+  dx: 25,
+  dy: 25,
   changeSeed: () => {
     noiseSeed(parseInt(Math.random() * 100));
     updateAllInside();
@@ -18,8 +18,8 @@ gui.domElement.parentElement.style = "z-Index: 1; user-select: none;";
 gui.add(settings, "res", 10, 50).onChange(() => { updateSize() });
 gui.add(settings, "threshold", 0, 1).onChange(() => { updateAllInside() });
 gui.add(settings, "freq", 1, 30).onChange(() => { updateAllInside() });
-gui.add(settings, "dx", -25, 25).onChange(() => { updateAllInside() });
-gui.add(settings, "dy", -25, 25).onChange(() => { updateAllInside() });
+gui.add(settings, "dx", 0, 50).onChange(() => { updateAllInside() });
+gui.add(settings, "dy", 0, 50).onChange(() => { updateAllInside() });
 gui.add(settings, "changeSeed").onChange(() => { updateAllInside() });
 
 var columns, rows, points;
@@ -59,11 +59,13 @@ class Point {
   }
 
   updateInside() {
-    this.inside = parseInt(noise(this.x / settings.freq + settings.dx, this.y / settings.freq + settings.dy) < settings.threshold ? 1 : 0);
+    try {
+      this.inside = parseInt(noise(this.x / settings.freq + settings.dx, this.y / settings.freq + settings.dy) < settings.threshold ? 1 : 0);
+    } catch { }
   }
 
   draw() {
-    this.inside ? fill("red") : fill("white");
+    this.inside ? fill("#f00") : fill("#222");
     noStroke();
     circle(this.x * settings.res + 0.5 * settings.res, this.y * settings.res + 0.5 * settings.res, settings.res / 5);
     stroke(255);
