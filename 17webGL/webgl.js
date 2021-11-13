@@ -73,6 +73,8 @@ function init() {
 
   //GUI
   const gui = new dat.GUI();
+  gui.domElement.parentElement.style = "z-Index: 1; user-select: none;";
+
   settings = {
     helperShadowVis: true,
     helperAxesVis: false,

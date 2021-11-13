@@ -7,7 +7,7 @@ var settings = {
 }
 
 const gui = new dat.GUI();
-gui.domElement.parentElement.style.zIndex = 1;
+gui.domElement.parentElement.style = "z-Index: 1; user-select: none;";
 gui.add(settings, "rays", 10, 1500).onChange(() => { setRays() });
 
 function isbetween(x, a, b) {
