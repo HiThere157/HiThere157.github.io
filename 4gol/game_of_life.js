@@ -141,8 +141,7 @@ function randomButtonHandler() {
   clearButtonHandler();
   for (var i = 0; i < rows; i++) {
     for (var j = 0; j < cols; j++) {
-      var isLive = Math.round(Math.random());
-      if (isLive == 1) {
+      if (Math.random() > 0.4) {
         var cell = document.getElementById(i + "_" + j);
         cell.setAttribute("class", "live");
         grid[i][j] = 1;
