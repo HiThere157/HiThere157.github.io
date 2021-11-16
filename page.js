@@ -16,7 +16,7 @@ var list = {
   "icon2": ["Mine Sweeper", "./9mineSweeper/"], "icon3": ["Snake", "./13snake/"],
 
   "icon7": ["Ray Cast", "./11rayCast/"], "icon8": ["WebGL", "./17webGL/"],
-  "icon9": ["Marching Squares", "./19mSquares/"],
+  "icon9": ["Marching Squares", "./19mSquares/"], "icon10": ["Bezier Curve", "./20bezierCurves/"],
 
   "icon12": ["HTML Shooter", "shooter/shooter.js"], "icon13": ["DataViewer v2", "./10data_viewer_v2/data_viewer.html"]
 }
