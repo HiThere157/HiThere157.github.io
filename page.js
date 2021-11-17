@@ -35,7 +35,7 @@ function setupIcons() {
     //icon container
     var iconDiv = document.createElement("div");
     var iconId = "icon" + j.toString();
-    iconDiv.className = "main_icons";
+    iconDiv.className = "main_icon";
     iconDiv.onclick = function () { click_icon(this); };
     iconDiv.id = iconId;
 
