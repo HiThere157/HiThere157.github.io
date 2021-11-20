@@ -15,7 +15,7 @@ var grid = new Array(rows);
 var nextGrid = new Array(rows);
 
 var timer;
-var reproductionTime = 100;
+var reproductionTime = 75;
 
 function initializeGrids() {
   for (var i = 0; i < rows; i++) {
@@ -42,7 +42,6 @@ function copyAndResetGrid() {
   }
 }
 
-// Initialize
 function initialize() {
   createTable();
 
