@@ -64,7 +64,7 @@ function draw() {
   points.forEach((pointGroup, j) => {
     pointGroup.forEach((point, i) => {
       if (i < pointGroup.length - 1) {
-        if (settings.showLines) {
+        if (settings.showLines || (j == 0 && i != 1)) {
           line(point.x, point.y, pointGroup[i + 1].x, pointGroup[i + 1].y);
         }
         point.drawIntPoint(pointGroup[i + 1].x, pointGroup[i + 1].y, j, i);
