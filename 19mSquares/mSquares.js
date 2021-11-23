@@ -111,7 +111,6 @@ function setup() {
   createCanvas(columns * settings.res, rows * settings.res);
   background("#000");
   updateAllInside();
-  frameRate(20);
 }
 
 function draw() {

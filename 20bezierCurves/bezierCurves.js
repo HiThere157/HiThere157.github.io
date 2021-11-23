@@ -18,7 +18,6 @@ gui.add(settings, "toggleLines");
 function setup() {
   createCanvas(window.innerWidth - 10, window.innerHeight - 10);
   background("#000");
-  frameRate(30);
 }
 
 class Point {
