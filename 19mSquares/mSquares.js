@@ -1,6 +1,3 @@
-var w = window.innerWidth;
-var h = window.innerHeight;
-
 var settings = {
   res: 20,
   threshold: 0.5,
@@ -82,8 +79,8 @@ class Point {
 
 //on resolution change
 function updateSize() {
-  columns = parseInt(w / settings.res);
-  rows = parseInt(parseInt(h / 10) * 10 / settings.res);
+  columns = parseInt(window.innerWidth / settings.res);
+  rows = parseInt(parseInt(window.innerHeight / 10) * 10 / settings.res);
 
   points = []
   for (let i = 0; i < columns; i++) {

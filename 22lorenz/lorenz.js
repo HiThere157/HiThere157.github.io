@@ -8,11 +8,12 @@ var settings = {
     settings.a = 10;
     settings.b = 28;
     settings.c = 8 / 3;
-    settings.dt = 0.01;
+    settings.dt = 0.005;
     settings.deletePoints();
   },
   deletePoints: () => {
     points = [];
+    settings.nPoints = 0;
     [x, y, z] = [0.1, 0, 0];
   },
   nPoints: 0
@@ -21,10 +22,10 @@ var settings = {
 const gui = new dat.GUI();
 gui.domElement.parentElement.style = "z-Index: 1; user-select: none;";
 gui.add(settings, "scale", 5, 40);
-gui.add(settings, "dt", 0.0001, 0.005);
-gui.add(settings, "a", 1, 50).onChange(() => { settings.deletePoints() });
-gui.add(settings, "b", 1, 50).onChange(() => { settings.deletePoints() });
-gui.add(settings, "c", 1, 50).onChange(() => { settings.deletePoints() });
+gui.add(settings, "dt", 0.001, 0.01).listen();
+gui.add(settings, "a", 1, 50).onChange(() => { settings.deletePoints() }).listen();
+gui.add(settings, "b", 1, 50).onChange(() => { settings.deletePoints() }).listen();
+gui.add(settings, "c", 1, 50).onChange(() => { settings.deletePoints() }).listen();
 gui.add(settings, "resetToDefault");
 
 var nPoints = gui.add(settings, "nPoints", 0, 0).listen();
@@ -39,17 +40,18 @@ function setup() {
   createCanvas(window.innerWidth - 10, window.innerHeight - 10, WEBGL);
   background("#000");
   stroke("#fff");
+  strokeWeight(2);
   noFill();
 }
 
 function draw() {
   background("#000");
   stroke("#f00");
-  sphere(5);
+  sphere(3);
   stroke("#fff");
   orbitControl(4, 4, 0.6);
 
-  if(settings.nPoints < 6500){
+  if(settings.nPoints < 6000){
     points.push([x, y, z]);
 
     let dx = (settings.a * (y - x)) * settings.dt;
@@ -65,6 +67,6 @@ function draw() {
   points.forEach(point => {
     vertex(...point.map(coord => { return coord * settings.scale }));
   });
-  settings.nPoints = points.length;
+  settings.nPoints += 1;
   endShape();
 }
