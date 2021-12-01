@@ -181,7 +181,7 @@ function draw() {
   tiles.forEach(row => {
     row.forEach(tile => {
       if (tile.show == true) {
-        fill("cecece");
+        fill("#cecece");
       } else {
         fill("#525252");
       }

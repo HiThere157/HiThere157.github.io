@@ -195,11 +195,11 @@ function setup() {
 function draw() {
   tiles.forEach(row => {
     row.forEach(tile => {
-      fill("#cecece");
+      fill("#525252");
       rect(tile.x * resolution, tile.y * resolution, resolution, resolution);
 
       let temp = tile.walls;
-      fill("#222");
+      fill("#000");
       if (temp[0] == 1 && tile.y != 0) {
         rect(tile.x * resolution, tile.y * resolution - 3, resolution, 6)
       }

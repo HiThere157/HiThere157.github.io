@@ -61,12 +61,13 @@ function draw() {
     x += dx;
     y += dy;
     z += dz;
+    
+    settings.nPoints += 1;
   }
 
   beginShape();
   points.forEach(point => {
     vertex(...point.map(coord => { return coord * settings.scale }));
   });
-  settings.nPoints += 1;
   endShape();
 }
