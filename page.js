@@ -17,9 +17,9 @@ var list = {
 
   "icon7": ["Ray Cast", "./11rayCast/"], "icon8": ["WebGL", "./17webGL/"],
   "icon9": ["Marching Squares", "./19mSquares/"], "icon10": ["Bezier Curve", "./20bezierCurves/"],
-  "icon11": ["Lorenz Attractor", "./22lorenz/"],
+  "icon11": ["Lorenz Attractor", "./22lorenz/"], "icon12": ["Aizawa Attractor", "./25aizawa/"],
 
-  "icon6": ["HTML Shooter", "shooter/shooter.js"], "icon13": ["DataViewer v2", "./10data_viewer_v2/data_viewer.html"]
+  "icon5": ["HTML Shooter", "shooter/shooter.js"], "icon6": ["DataViewer v2", "./10data_viewer_v2/data_viewer.html"]
 }
 var key = Object.keys(list);
 
