@@ -42,6 +42,7 @@ gui.add(settings, "f", 0, 5).listen();
 gui.add(settings, "resetToDefault");
 
 gui.add(settings, "nPoints", 100, 3000).onChange(() => { settings.newPoints() }).listen();
+gui.add(settings, "newPoints");
 
 class Point {
   constructor(x, y, z) {
