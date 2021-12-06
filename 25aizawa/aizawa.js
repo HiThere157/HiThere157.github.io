@@ -65,7 +65,7 @@ function setup() {
   createCanvas(window.innerWidth - 10, window.innerHeight - 10, WEBGL);
   background("#000");
   stroke("#fff");
-  strokeWeight(2);
+  strokeWeight(5);
   settings.newPoints();
 }
 
