@@ -31,7 +31,6 @@ function setRays() {
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight - 5);
   background("#000");
-  stroke("#777");
 
   setRays();
 
@@ -45,6 +44,8 @@ function draw() {
   background("#000");
 
   var solutions = {};
+  strokeWeight(3);
+  stroke("#ddd");
   walls.forEach(wall => {
     line(wall[0][0], wall[0][1], wall[0][0] + wall[1].x, wall[0][1] + wall[1].y);
     for (let i = 0; i < vectors.length; i++) {
@@ -61,7 +62,6 @@ function draw() {
       var y = mouseY + s * vy;
 
       if (isbetween(x, wx, wx + wvx) && isbetween(y, wy, wy + wvy) && s > 0) {
-        //circle(x, y, 3);
         if (solutions[i] == undefined) {
           solutions[i] = [[x, y]];
         } else {
@@ -71,6 +71,8 @@ function draw() {
     }
   });
 
+  strokeWeight(1);
+  stroke("#777");
   for (let i = 0; i < vectors.length; i++) {
     if (solutions[i] == undefined) {
       line(mouseX, mouseY, mouseX + vectors[i].x * 9999, mouseY + vectors[i].y * 9999);
