@@ -12,45 +12,59 @@ function click_icon(elem) {
 }
 
 var list = {
-  "icon0": ["Game of Life", "./4gol/"], "icon1": ["Maze Generator", "./6maze/"],
-  "icon2": ["Mine Sweeper", "./9mineSweeper/"], "icon3": ["Snake", "./13snake/"],
+  "icon0": ["Game of Life", "./4gol/"],
+  "icon1": ["Maze Generator", "./6maze/", "p5"],
+  "icon2": ["Mine Sweeper", "./9mineSweeper/", "p5"],
+  "icon3": ["Snake", "./13snake/", "p5"],
+  "icon4": ["WebGL", "./17webGL/", "three.js"],
 
-  "icon7": ["Ray Cast", "./11rayCast/"], "icon8": ["WebGL", "./17webGL/"],
-  "icon9": ["Marching Squares", "./19mSquares/"], "icon10": ["Bezier Curve", "./20bezierCurves/"],
-  "icon11": ["Lorenz Attractor", "./22lorenz/"], "icon12": ["Aizawa Attractor", "./25aizawa/"],
+  "icon5": ["HTML Shooter", "shooter/shooter.js"],
+  "icon6": ["DataViewer v2", "./10data_viewer_v2/data_viewer.html"],
 
-  "icon5": ["HTML Shooter", "shooter/shooter.js"], "icon6": ["DataViewer v2", "./10data_viewer_v2/data_viewer.html"]
+  "icon7": ["Ray Cast", "./11rayCast/", "p5"],
+  "icon8": ["Marching Squares", "./19mSquares/", "p5"],
+  "icon9": ["Bezier Curve", "./20bezierCurves/", "p5"],
+  "icon10": ["Lorenz Attractor", "./22lorenz/", "p5"],
+  "icon11": ["Aizawa Attractor", "./25aizawa/", "p5"],
+  "icon12": ["Cardioid", "./27cardioid/", "p5"],
+  "icon13": ["Lissajous Curves", "./29lissajous/", "p5"]
 }
-var key = Object.keys(list);
+var keys = Object.keys(list);
 
 function setNames() {
-  for (var i = 0; i < key.length; i++) {
-    document.getElementsByName(key[i])[0].innerText = list[key[i]][0];
-    document.getElementsByName(key[i] + "_i")[0].innerText = key[i].substring(4, key[i].length);
+  for (var i = 0; i < keys.length; i++) {
+    document.getElementById(keys[i] + "_name").innerText = list[keys[i]][0];
+    document.getElementById(keys[i] + "_index").innerText = keys[i].substring(4, keys[i].length);
+    document.getElementById(keys[i] + "_frame").innerText =  "";
   }
 }
 
 function setupIcons() {
-  var main = document.getElementById("overlay_main");
+  var main = document.getElementById("overlayMain");
   for (var j = 0; j < 14; j++) {
+    var iconId = "icon" + j;
     //icon container
     var iconDiv = document.createElement("div");
-    var iconId = "icon" + j.toString();
-    iconDiv.className = "main_icon";
-    iconDiv.onclick = function () { click_icon(this); };
     iconDiv.id = iconId;
+    iconDiv.className = "mainIcon";
+    iconDiv.onclick = function () { click_icon(this); };
 
     //icon index
-    var iconI = document.createElement("p");
-    iconI.setAttribute("name", iconId.toString() + "_i");
-    iconI.className = "main_i";
-    iconDiv.appendChild(iconI);
+    var iconIndex = document.createElement("span");
+    iconIndex.id = iconId + "_index";
+    iconIndex.className = "indexSpan";
+    iconDiv.appendChild(iconIndex);
 
     //icon name
-    var iconP = document.createElement("p");
-    iconP.setAttribute("name", iconId);
-    iconP.className = "main_p";
-    iconDiv.appendChild(iconP);
+    var iconName = document.createElement("span");
+    iconName.id = iconId + "_name";
+    iconDiv.appendChild(iconName);
+
+    //icon Framework
+    var iconFrame = document.createElement("div");
+    iconFrame.id = iconId + "_frame";
+    iconFrame.className = "frameworkSpan";
+    iconDiv.appendChild(iconFrame);
 
     main.appendChild(iconDiv);
   }
