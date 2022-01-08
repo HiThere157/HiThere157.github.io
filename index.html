@@ -3,12 +3,31 @@
 
 <head>
   <title>Hi_There157's Github</title>
+  <meta charset="UTF-8">
+  <meta name="author" content="HiThere157">
   <link rel="stylesheet" href="page.css">
 </head>
 
 <body>
-  <div id="overlayMain"></div>
-  <iframe src="./4gol/"></iframe>
+  <div id="mainContainer"></div>
+
+  <template id="cardTemplate">
+    <div class="cardContainer">
+      <div class="cardLibContainer">
+        <span class="cardLibName"></span>
+      </div>
+      <div class="cardText">
+        <span class="cardTitle"></span>
+
+        <span class="cardDescription"></span>
+        <div class="actionContainer">
+          <button class="defaultButton actionCode"></button>
+          <button class="defaultButton actionOpen"></button>
+          <button class="defaultButton actionInfo"></button>
+        </div>
+      </div>
+    </div>
+  </template>
   <script src="page.js"></script>
 </body>
 

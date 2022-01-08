@@ -1,74 +1,66 @@
-function click_icon(elem) {
-  let href = list[elem.id][1];
-  if (href.includes(".js")) {
-    let tmp = document.createElement("script");
-    tmp.src = href;
+var pages = [
+  { title: "Game of Life", desc: "The Game of Life, is a cellular automaton devised by the Mathematician John Horton Conway in 1970", uri: "./4gol/", info: "https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" },
+  { title: "Maze Generator", desc: "Depth First Search (DFS) Maze Generator. One of the simplest ways to generate a maze.", uri: "./6maze/", lib: "p5.js", info: "https://en.wikipedia.org/wiki/Maze_generation_algorithm#Randomized_depth-first_search" },
+  { title: "Mine Sweeper", desc: "Simple implementation of Minesweeper in p5.js", uri: "./9mineSweeper/", lib: "p5.js", info: "https://en.wikipedia.org/wiki/Minesweeper_(video_game)" },
+  { title: "Ray Cast", desc: "Implementation of an intersection algorithm for 'light rays' on obstacles", uri: "./11rayCast/", lib: "p5.js", info: "https://en.wikipedia.org/wiki/Ray_casting" },
+  { title: "WebGL", desc: "THREE.js: Easy to use, lightweight, cross-browser, general purpose 3D library using WebGL", uri: "./17webGL/", lib: "three.js", info: "https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API" },
+  { title: "Marching Squares", desc: "Marching squares is a computer graphics algorithm that generates contours for a two-dimensional scalar field", uri: "./19mSquares/", lib: "p5.js", info: "https://en.wikipedia.org/wiki/Marching_squares" },
+  { title: "Bézier Curve", desc: "Bézier curves are widely used in computer graphics to model smooth curves", uri: "./20bezierCurves/", lib: "p5.js", info: "https://en.wikipedia.org/wiki/B%C3%A9zier_curve" },
+  { title: "Lorenz Attractor", desc: "The Lorenz system is a chaotic system of ordinary differential equations", uri: "./22lorenz/", lib: "p5.js", info: "https://en.wikipedia.org/wiki/Lorenz_system" },
+  { title: "Aizawa Attractor", desc: "The Aizawa Attractor is a chaotic system of ordinary differential equations", uri: "./25aizawa/", lib: "p5.js", info: "https://www.algosome.com/articles/aizawa-attractor-chaos.html" },
+  { title: "Lissajous Curves", desc: "A Lissajous curve is the graph of a system of parametric equations which describe complex harmonic motion", uri: "./29lissajous/", lib: "p5.js", info: "https://en.wikipedia.org/wiki/Lissajous_curve" },
 
-    document.body.appendChild(tmp);
+  { title: "HTML Shooter", desc: "'Asteroid' like Game for all HTML Websites", uri: "./0shooter/shooter.js" },
+  { title: "DataViewer v2", desc: "Online calculator for Data Evaluation", uri: "./10data_viewer_v2/data_viewer.html" }
+];
 
+var libColor = {
+  "p5.js": "#ed225d",
+  "three.js": "#049EF4"
+};
+
+const openURI = (uri) => {
+  if (uri.includes(".js")) {
+    let tmpElement = document.createElement("script");
+    tmpElement.src = uri;
+
+    document.body.appendChild(tmpElement);
   } else {
-    window.location.href = href;
+    window.open(uri, "_blank").focus();
   }
-}
+};
 
-var list = {
-  "icon0": ["Game of Life", "./4gol/"],
-  "icon1": ["Maze Generator", "./6maze/", "p5"],
-  "icon2": ["Mine Sweeper", "./9mineSweeper/", "p5"],
-  "icon3": ["Snake", "./13snake/", "p5"],
-  "icon4": ["WebGL", "./17webGL/", "three.js"],
+const cardTemplate = document.getElementById("cardTemplate");
+const mainContainer = document.getElementById("mainContainer");
 
-  "icon5": ["HTML Shooter", "shooter/shooter.js"],
-  "icon6": ["DataViewer v2", "./10data_viewer_v2/data_viewer.html"],
+pages.forEach(page => {
+  var cardClone = cardTemplate.content.firstElementChild.cloneNode(true);
+  var id = page.uri.split("/")[1]
+  cardClone.style = `background-image: url(assets/${id}.png)`;
+  cardClone.querySelector(".cardTitle").innerText = page.title;
+  cardClone.querySelector(".cardDescription").innerText = page.desc;
 
-  "icon7": ["Ray Cast", "./11rayCast/", "p5"],
-  "icon8": ["Marching Squares", "./19mSquares/", "p5"],
-  "icon9": ["Bezier Curve", "./20bezierCurves/", "p5"],
-  "icon10": ["Lorenz Attractor", "./22lorenz/", "p5"],
-  "icon11": ["Aizawa Attractor", "./25aizawa/", "p5"],
-  "icon12": ["Cardioid", "./27cardioid/", "p5"],
-  "icon13": ["Lissajous Curves", "./29lissajous/", "p5"]
-}
-var keys = Object.keys(list);
+  cardClone.querySelector(".actionCode").onclick = () => { openURI("https://github.com/HiThere157/HiThere157.github.io/tree/main/" + id); };
+  cardClone.querySelector(".actionOpen").onclick = () => { openURI(page.uri); };
 
-function setNames() {
-  for (var i = 0; i < keys.length; i++) {
-    document.getElementById(keys[i] + "_name").innerText = list[keys[i]][0];
-    document.getElementById(keys[i] + "_index").innerText = keys[i].substring(4, keys[i].length);
-    document.getElementById(keys[i] + "_frame").innerText =  "";
-  }
-}
-
-function setupIcons() {
-  var main = document.getElementById("overlayMain");
-  for (var j = 0; j < 14; j++) {
-    var iconId = "icon" + j;
-    //icon container
-    var iconDiv = document.createElement("div");
-    iconDiv.id = iconId;
-    iconDiv.className = "mainIcon";
-    iconDiv.onclick = function () { click_icon(this); };
-
-    //icon index
-    var iconIndex = document.createElement("span");
-    iconIndex.id = iconId + "_index";
-    iconIndex.className = "indexSpan";
-    iconDiv.appendChild(iconIndex);
-
-    //icon name
-    var iconName = document.createElement("span");
-    iconName.id = iconId + "_name";
-    iconDiv.appendChild(iconName);
-
-    //icon Framework
-    var iconFrame = document.createElement("div");
-    iconFrame.id = iconId + "_frame";
-    iconFrame.className = "frameworkSpan";
-    iconDiv.appendChild(iconFrame);
-
-    main.appendChild(iconDiv);
+  if (page.info) {
+    cardClone.querySelector(".actionInfo").onclick = () => { openURI(page.info); };
+  } else {
+    cardClone.querySelector(".actionInfo").style = "opacity: 0.3; cursor: auto;";
   }
 
-  setNames();
-}
-setupIcons();
+  if (page.lib) {
+    cardClone.querySelector(".cardLibName").innerText = page.lib;
+    cardClone.style.setProperty("--accent-color", libColor[page.lib]);
+  } else {
+    cardClone.querySelector(".cardLibContainer").style.display = "none";
+  }
+
+  cardClone.onclick = (event) => {
+    console.log(event.target);
+    if (event.target.className != "actionContainer" && event.target.tagName != "BUTTON") {
+      openURI(page.uri);
+    }
+  }
+  mainContainer.appendChild(cardClone);
+});
