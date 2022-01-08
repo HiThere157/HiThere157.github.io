@@ -109,7 +109,7 @@ html, body {
   justify-content: space-around;
   position: absolute;
   top: 1em;
-  right: 0em;
+  right: 0;
   height: 1.4em;
   width: 5em;
   background-color: var(--accent-color);
