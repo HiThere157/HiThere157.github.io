@@ -1,3 +1,4 @@
+p5.disableFriendlyErrors = true;
 var gameVars = {
   "resolution": 50,
   "startFood": 4,

@@ -1,3 +1,4 @@
+p5.disableFriendlyErrors = true;
 var settings = {
   res: 20,
   threshold: 0.5,

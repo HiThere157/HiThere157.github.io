@@ -1,3 +1,4 @@
+p5.disableFriendlyErrors = true;
 var vectors = [];
 var walls = [];
 var pos = [[], []];

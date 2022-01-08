@@ -1,3 +1,4 @@
+p5.disableFriendlyErrors = true;
 var settings = {
   scale: 200,
   dt: 0.01,
@@ -72,7 +73,6 @@ function setup() {
 function draw() {
   background("#000");
   orbitControl(2, 2, 0.5);
-
   points.forEach((p) => {
     p.updatePos()
   })

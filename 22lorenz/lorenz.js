@@ -1,3 +1,4 @@
+p5.disableFriendlyErrors = true;
 var settings = {
   scale: 10,
   dt: 0.005,
