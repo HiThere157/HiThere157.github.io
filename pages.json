@@ -69,6 +69,12 @@
     "info": "https://en.wikipedia.org/wiki/Lissajous_curve"
   },
   {
+    "title": "Mixed Shapes",
+    "desc": "Matter.js 2D Physics engine Demo",
+    "uri": "./30physics/",
+    "lib": "matter.js"
+  },
+  {
     "title": "HTML Shooter",
     "desc": "'Asteroid' like Game for all HTML Websites",
     "uri": "./0shooter/shooter.js"
