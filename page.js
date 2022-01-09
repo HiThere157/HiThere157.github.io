@@ -3,7 +3,7 @@ var libColor = {
   "three.js": "#049EF4"
 };
 
-const openURI = (uri) => {
+const openURI = (uri, element = undefined) => {
   if (uri.includes(".js")) {
     let tmpElement = document.createElement("script");
     tmpElement.src = uri;
@@ -11,6 +11,10 @@ const openURI = (uri) => {
     document.body.appendChild(tmpElement);
   } else {
     window.open(uri, "_blank").focus();
+  }
+
+  if (element) {
+    element.blur();
   }
 };
 
@@ -21,17 +25,20 @@ fetch("./pages.json").then(response => response.json())
   .then(pages => pages.forEach(page => {
     var cardClone = cardTemplate.content.firstElementChild.cloneNode(true);
     var id = page.uri.split("/")[1]
+
     cardClone.style = `background-image: url(assets/${id}.webp)`;
     cardClone.querySelector(".cardTitle").innerText = page.title;
     cardClone.querySelector(".cardDescription").innerText = page.desc;
 
-    cardClone.querySelector(".actionCode").onclick = () => { openURI("https://github.com/HiThere157/HiThere157.github.io/tree/main/" + id); };
-    cardClone.querySelector(".actionOpen").onclick = () => { openURI(page.uri); };
+    cardClone.querySelector(".actionCode").onclick = (event) => { openURI("https://github.com/HiThere157/HiThere157.github.io/tree/main/" + id, event.target); };
+    cardClone.querySelector(".actionOpen").onclick = (event) => { openURI(page.uri, event.target); };
 
+    var actionInfoElement = cardClone.querySelector(".actionInfo");
     if (page.info) {
-      cardClone.querySelector(".actionInfo").onclick = () => { openURI(page.info); };
+      actionInfoElement.onclick = (event) => { openURI(page.info, event.target); };
     } else {
-      cardClone.querySelector(".actionInfo").style = "opacity: 0.3; cursor: auto;";
+      actionInfoElement.style = "opacity: 0.3; cursor: auto;";
+      actionInfoElement.tabIndex = -1;
     }
 
     if (page.lib) {
@@ -42,7 +49,6 @@ fetch("./pages.json").then(response => response.json())
     }
 
     cardClone.onclick = (event) => {
-      console.log(event.target);
       if (event.target.className != "actionContainer" && event.target.tagName != "BUTTON") {
         openURI(page.uri);
       }

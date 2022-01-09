@@ -22,6 +22,8 @@ h1 {
   text-align: center;
 }
 
+
+/*-- custom scrollbar --*/
 ::-webkit-scrollbar {
   width: .75em;
   height: .75em;
@@ -41,6 +43,8 @@ h1 {
   border-radius: .5em;
 }
 
+
+/*-- media queries --*/
 @media (hover) {
   .cardText {
     transform: translateY(calc(100% - 3.4em));
@@ -63,6 +67,8 @@ h1 {
   }
 }
 
+
+/*-- main + hover, focus --*/
 #mainContainer {
   display: flex;
   flex-wrap: wrap;
@@ -109,6 +115,8 @@ h1 {
   transition-duration: 0ms !important;
 }
 
+
+/*-- Library container + Ribbon --*/
 .cardLibContainer {
   display: flex;
   justify-content: space-around;
@@ -145,6 +153,8 @@ h1 {
   border-right: .5em solid var(--accent-color);
 }
 
+
+/*-- Card Text --*/
 .cardTextContainer {
   position: relative;
   height: 100%;
@@ -158,9 +168,10 @@ h1 {
   bottom: -1px;
   left: 0;
   padding: 1em;
+  padding-top: 1.5em;
   padding-bottom: 0;
   background: linear-gradient(hsl(0 0% 0% / 0),
-      hsl(0 0% 0% / 0.4) 17%,
+      hsl(0 0% 0% / 0.45) 15%,
       hsl(0 0% 0% / 0.7) 40%,
       hsl(0 0% 0% / 1));
 }
@@ -187,6 +198,8 @@ h1 {
   transform-origin: right;
 }
 
+
+/*-- Card action Buttons --*/
 .actionContainer {
   display: flex;
   justify-content: space-around;
@@ -207,7 +220,7 @@ h1 {
   padding: 1.2em;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 75%;
+  background-size: 70%;
   cursor: pointer;
   transition: 200ms;
 }
@@ -223,7 +236,8 @@ h1 {
 .actionOpen {
   height: 2em;
   width: 2em;
-  padding: 1.5em;
+  padding: 1.6em;
+  background-size: 65%;
   background-image: url(assets/icons/open-outline.svg);
 }
 
