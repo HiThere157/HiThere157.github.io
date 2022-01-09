@@ -17,7 +17,7 @@ html, body {
 }
 
 h1 {
-  margin: 0;
+  margin: 0 .5em 0;
   padding: .75em 0;
   text-align: center;
 }
@@ -54,6 +54,10 @@ h1 {
   .cardText>*:not(.cardTitle) {
     opacity: 0;
     transition: opacity 500ms linear;
+  }
+
+  .cardTitle::before {
+    transform: scaleX(0);
   }
 }
 
@@ -115,15 +119,6 @@ h1 {
   transition-duration: 0ms !important;
 }
 
-
-/*-- ::after and ::before default styles --*/
-*::after, *::before {
-  content: "";
-  position: absolute;
-  display: block;
-}
-
-
 /*-- Library container + Ribbon --*/
 .cardLibContainer {
   display: flex;
@@ -137,6 +132,9 @@ h1 {
 }
 
 .cardLibContainer::after {
+  content: "";
+  position: absolute;
+  display: block;
   filter: brightness(.6);
   height: 0;
   width: 0;
@@ -147,6 +145,9 @@ h1 {
 }
 
 .cardLibContainer::before {
+  content: "";
+  position: absolute;
+  display: block;
   height: 0;
   width: 0;
   left: -.5em;
@@ -187,11 +188,13 @@ h1 {
 }
 
 .cardTitle::before {
+  content: "";
+  position: absolute;
+  display: block;
   height: .23em;
   bottom: -.225em;
   width: 110%;
   background-color: var(--accent-color);
-  transform: scaleX(0);
   transition: transform 500ms;
   transition-delay: 100ms;
   transform-origin: right;
