@@ -1,38 +1,15 @@
-var gameVars = {
-  "resolution": 50,
-  "horizontalBias": 1,
-
-  "columns": undefined,
-  "rows": undefined
-}
-
-let getParam = window.location.search.substr(1).split("&");
-let gameVarKeys = Object.keys(gameVars);
-getParam.forEach(param => {
-  let tmp = param.split("=");
-  if(gameVarKeys.indexOf(tmp[0]) != -1){
-    gameVars[tmp[0]] = parseInt(tmp[1]);
-  }
-});
-
 var w = window.innerWidth;
 var h = window.innerHeight;
-var resolution = gameVars["resolution"];
-var horizontalBias = gameVars["horizontalBias"];
+var resolution = 50;
+var horizontalBias = 1;
 
-if(gameVars["columns"] == undefined || gameVars["rows"] == undefined){
-  var columns = parseInt(w / resolution);
-  var rows = parseInt(parseInt(h / 10) * 10 / resolution);
-}else{
-  var columns = gameVars["columns"];
-  var rows = gameVars["rows"];
-}
+var columns = parseInt(w / resolution);
+var rows = parseInt(parseInt(h / 10) * 10 / resolution);
 
 var player;
 var mobile = false;
 var tiles = [];
 var visitedN = 0;
-//vertival/horizontal = 1/4 => 4x horizontal
 
 class Tile {
   constructor(x, y, p) {
@@ -183,9 +160,9 @@ while (visitedN < columns * rows) {
 }
 
 function setup() {
-  frameRate(10);
   createCanvas(columns * resolution, rows * resolution);
   background("#000");
+  frameRate(20);
 
   if (/Android|webOS|iPhone|iPad|Mac|Macintosh|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     mobile = true;
@@ -214,11 +191,6 @@ function draw() {
         fill("green")
         rect(tile.x * resolution + resolution * 0.5 - 5, tile.y * resolution + resolution * 0.5 - 5, 10, 10)
       }
-
-      /*if(tile.visited == true){
-          fill("purple")
-          rect(tile.x*resolution+resolution*0.5-5, tile.y*resolution+resolution*0.5-5, 10, 10)
-      }*/
     });
   });
 
@@ -227,7 +199,7 @@ function draw() {
 
   if (mobile) {
     noStroke();
-    fill(255, 0, 0, 20);
+    fill(255, 0, 0, 15);
     rect(w * 0.2, 0, w * 0.6, h * 0.25);
     rect(w * 0.2, h - h * 0.25, w * 0.6, h * 0.25);
     rect(0, h * 0.25, w * 0.4, h * 0.5);
