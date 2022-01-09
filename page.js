@@ -24,7 +24,7 @@ const mainContainer = document.getElementById("mainContainer");
 fetch("./pages.json").then(response => response.json())
   .then(pages => pages.forEach(page => {
     var cardClone = cardTemplate.content.firstElementChild.cloneNode(true);
-    var id = page.uri.split("/")[1]
+    var id = page.uri.split("/")[1];
 
     cardClone.style = `background-image: url(assets/${id}.webp)`;
     cardClone.querySelector(".cardTitle").innerText = page.title;

@@ -116,6 +116,14 @@ h1 {
 }
 
 
+/*-- ::after and ::before default styles --*/
+*::after, *::before {
+  content: "";
+  position: absolute;
+  display: block;
+}
+
+
 /*-- Library container + Ribbon --*/
 .cardLibContainer {
   display: flex;
@@ -130,9 +138,6 @@ h1 {
 
 .cardLibContainer::after {
   filter: brightness(.6);
-  content: "";
-  position: absolute;
-  display: block;
   height: 0;
   width: 0;
   right: 0;
@@ -142,9 +147,6 @@ h1 {
 }
 
 .cardLibContainer::before {
-  content: "";
-  position: absolute;
-  display: block;
   height: 0;
   width: 0;
   left: -.5em;
@@ -153,6 +155,51 @@ h1 {
   border-right: .5em solid var(--accent-color);
 }
 
+
+/*-- NEW! Ribbon --*/
+.cardNewContainer {
+  display: none;
+  position: absolute;
+  height: 8em;
+  width: 8em;
+  top: -.4em;
+  left: -.4em;
+  overflow: hidden;
+
+  --bg-color: gold;
+}
+
+.cardNewContainer>span {
+  position: absolute;
+  display: block;
+  top: 1.3em;
+  left: -2.7em;
+  padding: .2em;
+  width: 10em;
+  text-align: center;
+  transform: rotate(-45deg);
+  color: #000;
+  background-color: var(--bg-color);
+  z-index: 1;
+}
+
+.cardNewContainer::after {
+  filter: brightness(.6);
+  height: .4em;
+  width: .4em;
+  right: 2.2em;
+  top: 0;
+  background-color: var(--bg-color);
+}
+
+.cardNewContainer::before {
+  filter: brightness(.6);
+  height: .4em;
+  width: .4em;
+  left: 0;
+  top: 5.4em;
+  background-color: var(--bg-color);
+}
 
 /*-- Card Text --*/
 .cardTextContainer {
@@ -186,8 +233,6 @@ h1 {
 }
 
 .cardTitle::before {
-  content: "";
-  position: absolute;
   height: .23em;
   bottom: -.225em;
   width: 110%;
