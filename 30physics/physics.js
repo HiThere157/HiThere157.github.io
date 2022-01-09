@@ -19,7 +19,8 @@ const render = Render.create({
   engine: engine,
   options: {
     width: window.innerWidth,
-    height: window.innerHeight
+    height: window.innerHeight,
+    wireframes: false
   }
 });
 
@@ -33,6 +34,7 @@ var settings = {
     engine.gravity.x = 0;
     engine.gravity.y = 1;
   },
+
   addNBodies: 1,
   addedBodies: 0,
   bodyW: 50,
@@ -48,6 +50,11 @@ var settings = {
       Composite.add(world, createBody(200, 200));
     }
   },
+
+  toggleWireframe: () => {
+    render.options.wireframes = !render.options.wireframes;
+  },
+
   refresh: () => {
     window.location.reload();
   }
@@ -115,6 +122,7 @@ gravityFolder.add(settings, "resetGravity").name("Reset");
 gravityFolder.open();
 
 const bodyFolder = gui.addFolder("Body");
+bodyFolder.add(settings, "toggleWireframe").name("Toggle Wireframe");
 bodyFolder.add(settings, "addNBodies", 1, 10, 1).name("n Bodies").listen();
 bodyFolder.add(settings, "bodyH", 15, 150, 1).name("Height").listen();
 bodyFolder.add(settings, "bodyW", 15, 150, 1).name("Wdith").listen();
