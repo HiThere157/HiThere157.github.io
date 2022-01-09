@@ -27,7 +27,12 @@ fetch("./pages.json").then(response => response.json())
     var cardClone = cardTemplate.content.firstElementChild.cloneNode(true);
     var id = page.uri.split("/")[1];
 
-    cardClone.style = `background-image: url(assets/${id}.webp)`;
+    if (page.noBg == true) {
+      cardClone.style = `background-image: url(assets/icons/logo-github.svg); background-size: 50%; background-position: 50% 40%;`;
+    } else {
+      cardClone.style = `background-image: url(assets/${id}.webp);`;
+    }
+
     cardClone.querySelector(".cardTitle").innerText = page.title;
     cardClone.querySelector(".cardDescription").innerText = page.desc;
 

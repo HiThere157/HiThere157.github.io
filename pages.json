@@ -77,11 +77,13 @@
   {
     "title": "HTML Shooter",
     "desc": "'Asteroid' like Game for all HTML Websites",
-    "uri": "./0shooter/shooter.js"
+    "uri": "./0shooter/shooter.js",
+    "noBg": true
   },
   {
     "title": "DataViewer v2",
     "desc": "Online calculator for Data Evaluation",
-    "uri": "./10data_viewer_v2/data_viewer.html"
+    "uri": "./10data_viewer_v2/data_viewer.html",
+    "noBg": true
   }
 ]
