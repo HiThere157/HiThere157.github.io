@@ -38,14 +38,13 @@ var settings = {
   addNBodies: 1,
   addedBodies: 0,
   bodyW: 50,
-  bodyH: 50,
-  bodyParam: [],
+  bodyParam: undefined,
   addBody: () => {
     if (settings.addedBodies > 300) {
       return;
     }
 
-    settings.bodyParam = [settings.bodyW, settings.bodyH];
+    settings.bodyParam = settings.bodyW;
     for (let i = 0; i < settings.addNBodies; i++) {
       Composite.add(world, createBody(200, 200));
     }
@@ -73,13 +72,13 @@ function createBody(x, y) {
 
   if (Common.random() < 0.4) {
     if (Common.random() < 0.6) {
-      return Bodies.rectangle(x, y, settings.bodyParam[0] || Common.random(25, 50), settings.bodyParam[1] || Common.random(25, 50), { chamfer: chamfer });
+      return Bodies.rectangle(x, y, settings.bodyParam || Common.random(25, 50), settings.bodyParam || Common.random(25, 50), { chamfer: chamfer });
     } else {
-      return Bodies.rectangle(x, y, settings.bodyParam[0] || Common.random(80, 120), settings.bodyParam[1] || Common.random(25, 30), { chamfer: chamfer });
+      return Bodies.rectangle(x, y, settings.bodyParam || Common.random(80, 120), settings.bodyParam || Common.random(25, 30), { chamfer: chamfer });
     }
 
   } else {
-    return Bodies.polygon(x, y, sides, settings.bodyParam[1] || Common.random(25, 50), { chamfer: chamfer });
+    return Bodies.polygon(x, y, sides, settings.bodyParam || Common.random(25, 50), { chamfer: chamfer });
   }
 
 }
@@ -122,11 +121,12 @@ gravityFolder.add(settings, "resetGravity").name("Reset");
 gravityFolder.open();
 
 const bodyFolder = gui.addFolder("Body");
-bodyFolder.add(settings, "toggleWireframe").name("Toggle Wireframe");
 bodyFolder.add(settings, "addNBodies", 1, 10, 1).name("n Bodies").listen();
-bodyFolder.add(settings, "bodyH", 15, 150, 1).name("Height").listen();
 bodyFolder.add(settings, "bodyW", 15, 150, 1).name("Wdith").listen();
 bodyFolder.add(settings, "addBody").name("Add Body");
 bodyFolder.open();
 
-gui.add(settings, "refresh").name("Full Reset");
+const worldFolder = gui.addFolder("World");
+worldFolder.add(settings, "toggleWireframe").name("Toggle Wireframe");
+worldFolder.add(settings, "refresh").name("Full Reset");
+worldFolder.open();
