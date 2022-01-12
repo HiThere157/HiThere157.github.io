@@ -8,6 +8,10 @@ var settings = {
   changeSeed: () => {
     noiseSeed(parseInt(Math.random() * 100));
     updateAllInside();
+  },
+  showBorders: true,
+  toggleBorders: () => {
+    settings.showBorders = !settings.showBorders;
   }
 }
 
@@ -18,7 +22,8 @@ gui.add(settings, "threshold", 0, 1).onChange(() => { updateAllInside() });
 gui.add(settings, "freq", 1, 30).onChange(() => { updateAllInside() });
 gui.add(settings, "dx", 0, 50).onChange(() => { updateAllInside() });
 gui.add(settings, "dy", 0, 50).onChange(() => { updateAllInside() });
-gui.add(settings, "changeSeed").onChange(() => { updateAllInside() });
+gui.add(settings, "changeSeed").onChange(() => { updateAllInside() }).name("New Seed");
+gui.add(settings, "toggleBorders").name("Toggle Borders");
 
 var columns, rows, points;
 var lookupTable = {
@@ -118,7 +123,7 @@ function draw() {
     column.forEach((point, indexR) => {
       point.draw();
 
-      if (indexC != columns - 1 && indexR != rows - 1) {
+      if (settings.showBorders && indexC != columns - 1 && indexR != rows - 1) {
         point.drawLines();
       }
     })
