@@ -86,7 +86,7 @@ u {
   }
 }
 
-.header {
+#header {
   display: flex;
   height: 1em;
   width: 100%;
@@ -99,7 +99,7 @@ u {
   user-select: none;
 }
 
-.header>div {
+#header>div {
   display: flex;
   column-gap: 0.2em;
 }
@@ -120,7 +120,7 @@ u {
   background-color: hsla(0, 0%, 0%, 0.25);
 }
 
-.main {
+#main {
   min-height: 80%;
   width: 100%;
   font-size: x-large;
@@ -128,19 +128,19 @@ u {
   --c: 0;
 }
 
-.main::before {
+#main::before {
   top: calc(var(--bar-height) - 0.1em);
   height: 0.3em;
   width: 0.3em;
 }
 
-.main::after {
+#main::after {
   top: var(--bar-height);
   height: 0.1em;
   width: calc(var(--bar-width) + 2em);
 }
 
-.main::before, .main::after {
+#main::before, #main::after {
   content: "";
   position: absolute;
   left: calc((100% - var(--width))/2 - 1em);
@@ -174,7 +174,7 @@ u {
 }
 
 #footer {
-  display: flex;
+  display: none;
   position: fixed;
   width: 100%;
   height: 3em;
@@ -203,7 +203,7 @@ u {
   z-index: 4;
 }
 
-#footer_bar {
+#footerBar {
   --c: 120;
   position: absolute;
   width: 0%;
@@ -212,7 +212,7 @@ u {
   transition: width 3s;
 }
 
-#openClose_footer {
+#openCloseFooter {
   position: absolute;
   width: 5em;
   height: 1.25em;
@@ -228,7 +228,7 @@ u {
   user-select: none;
 }
 
-#openClose_footer:hover {
+#openCloseFooter:hover {
   background-color: hsla(0, 0%, 0%, 0.4);
 }
 
@@ -278,10 +278,6 @@ u {
   position: absolute;
   background-color: hsl(var(--c), 100%, 40%);
   z-index: 1;
-}
-
-.neon::before, .neon::after {
-  box-shadow: 0 0 0.1em hsl(var(--c), 100%, 40%), 0 0 0.6em hsl(var(--c), 100%, 40%);
 }
 
 #lmDm_Btn {
