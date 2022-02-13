@@ -51,7 +51,7 @@ tr {
 td {
   position: relative;
   border-top: 1px solid black;
-  --c: 120;
+  --c: 0;
   --h: calc(100% - 0.2em);
   --w: 0.3em;
 }
@@ -59,6 +59,23 @@ td {
 u {
   padding: 0 0.3em;
   cursor: pointer;
+}
+
+button {
+  filter: invert(1);
+  height: 2rem;
+  width: 2rem;
+  padding: 1.3rem;
+  cursor: pointer;
+  border: 0;
+  border-radius: 5px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: hsla(0, 0%, 0%, 0.15);
+}
+
+button:hover {
+  background-color: hsla(0, 0%, 0%, 0.25);
 }
 
 ::-webkit-scrollbar {
@@ -71,6 +88,12 @@ u {
   background-color: hsl(0, 0%, 60%);
 }
 
+@media screen and (max-width: 110em) {
+  :root {
+    --width: 90%;
+  }
+}
+
 .container {
   display: flex;
   min-width: 50em;
@@ -78,12 +101,6 @@ u {
   margin: 2em auto;
   flex-direction: column;
   align-items: center;
-}
-
-@media screen and (max-width: 110em) {
-  :root {
-    --width: 90%;
-  }
 }
 
 #header {
@@ -102,22 +119,6 @@ u {
 #header>div {
   display: flex;
   column-gap: 0.2em;
-}
-
-.button {
-  filter: invert(1);
-  height: 2rem;
-  width: 2rem;
-  padding: 0.3rem;
-  cursor: pointer;
-  border-radius: 5px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: hsla(0, 0%, 0%, 0.15);
-}
-
-.button:hover {
-  background-color: hsla(0, 0%, 0%, 0.25);
 }
 
 #main {
@@ -161,7 +162,7 @@ u {
   height: 0.15em;
   left: -0.2em;
   width: calc(100% + 0.4em);
-  background-color: hsl(var(--c), 100%, 35%);
+  background-color: var(--secondary-background);
 }
 
 #R0>*:nth-child(1) {
@@ -171,80 +172,6 @@ u {
 
 #R0>*, tr:nth-child(2)>* {
   border: 0;
-}
-
-#footer {
-  display: none;
-  position: fixed;
-  width: 100%;
-  height: 3em;
-  min-width: 70em;
-  bottom: 0;
-  background-color: var(--secondary-background);
-  align-items: center;
-  justify-content: space-between;
-  transition: transform 1s;
-  z-index: 3;
-}
-
-.closed {
-  transform: translateY(100%);
-  --angle: 0deg;
-}
-
-.open {
-  transform: translateY(0);
-  --angle: 180deg;
-}
-
-#footer>span {
-  font-size: xx-large;
-  margin: 0 0.5em;
-  z-index: 4;
-}
-
-#footerBar {
-  --c: 120;
-  position: absolute;
-  width: 0%;
-  height: 100%;
-  background-color: hsla(var(--c), 100%, 40%, calc(var(--opacity)*2));
-  transition: width 3s;
-}
-
-#openCloseFooter {
-  position: absolute;
-  width: 5em;
-  height: 1.25em;
-  top: 0;
-  left: 50%;
-  filter: invert(1);
-  transform: translate(-50%, -100%) rotateX(var(--angle));
-  background-color: hsla(0, 0%, 0%, 0.2);
-  background-image: url(icons/chevron_up_icon.svg);
-  background-position: center;
-  background-repeat: no-repeat;
-  cursor: pointer;
-  user-select: none;
-}
-
-#openCloseFooter:hover {
-  background-color: hsla(0, 0%, 0%, 0.4);
-}
-
-.mr {
-  position: absolute;
-  top: 50%;
-  right: 0.2em;
-  font-size: xx-large;
-  transform: translateY(-50%);
-}
-
-.br {
-  position: absolute;
-  bottom: 0;
-  right: 0.2em;
-  font-size: large;
 }
 
 .format {
@@ -280,10 +207,83 @@ u {
   z-index: 1;
 }
 
+.mr {
+  position: absolute;
+  top: 50%;
+  right: 0.2em;
+  font-size: xx-large;
+  transform: translateY(-50%);
+}
+
+.br {
+  position: absolute;
+  bottom: 0;
+  right: 0.2em;
+  font-size: large;
+}
+
 #lmDm_Btn {
   background-image: url(icons/sun_icon.svg);
 }
 
 #names_Btn {
   background-image: url(icons/eye_off_icon.svg);
+}
+
+#footer {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 3em;
+  min-width: 70em;
+  bottom: 0;
+  background-color: var(--secondary-background);
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 1s;
+  z-index: 3;
+}
+
+#footer>span {
+  font-size: xx-large;
+  margin: 0 0.5em;
+  z-index: 4;
+}
+
+#footerBar {
+  --c: 120;
+  position: absolute;
+  width: 0%;
+  height: 100%;
+  background-color: hsla(var(--c), 100%, 40%, calc(var(--opacity)*2));
+  transition: width 3s;
+}
+
+#openCloseFooter {
+  position: absolute;
+  width: 5em;
+  height: 1.25em;
+  top: 0;
+  left: 50%;
+  filter: invert(1);
+  transform: translate(-50%, -100%) rotateX(var(--angle));
+  background-color: hsla(0, 0%, 0%, 0.2);
+  background-image: url(icons/chevron_up_icon.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+#openCloseFooter:hover {
+  background-color: hsla(0, 0%, 0%, 0.4);
+}
+
+.closed {
+  transform: translateY(100%);
+  --angle: 0deg;
+}
+
+.open {
+  transform: translateY(0);
+  --angle: 180deg;
 }

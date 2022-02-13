@@ -184,11 +184,6 @@ class Timetable {
 
     //calculate bar height
     document.getElementById("main").style.setProperty("--bar-width", getComputedStyle(document.getElementById("R0")).width);
-    if (day > 0 && day < 6) {
-      let currentElement = document.getElementById("R0").getElementsByTagName("td")[day];
-      currentElement.style.setProperty("--c", "0");
-      currentElement.style.zIndex = 2;
-    }
 
     var tableTop = getAbsoluteY(document.getElementById("R1"), false);
     var tableHeight = getAbsoluteY(document.getElementById("R" + this.timeTemplate.length), true) - tableTop;
@@ -300,44 +295,25 @@ if (uri[1]) {
 //toggle theme / mode
 var lightMode = false;
 function changeMode() {
-  let btn = document.getElementById("lmDm_Btn");
   lightMode = !lightMode;
-  if (lightMode) {
-    var cssInfo = ["-lm", 0];
-    btn.style.backgroundImage = "url(icons/moon_icon.svg)";
-    document.documentElement.style.setProperty("--opacity", 0.35);
-
-  } else {
-    var cssInfo = ["-dm", 1];
-    document.documentElement.style.setProperty("--opacity", 0.2);
-    btn.style.backgroundImage = "url(icons/sun_icon.svg)";
-  }
+  document.getElementById("lmDm_Btn").style.backgroundImage = lightMode ? "url(icons/moon_icon.svg)" : "url(icons/sun_icon.svg)";
+  document.documentElement.style.setProperty("--opacity", (lightMode ? 0.35 : 0.2));
 
   ["--pimary-background", "--secondary-background", "--font-color"].forEach(element => {
-    document.documentElement.style.setProperty(element, getComputedStyle(document.body).getPropertyValue(element + cssInfo[0]));
+    document.documentElement.style.setProperty(element, getComputedStyle(document.body).getPropertyValue(element + (lightMode ? "-lm" : "-dm")));
   });
-
   ["lmDm_Btn", "names_Btn", "openCloseFooter"].forEach(element => {
-    document.getElementById(element).style.filter = "invert(" + cssInfo[1] + ")";
+    document.getElementById(element).style.filter = lightMode ? "invert(0)" : "invert(1)";
   });
 }
 
 //toggle teacher names
 var showNames = true;
 function toggleNames() {
-  let btn = document.getElementById("names_Btn");
   showNames = !showNames;
-  if (showNames) {
-    var addFieldStyle = "block";
-    btn.style.backgroundImage = "url(icons/eye_off_icon.svg)";
-
-  } else {
-    var addFieldStyle = "none";
-    btn.style.backgroundImage = "url(icons/eye_icon.svg)";
-  }
-
+  document.getElementById("names_Btn").style.backgroundImage = showNames ? "url(icons/eye_off_icon.svg)" : "url(icons/eye_icon.svg)";
   [...document.getElementsByClassName("br")].forEach(element => {
-    element.style.display = addFieldStyle;
+    element.style.display = showNames ? "block" : "none";
   });
 }
 
