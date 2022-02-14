@@ -164,6 +164,16 @@ header {
   column-gap: .5em;
 }
 
+.mainLinkContainer {
+  display: flex;
+  align-items: center;
+  column-gap: .3em;
+}
+
+.deleteBtn {
+  background-image: url(icons/trash-bin_icon.svg);
+}
+
 #R0 {
   user-select: none;
 }

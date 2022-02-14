@@ -7,6 +7,10 @@ const headerElement = document.getElementsByTagName("header")[0];
 const footerElement = document.getElementsByTagName("footer")[0];
 const mainElement = document.getElementById("main");
 
+function filterUserInput(str) {
+  return str.toString().replaceAll("<", "").replaceAll(">", "");
+}
+
 //make HTML table from array
 function createHTMLTable(table, lessonLabels) {
   var result = "<table>";
@@ -14,9 +18,9 @@ function createHTMLTable(table, lessonLabels) {
     result += "<tr id=R" + i + ">";
 
     for (let j = 0; j < table[i].length; j++) {
-      let currentField = table[i][j] || ""
+      let currentField = filterUserInput(table[i][j] || "");
       let addFieldClass = (i > 0 && j > 0 && currentField != "") ? " class=format" : "";
-      let fieldLabel = (j == 0 && i > 0) ? "<span class=lessonLabel>" + lessonLabels[i - 1] + "</span>" : "";
+      let fieldLabel = (j == 0 && i > 0) ? "<span class=lessonLabel>" + filterUserInput(lessonLabels[i - 1]) + "</span>" : "";
 
       result += "<td" + addFieldClass + ">" + currentField + fieldLabel + "</td>";
     }
@@ -90,59 +94,70 @@ function setURI(param) {
 
 var intervalID;
 class Timetable {
-  constructor(uri) {
-    uri = uri.split("&");
+  constructor(uriStr) {
+    const uri = uriStr.split("&");
 
     this.timeOverride;
     this.dayOverride;
 
     this.title = uri[0];
-    this.timeTemplate = uri[1].split(",").map(time => parseInt(time));
-    this.tableContent = uri[2].split(";").map(day => day.split(","));
-    var breaks = (parseInt(uri[3]) >>> 0).toString(2).split("").reverse().join("");
 
-    this.startTime = uri[4];
+    try {
+      this.timeTemplate = uri[1].split(",").map(time => parseInt(time));
+      this.tableContent = uri[2].split(";").map(day => day.split(","));
+      var breaks = (parseInt(uri[3]) >>> 0).toString(2).split("").reverse().join("");
 
-    //additional Info (background color, teacher name)
-    var additionalInfo = [];
-    if (uri[5]) {
-      additionalInfo = uri[5].split(",").map(param => param.split(":"));
-    }
+      this.startTime = uri[4];
 
-    //dont label breaks
-    this.lessonLabels = [];
-    for (let i = 0, t = 0; i < this.timeTemplate.length; i++) {
-      if (breaks[i] != "1") {
-        t += 1;
-        this.lessonLabels.push(t);
-      } else {
-        this.lessonLabels.push("");
+      //additional Info (background color, teacher name)
+      var additionalInfo = [];
+      if (uri[5]) {
+        additionalInfo = uri[5].split(",").map(param => param.split(":"));
+      }
+
+      //dont label breaks
+      this.lessonLabels = [];
+      for (let i = 0, t = 0; i < this.timeTemplate.length; i++) {
+        if (breaks[i] != "1") {
+          t += 1;
+          this.lessonLabels.push(t);
+        } else {
+          this.lessonLabels.push("");
+        }
+      }
+
+      //calculate lesson start and end times using duration and end time of previous lesson
+      this.startEndTimes = [["", this.startTime]];
+      for (let i = 0; i < this.timeTemplate.length; i++) {
+        this.startEndTimes.push(
+          [this.startEndTimes[i][1], addTimes(this.startEndTimes[i][1], this.timeTemplate[i])]
+        );
+      }
+      this.startEndTimes.shift();
+      this.tableContent.unshift(this.startEndTimes.map(val => val.join(" - ")));
+
+      //background colors and teacher info
+      this.colors = {};
+      this.teachers = {};
+      additionalInfo.forEach(info => {
+        this.colors[info[0].toLowerCase()] = info[1];
+        this.teachers[info[0].toLowerCase()] = info[2];
+      });
+
+      localStorage.setItem(this.title, uriStr);
+      this.setActiveTimetable();
+
+    } catch {
+      localStorage.removeItem(this.title);
+      if (uriStr != "") {
+        document.location.href = "./";
       }
     }
-
-    //calculate lesson start and end times using duration and end time of previous lesson
-    this.startEndTimes = [["", this.startTime]];
-    for (let i = 0; i < this.timeTemplate.length; i++) {
-      this.startEndTimes.push(
-        [this.startEndTimes[i][1], addTimes(this.startEndTimes[i][1], this.timeTemplate[i])]
-      );
-    }
-    this.startEndTimes.shift();
-    this.tableContent.unshift(this.startEndTimes.map(val => val.join(" - ")));
-
-    //background colors and teacher info
-    this.colors = {};
-    this.teachers = {};
-    additionalInfo.forEach(info => {
-      this.colors[info[0].toLowerCase()] = info[1];
-      this.teachers[info[0].toLowerCase()] = info[2];
-    });
 
     console.log(this);
   }
 
   drawTimeTable() {
-    document.title = this.title;
     //scale td with lesson length and draw table
     mainElement.innerHTML = createHTMLTable(
       transpose2DArray(this.timeTemplate.length, this.tableContent), this.lessonLabels
@@ -163,7 +178,7 @@ class Timetable {
         }
 
         if (this.teachers[tmp]) {
-          currentField.innerHTML += "<span class=nameSpan>" + this.teachers[tmp].replaceAll("+", "<br>") + "<span>";
+          currentField.innerHTML += "<span class=nameSpan>" + filterUserInput(this.teachers[tmp]).replaceAll("+", "<br>") + "<span>";
         }
 
         //remove lesson name if is already labeld above
@@ -256,6 +271,7 @@ class Timetable {
     if (intervalID) {
       clearInterval(intervalID);
     }
+    document.title = this.title + " | Timetable";
     this.drawTimeTable();
     this.updateTimeTable();
     window.onresize = this.updateTimeTable.bind(this);
@@ -272,12 +288,18 @@ function updateHeader(date) {
   document.getElementById("timeSpan").innerText = "Time: " + [date.getHours(), date.getMinutes().toString().padStart(2, "0")].join(":");
 }
 
+function removeFromStorage(key) {
+  localStorage.removeItem(key);
+  location.reload();
+}
+
 //get current Get Parameter
-const uri = decodeURIComponent(window.location.search.substring(1)).replaceAll("<", "").replaceAll(">", "").split("?");
-var encodedData = uri[0];
+const url = filterUserInput(decodeURIComponent(window.location.search.substring(1))).split("?");
+var encodedData = url[0];
 const savedTimetables = {
   //title & lesson length (delimited by ,) & Days/Lessons (delimited by ; and lessons by ,) & labels to skip & start time & Lessons with their color (delimited by , and :)
-  "OF10S2": "OF10S2 | Timetable&15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0:Fr. Klingspor,IT-Systeme:180:Hr. Elter,AP:130:Hr. Schmidt+Fr. Hippeli,Politik:200:Hr. Berberich,Ethik/Reli:300:Fr. Beckmann+Fr. Hoffmann,BwP:240:Hr. Geheeb,Deutsch:120:Hr. Foltin,IT-Technik:260:Hr. Geheeb (KL)+Hr. Zimmermann"
+  ...localStorage,
+  "OF10S2": "OF10S2&15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0:Fr. Klingspor,IT-Systeme:180:Hr. Elter,AP:130:Hr. Schmidt+Fr. Hippeli,Politik:200:Hr. Berberich,Ethik/Reli:300:Fr. Beckmann+Fr. Hoffmann,BwP:240:Hr. Geheeb,Deutsch:120:Hr. Foltin,IT-Technik:260:Hr. Geheeb (KL)+Hr. Zimmermann"
 }
 
 //check for preProgrammed tables or special sites 
@@ -285,27 +307,27 @@ if (savedTimetables[encodedData]) {
   encodedData = savedTimetables[encodedData];
 
 } else if (encodedData == "") {
-  mainElement.innerHTML = Object.keys(savedTimetables).map(key => `<a href='?${key}'>${key}</a>`).join("");
+  mainElement.innerHTML = Object.keys(savedTimetables).map(key => {
+    var filteredKey = filterUserInput(key);
+    return `<div class="mainLinkContainer">
+              <a href="?${filteredKey}">${filteredKey}</a>
+              <button class="deleteBtn invert" onclick="removeFromStorage('${filteredKey}')" aria-label="remove ${filteredKey} from local storage"></button>
+            </div>`
+  }).join("");
+
   mainElement.classList = "mainLinks";
   updateHeader();
   intervalID = setInterval(updateHeader, 1000);
 }
 
-try {
-  var mainTimetable = new Timetable(encodedData);
-  mainTimetable.setActiveTimetable();
-} catch {
-  if (encodedData != "") {
-    setURI("");
-  }
-}
+var mainTimetable = new Timetable(encodedData);
 
 //check for aditional Get parameters for predefined modes
-if (uri[1]) {
-  if (uri[1].indexOf("h") != -1) {
+if (url[1]) {
+  if (url[1].indexOf("h") != -1) {
     setTimeout(toggleNames, 0);
   }
-  if (uri[1].indexOf("l") != -1) {
+  if (url[1].indexOf("l") != -1) {
     setTimeout(changeMode, 0);
   }
 }
