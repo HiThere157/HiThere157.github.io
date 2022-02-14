@@ -1,3 +1,12 @@
+//PWA
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("worker.js");
+};
+
+const headerElement = document.getElementsByTagName("header")[0];
+const footerElement = document.getElementsByTagName("footer")[0];
+const mainElement = document.getElementById("main");
+
 //make HTML table from array
 function createHTMLTable(table, lessonLabels) {
   var result = "<table>";
@@ -133,7 +142,7 @@ class Timetable {
 
   drawTimeTable() {
     //scale td with lesson length and draw table
-    document.getElementById("main").innerHTML = createHTMLTable(
+    mainElement.innerHTML = createHTMLTable(
       transpose2DArray(this.timeTemplate.length, this.tableContent), this.lessonLabels
     );
     for (let i = 0; i < this.timeTemplate.length; i++) {
@@ -183,7 +192,7 @@ class Timetable {
     document.getElementById("timeSpan").innerText = "Time: " + [date.getHours(), date.getMinutes().toString().padStart(2, "0")].join(":");
 
     //calculate bar height
-    document.getElementById("main").style.setProperty("--bar-width", getComputedStyle(document.getElementById("R0")).width);
+    mainElement.style.setProperty("--bar-width", getComputedStyle(document.getElementById("R0")).width);
 
     var tableTop = getAbsoluteY(document.getElementById("R1"), false);
     var tableHeight = getAbsoluteY(document.getElementById("R" + this.timeTemplate.length), true) - tableTop;
@@ -239,7 +248,7 @@ class Timetable {
     }
 
     //hide footer if no lesson
-    document.getElementById("footer").style.display = lessonName ? "flex" : "none";
+    footerElement.style.display = lessonName ? "flex" : "none";
   }
 
   setActiveTimetable() {
@@ -248,7 +257,7 @@ class Timetable {
     }
     this.drawTimeTable();
     this.updateTimeTable();
-    window.onresize = this.updateTimeTable;
+    window.onresize = this.updateTimeTable.bind(this);
     intervalID = setInterval(this.updateTimeTable.bind(this), 1000);
   }
 }
@@ -267,7 +276,6 @@ if (savedTimetables[encodedData]) {
   encodedData = savedTimetables[encodedData];
 
 } else if (encodedData == "") {
-  let headerElement = document.getElementById("header");
   headerElement.innerHTML = Object.keys(savedTimetables).map(key => "<u onclick=setURI('" + key + "')>" + key + "</u>").join("");
   headerElement.style.height = "2em";
   headerElement.style.justifyContent = "space-around";
@@ -296,13 +304,13 @@ if (uri[1]) {
 var lightMode = false;
 function changeMode() {
   lightMode = !lightMode;
-  document.getElementById("lmDm_Btn").style.backgroundImage = lightMode ? "url(icons/moon_icon.svg)" : "url(icons/sun_icon.svg)";
+  document.getElementById("lmDmBtn").style.backgroundImage = lightMode ? "url(icons/moon_icon.svg)" : "url(icons/sun_icon.svg)";
   document.documentElement.style.setProperty("--opacity", (lightMode ? 0.35 : 0.2));
 
   ["--pimary-background", "--secondary-background", "--font-color"].forEach(element => {
     document.documentElement.style.setProperty(element, getComputedStyle(document.body).getPropertyValue(element + (lightMode ? "-lm" : "-dm")));
   });
-  ["lmDm_Btn", "names_Btn", "openCloseFooter"].forEach(element => {
+  ["lmDmBtn", "namesBtn", "openCloseFooter"].forEach(element => {
     document.getElementById(element).style.filter = lightMode ? "invert(0)" : "invert(1)";
   });
 }
@@ -311,7 +319,7 @@ function changeMode() {
 var showNames = true;
 function toggleNames() {
   showNames = !showNames;
-  document.getElementById("names_Btn").style.backgroundImage = showNames ? "url(icons/eye_off_icon.svg)" : "url(icons/eye_icon.svg)";
+  document.getElementById("namesBtn").style.backgroundImage = showNames ? "url(icons/eye_off_icon.svg)" : "url(icons/eye_icon.svg)";
   [...document.getElementsByClassName("br")].forEach(element => {
     element.style.display = showNames ? "block" : "none";
   });
@@ -321,10 +329,10 @@ function toggleNames() {
 var showFooter = false;
 function toggleFooter() {
   showFooter = !showFooter;
-  document.getElementById("footer").classList = showFooter ? "open" : "closed";
+  footerElement.classList = showFooter ? "footerOpen" : "footerClosed";
 }
 
 //set button handlers
-document.getElementById("lmDm_Btn").onclick = changeMode;
-document.getElementById("names_Btn").onclick = toggleNames;
+document.getElementById("lmDmBtn").onclick = changeMode;
+document.getElementById("namesBtn").onclick = toggleNames;
 document.getElementById("openCloseFooter").onclick = toggleFooter;

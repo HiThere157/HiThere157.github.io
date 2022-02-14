@@ -50,7 +50,7 @@ tr {
 
 td {
   position: relative;
-  border-top: 1px solid black;
+  border-top: thin solid black;
   --c: 0;
   --h: calc(100% - 0.2em);
   --w: 0.3em;
@@ -68,7 +68,7 @@ button {
   padding: 1.3rem;
   cursor: pointer;
   border: 0;
-  border-radius: 5px;
+  border-radius: .3rem;
   background-position: center;
   background-repeat: no-repeat;
   background-color: hsla(0, 0%, 0%, 0.15);
@@ -84,7 +84,7 @@ button:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 100px;
+  border-radius: 1vw;
   background-color: hsl(0, 0%, 60%);
 }
 
@@ -103,20 +103,20 @@ button:hover {
   align-items: center;
 }
 
-#header {
+header {
   display: flex;
   height: 1em;
   width: 100%;
   padding: 0.1em;
   font-size: xx-large;
-  border-radius: 3px;
+  border-radius: .2rem;
   align-items: center;
   justify-content: space-between;
   background-color: var(--secondary-background);
   user-select: none;
 }
 
-#header>div {
+header>div {
   display: flex;
   column-gap: 0.2em;
 }
@@ -222,15 +222,15 @@ button:hover {
   font-size: large;
 }
 
-#lmDm_Btn {
+#lmDmBtn {
   background-image: url(icons/sun_icon.svg);
 }
 
-#names_Btn {
+#namesBtn {
   background-image: url(icons/eye_off_icon.svg);
 }
 
-#footer {
+footer {
   display: none;
   position: fixed;
   width: 100%;
@@ -244,7 +244,7 @@ button:hover {
   z-index: 3;
 }
 
-#footer>span {
+footer>span {
   font-size: xx-large;
   margin: 0 0.5em;
   z-index: 4;
@@ -278,12 +278,12 @@ button:hover {
   background-color: hsla(0, 0%, 0%, 0.4);
 }
 
-.closed {
+.footerClosed {
   transform: translateY(100%);
   --angle: 0deg;
 }
 
-.open {
+.footerOpen {
   transform: translateY(0);
   --angle: 180deg;
 }

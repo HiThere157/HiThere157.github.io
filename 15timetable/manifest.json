@@ -1,0 +1,44 @@
+{
+  "name": "Timetable App",
+  "short_name": "Timetable",
+  "description": "Simple and Minimalistic Timetable Application",
+  "icons": [
+    {
+      "src": "./images/icon_any_192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "./images/icon_any_512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "./images/icon_maskable_192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./images/icon_maskable_512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ],
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "theme_color": "#0f131a",
+  "background_color": "#0f131a",
+  "shortcuts": [
+    {
+      "name": "Timetable Home",
+      "short_name": "Home",
+      "description": "Homepage of the Timetable App",
+      "url": "./"
+    }
+  ]
+}

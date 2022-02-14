@@ -5,28 +5,31 @@
   <title>Timetable</title>
   <meta charset="UTF-8">
   <meta name="author" content="HiThere157">
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="timetable.css">
   <meta name="theme-color" content="#0f131a">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Simple and Minimalistic Timetable Application">
 </head>
 
 <body>
   <div class="container">
-    <div id="header">
+    <header>
       <span id="dateSpan"></span>
       <div>
-        <button id="lmDm_Btn"></button>
-        <button id="names_Btn"></button>
+        <button id="lmDmBtn" aria-label="change to light / dark mode"></button>
+        <button id="namesBtn" aria-label="toggle names visibility"></button>
       </div>
       <span id="timeSpan"></span>
-    </div>
+    </header>
     <div id="main"></div>
-    <div id="footer" class="closed">
+    <footer class="footerClosed">
       <div id="openCloseFooter"></div>
       <div id="footerBar"></div>
       <span id="startTime"></span>
       <span id="progInfo"></span>
       <span id="endTime"></span>
-    </div>
+    </footer>
   </div>
   <script src="timetable.js"></script>
 </body>
