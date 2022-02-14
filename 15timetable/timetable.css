@@ -150,6 +150,14 @@ header>div {
   z-index: 2;
 }
 
+.mainLinks {
+  display: flex;
+  flex-wrap: wrap;
+  padding: .5em 0;
+  row-gap: .5em;
+  column-gap: .5em;
+}
+
 #R0 {
   user-select: none;
 }
@@ -222,7 +230,7 @@ header>div {
   font-size: large;
 }
 
-#lmDmBtn {
+#modeBtn {
   background-image: url(icons/sun_icon.svg);
 }
 

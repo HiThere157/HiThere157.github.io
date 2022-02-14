@@ -96,16 +96,17 @@ class Timetable {
     this.timeOverride;
     this.dayOverride;
 
-    this.timeTemplate = uri[0].split(",").map(time => parseInt(time));
-    this.tableContent = uri[1].split(";").map(day => day.split(","));
-    var breaks = (parseInt(uri[2]) >>> 0).toString(2).split("").reverse().join("");
+    this.title = uri[0];
+    this.timeTemplate = uri[1].split(",").map(time => parseInt(time));
+    this.tableContent = uri[2].split(";").map(day => day.split(","));
+    var breaks = (parseInt(uri[3]) >>> 0).toString(2).split("").reverse().join("");
 
-    this.startTime = uri[3];
+    this.startTime = uri[4];
 
     //additional Info (background color, teacher name)
     var additionalInfo = [];
-    if (uri[4]) {
-      additionalInfo = uri[4].split(",").map(param => param.split(":"));
+    if (uri[5]) {
+      additionalInfo = uri[5].split(",").map(param => param.split(":"));
     }
 
     //dont label breaks
@@ -141,6 +142,7 @@ class Timetable {
   }
 
   drawTimeTable() {
+    document.title = this.title;
     //scale td with lesson length and draw table
     mainElement.innerHTML = createHTMLTable(
       transpose2DArray(this.timeTemplate.length, this.tableContent), this.lessonLabels
@@ -188,8 +190,7 @@ class Timetable {
     var date = new Date();
     var day = this.dayOverride || date.getDay();
 
-    document.getElementById("dateSpan").innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
-    document.getElementById("timeSpan").innerText = "Time: " + [date.getHours(), date.getMinutes().toString().padStart(2, "0")].join(":");
+    updateHeader(date);
 
     //calculate bar height
     mainElement.style.setProperty("--bar-width", getComputedStyle(document.getElementById("R0")).width);
@@ -262,23 +263,32 @@ class Timetable {
   }
 }
 
+function updateHeader(date) {
+  if (!date) {
+    date = new Date();
+  }
+
+  document.getElementById("dateSpan").innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
+  document.getElementById("timeSpan").innerText = "Time: " + [date.getHours(), date.getMinutes().toString().padStart(2, "0")].join(":");
+}
+
 //get current Get Parameter
 const uri = decodeURIComponent(window.location.search.substring(1)).replaceAll("<", "").replaceAll(">", "").split("?");
 var encodedData = uri[0];
 const savedTimetables = {
-  //lesson length (delimited by ,) & Days/Lessons (delimited by ; and lessons by ,) & labels to skip & start time & Lessons with their color (delimited by , and :)
-  "OF10S2": "15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0:Fr. Klingspor,IT-Systeme:180:Hr. Elter,AP:130:Hr. Schmidt+Fr. Hippeli,Politik:200:Hr. Berberich,Ethik/Reli:300:Fr. Beckmann+Fr. Hoffmann,BwP:240:Hr. Geheeb,Deutsch:120:Hr. Foltin,IT-Technik:260:Hr. Geheeb (KL)+Hr. Zimmermann"
+  //title & lesson length (delimited by ,) & Days/Lessons (delimited by ; and lessons by ,) & labels to skip & start time & Lessons with their color (delimited by , and :)
+  "OF10S2": "OF10S2 | Timetable&15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0:Fr. Klingspor,IT-Systeme:180:Hr. Elter,AP:130:Hr. Schmidt+Fr. Hippeli,Politik:200:Hr. Berberich,Ethik/Reli:300:Fr. Beckmann+Fr. Hoffmann,BwP:240:Hr. Geheeb,Deutsch:120:Hr. Foltin,IT-Technik:260:Hr. Geheeb (KL)+Hr. Zimmermann"
 }
 
 //check for preProgrammed tables or special sites 
 if (savedTimetables[encodedData]) {
-  document.title = encodedData + " | Timetable";
   encodedData = savedTimetables[encodedData];
 
 } else if (encodedData == "") {
-  headerElement.innerHTML = Object.keys(savedTimetables).map(key => "<u onclick=setURI('" + key + "')>" + key + "</u>").join("");
-  headerElement.style.height = "2em";
-  headerElement.style.justifyContent = "space-around";
+  mainElement.innerHTML = Object.keys(savedTimetables).map(key => "<u onclick=setURI('" + key + "')>" + key + "</u>").join("");
+  mainElement.classList = "mainLinks";
+  updateHeader();
+  intervalID = setInterval(updateHeader, 1000);
 }
 
 try {
@@ -304,13 +314,13 @@ if (uri[1]) {
 var lightMode = false;
 function changeMode() {
   lightMode = !lightMode;
-  document.getElementById("lmDmBtn").style.backgroundImage = lightMode ? "url(icons/moon_icon.svg)" : "url(icons/sun_icon.svg)";
+  document.getElementById("modeBtn").style.backgroundImage = lightMode ? "url(icons/moon_icon.svg)" : "url(icons/sun_icon.svg)";
   document.documentElement.style.setProperty("--opacity", (lightMode ? 0.35 : 0.2));
 
   ["--pimary-background", "--secondary-background", "--font-color"].forEach(element => {
     document.documentElement.style.setProperty(element, getComputedStyle(document.body).getPropertyValue(element + (lightMode ? "-lm" : "-dm")));
   });
-  ["lmDmBtn", "namesBtn", "openCloseFooter"].forEach(element => {
+  ["modeBtn", "namesBtn", "openCloseFooter"].forEach(element => {
     document.getElementById(element).style.filter = lightMode ? "invert(0)" : "invert(1)";
   });
 }
@@ -333,6 +343,6 @@ function toggleFooter() {
 }
 
 //set button handlers
-document.getElementById("lmDmBtn").onclick = changeMode;
+document.getElementById("modeBtn").onclick = changeMode;
 document.getElementById("namesBtn").onclick = toggleNames;
 document.getElementById("openCloseFooter").onclick = toggleFooter;
