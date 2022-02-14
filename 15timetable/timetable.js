@@ -16,7 +16,7 @@ function createHTMLTable(table, lessonLabels) {
     for (let j = 0; j < table[i].length; j++) {
       let currentField = table[i][j] || ""
       let addFieldClass = (i > 0 && j > 0 && currentField != "") ? " class=format" : "";
-      let fieldLabel = (j == 0 && i > 0) ? "<span class=mr>" + lessonLabels[i - 1] + "</span>" : "";
+      let fieldLabel = (j == 0 && i > 0) ? "<span class=lessonLabel>" + lessonLabels[i - 1] + "</span>" : "";
 
       result += "<td" + addFieldClass + ">" + currentField + fieldLabel + "</td>";
     }
@@ -163,7 +163,7 @@ class Timetable {
         }
 
         if (this.teachers[tmp]) {
-          currentField.innerHTML += "<span class=br>" + this.teachers[tmp].replaceAll("+", "<br>") + "<span>";
+          currentField.innerHTML += "<span class=nameSpan>" + this.teachers[tmp].replaceAll("+", "<br>") + "<span>";
         }
 
         //remove lesson name if is already labeld above
@@ -285,7 +285,7 @@ if (savedTimetables[encodedData]) {
   encodedData = savedTimetables[encodedData];
 
 } else if (encodedData == "") {
-  mainElement.innerHTML = Object.keys(savedTimetables).map(key => "<u onclick=setURI('" + key + "')>" + key + "</u>").join("");
+  mainElement.innerHTML = Object.keys(savedTimetables).map(key => `<a href='?${key}'>${key}</a>`).join("");
   mainElement.classList = "mainLinks";
   updateHeader();
   intervalID = setInterval(updateHeader, 1000);
@@ -310,7 +310,7 @@ if (uri[1]) {
   }
 }
 
-//toggle theme / mode
+//toggle theme
 var lightMode = false;
 function changeMode() {
   lightMode = !lightMode;
@@ -320,8 +320,8 @@ function changeMode() {
   ["--pimary-background", "--secondary-background", "--font-color"].forEach(element => {
     document.documentElement.style.setProperty(element, getComputedStyle(document.body).getPropertyValue(element + (lightMode ? "-lm" : "-dm")));
   });
-  ["modeBtn", "namesBtn", "openCloseFooter"].forEach(element => {
-    document.getElementById(element).style.filter = lightMode ? "invert(0)" : "invert(1)";
+  [...document.getElementsByClassName("invert")].forEach(element => {
+    element.style.filter = lightMode ? "invert(0)" : "invert(1)";
   });
 }
 
@@ -330,13 +330,13 @@ var showNames = true;
 function toggleNames() {
   showNames = !showNames;
   document.getElementById("namesBtn").style.backgroundImage = showNames ? "url(icons/eye_off_icon.svg)" : "url(icons/eye_icon.svg)";
-  [...document.getElementsByClassName("br")].forEach(element => {
+  [...document.getElementsByClassName("nameSpan")].forEach(element => {
     element.style.display = showNames ? "block" : "none";
   });
 }
 
-//toggle teacher names
-var showFooter = false;
+//toggle progress bar visibility
+var showFooter = true;
 function toggleFooter() {
   showFooter = !showFooter;
   footerElement.classList = showFooter ? "footerOpen" : "footerClosed";
@@ -345,4 +345,5 @@ function toggleFooter() {
 //set button handlers
 document.getElementById("modeBtn").onclick = changeMode;
 document.getElementById("namesBtn").onclick = toggleNames;
+document.getElementById("homeBtn").onclick = () => { document.location.href = "./"; };
 document.getElementById("openCloseFooter").onclick = toggleFooter;
