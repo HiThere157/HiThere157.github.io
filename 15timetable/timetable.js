@@ -297,8 +297,8 @@ function removeFromStorage(key) {
 const url = filterUserInput(decodeURIComponent(window.location.search.substring(1))).split("?");
 var encodedData = url[0];
 const savedTimetables = {
+  ...Object.fromEntries(Object.entries(localStorage).filter(([key]) => key[0] != "_")),
   //title & lesson length (delimited by ,) & Days/Lessons (delimited by ; and lessons by ,) & labels to skip & start time & Lessons with their color (delimited by , and :)
-  ...localStorage,
   "OF10S2": "OF10S2&15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0:Fr. Klingspor,IT-Systeme:180:Hr. Elter,AP:130:Hr. Schmidt+Fr. Hippeli,Politik:200:Hr. Berberich,Ethik/Reli:300:Fr. Beckmann+Fr. Hoffmann,BwP:240:Hr. Geheeb,Deutsch:120:Hr. Foltin,IT-Technik:260:Hr. Geheeb (KL)+Hr. Zimmermann"
 }
 
@@ -322,19 +322,18 @@ if (savedTimetables[encodedData]) {
 
 var mainTimetable = new Timetable(encodedData);
 
-//check for aditional Get parameters for predefined modes
-if (url[1]) {
-  if (url[1].indexOf("h") != -1) {
-    setTimeout(toggleNames, 0);
-  }
-  if (url[1].indexOf("l") != -1) {
-    setTimeout(changeMode, 0);
-  }
+//check for last settings and apply them
+if (localStorage.getItem("_lastNamesHidden") == "true") {
+  setTimeout(() => { toggleNames(false) }, 0);
 }
+if (localStorage.getItem("_lastLightMode") == "true") {
+  setTimeout(() => { changeMode(false) }, 0);
+}
+
 
 //toggle theme
 var lightMode = false;
-function changeMode() {
+function changeMode(writeToStorage = true) {
   lightMode = !lightMode;
   document.getElementById("modeBtn").style.backgroundImage = lightMode ? "url(icons/moon_icon.svg)" : "url(icons/sun_icon.svg)";
   document.documentElement.style.setProperty("--opacity", (lightMode ? 0.35 : 0.2));
@@ -345,16 +344,24 @@ function changeMode() {
   [...document.getElementsByClassName("invert")].forEach(element => {
     element.style.filter = lightMode ? "invert(0)" : "invert(1)";
   });
+
+  if (writeToStorage) {
+    localStorage.setItem("_lastLightMode", lightMode);
+  }
 }
 
 //toggle teacher names
-var showNames = true;
-function toggleNames() {
-  showNames = !showNames;
-  document.getElementById("namesBtn").style.backgroundImage = showNames ? "url(icons/eye_off_icon.svg)" : "url(icons/eye_icon.svg)";
+var hideNames = false;
+function toggleNames(writeToStorage = true) {
+  hideNames = !hideNames;
+  document.getElementById("namesBtn").style.backgroundImage = hideNames ? "url(icons/eye_icon.svg)" : "url(icons/eye_off_icon.svg)";
   [...document.getElementsByClassName("nameSpan")].forEach(element => {
-    element.style.display = showNames ? "block" : "none";
+    element.style.display = hideNames ? "none" : "block";
   });
+
+  if (writeToStorage) {
+    localStorage.setItem("_lastNamesHidden", hideNames);
+  }
 }
 
 //toggle progress bar visibility

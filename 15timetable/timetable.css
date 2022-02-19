@@ -34,7 +34,7 @@ body::after {
   width: 0;
   height: 0;
   overflow: hidden;
-  content: url(icons/eye_icon.svg) url(icons/eye_off_icon.svg) url(icons/moon_icon.svg) url(icons/sun_icon.svg);
+  content: url(icons/chevron_up_icon.svg) url(icons/eye_icon.svg) url(icons/eye_off_icon.svg) url(icons/home_icon.svg) url(icons/moon_icon.svg) url(icons/sun_icon.svg) url(icons/trash-bin_icon.svg);
 }
 
 a {
