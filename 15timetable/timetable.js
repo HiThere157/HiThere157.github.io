@@ -3,12 +3,18 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("worker.js");
 };
 
+window.addEventListener("beforeinstallprompt", (event) => {
+  var installBtn = document.getElementById("installBtn");
+  installBtn.style.display = "block";
+  installBtn.onclick = () => { event.prompt(); }
+});
+
 const headerElement = document.getElementsByTagName("header")[0];
 const footerElement = document.getElementsByTagName("footer")[0];
 const mainElement = document.getElementById("main");
 
-function filterUserInput(str) {
-  return str.toString().replaceAll("<", "").replaceAll(">", "");
+function filterUserInput(string) {
+  return string.toString().replaceAll("<", "").replaceAll(">", "");
 }
 
 //make HTML table from array
@@ -157,7 +163,7 @@ class Timetable {
     console.log(this);
   }
 
-  drawTimeTable() {
+  drawTimetable() {
     //scale td with lesson length and draw table
     mainElement.innerHTML = createHTMLTable(
       transpose2DArray(this.timeTemplate.length, this.tableContent), this.lessonLabels
@@ -190,6 +196,7 @@ class Timetable {
 
       }
     }
+    this.updateTimetable();
   }
 
   getLessonIndex(minutes) {
@@ -201,7 +208,7 @@ class Timetable {
     return -1;
   }
 
-  updateTimeTable() {
+  updateTimetable() {
     var date = new Date();
     var day = this.dayOverride || date.getDay();
 
@@ -272,10 +279,9 @@ class Timetable {
       clearInterval(intervalID);
     }
     document.title = this.title + " | Timetable";
-    this.drawTimeTable();
-    this.updateTimeTable();
-    window.onresize = this.updateTimeTable.bind(this);
-    intervalID = setInterval(this.updateTimeTable.bind(this), 1000);
+    this.drawTimetable();
+    window.onresize = this.updateTimetable.bind(this);
+    intervalID = setInterval(this.updateTimetable.bind(this), 1000);
   }
 }
 
@@ -284,8 +290,8 @@ function updateHeader(date) {
     date = new Date();
   }
 
-  document.getElementById("dateSpan").innerText = "Date: " + [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
-  document.getElementById("timeSpan").innerText = "Time: " + [date.getHours(), date.getMinutes().toString().padStart(2, "0")].join(":");
+  document.getElementById("dateSpan").innerText = [date.getDate(), date.getMonth() + 1, date.getFullYear()].join(".");
+  document.getElementById("timeSpan").innerText = [date.getHours(), date.getMinutes().toString().padStart(2, "0")].join(":");
 }
 
 function removeFromStorage(key) {
@@ -296,10 +302,13 @@ function removeFromStorage(key) {
 //get current Get Parameter
 const url = filterUserInput(decodeURIComponent(window.location.search.substring(1))).split("?");
 var encodedData = url[0];
-const savedTimetables = {
-  ...Object.fromEntries(Object.entries(localStorage).filter(([key]) => key[0] != "_")),
+const staticTimetables = {
   //title & lesson length (delimited by ,) & Days/Lessons (delimited by ; and lessons by ,) & labels to skip & start time & Lessons with their color (delimited by , and :)
   "OF10S2": "OF10S2&15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0:Fr. Klingspor,IT-Systeme:180:Hr. Elter,AP:130:Hr. Schmidt+Fr. Hippeli,Politik:200:Hr. Berberich,Ethik/Reli:300:Fr. Beckmann+Fr. Hoffmann,BwP:240:Hr. Geheeb,Deutsch:120:Hr. Foltin,IT-Technik:260:Hr. Geheeb (KL)+Hr. Zimmermann"
+}
+const savedTimetables = {
+  ...Object.fromEntries(Object.entries(localStorage).filter(([key]) => key[0] != "_")),
+  ...staticTimetables
 }
 
 //check for preProgrammed tables or special sites 
@@ -311,7 +320,11 @@ if (savedTimetables[encodedData]) {
     var filteredKey = filterUserInput(key);
     return `<div class="mainLinkContainer">
               <a href="?${filteredKey}">${filteredKey}</a>
-              <button class="deleteBtn invert" onclick="removeFromStorage('${filteredKey}')" aria-label="remove ${filteredKey} from local storage"></button>
+              <button class="deleteBtn invert" 
+                      onclick="removeFromStorage('${filteredKey}')" 
+                      aria-label="remove ${filteredKey} from local storage" 
+                      style="display: ${Object.keys(staticTimetables).includes(filteredKey) ? "none" : "block"};">
+              </button>
             </div>`
   }).join("");
 
@@ -365,7 +378,7 @@ function toggleFooter() {
 }
 
 //set button handlers
+document.getElementById("homeBtn").onclick = () => { document.location.href = "./"; };
 document.getElementById("modeBtn").onclick = changeMode;
 document.getElementById("namesBtn").onclick = toggleNames;
-document.getElementById("homeBtn").onclick = () => { document.location.href = "./"; };
 document.getElementById("openCloseFooter").onclick = toggleFooter;
