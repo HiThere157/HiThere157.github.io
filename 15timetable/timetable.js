@@ -316,7 +316,7 @@ if (savedTimetables[encodedData]) {
   encodedData = savedTimetables[encodedData];
 
 } else if (encodedData == "") {
-  mainElement.innerHTML = Object.keys(savedTimetables).map(key => {
+  var buttonHtml = Object.keys(savedTimetables).map(key => {
     var filteredKey = filterUserInput(key);
     return `<div class="mainLinkContainer">
               <a href="?${filteredKey}">${filteredKey}</a>
@@ -328,7 +328,16 @@ if (savedTimetables[encodedData]) {
             </div>`
   }).join("");
 
-  mainElement.classList = "mainLinks";
+  mainElement.innerHTML = `<div class="mainLinks">
+                            ${buttonHtml}
+                          </div>
+                          <div id="infoContainer">
+                            <div id="infoIcon" class="invert"></div>
+                            <span>
+                              Open a valid Timetable Link once to add it to this List. (Data is saved to Browser Local Storage)
+                            </span>
+                          </div>`;
+
   updateHeader();
   intervalID = setInterval(updateHeader, 1000);
 }

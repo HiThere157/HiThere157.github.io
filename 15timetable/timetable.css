@@ -34,7 +34,7 @@ body::after {
   width: 0;
   height: 0;
   overflow: hidden;
-  content: url(icons/chevron_up_icon.svg) url(icons/eye_icon.svg) url(icons/eye_off_icon.svg) url(icons/home_icon.svg) url(icons/moon_icon.svg) url(icons/sun_icon.svg) url(icons/trash-bin_icon.svg);
+  content: url(icons/chevron_up_icon.svg) url(icons/download_icon.svg) url(icons/eye_icon.svg) url(icons/eye_off_icon.svg) url(icons/home_icon.svg) url(icons/info_icon.svg) url(icons/moon_icon.svg) url(icons/sun_icon.svg) url(icons/trash-bin_icon.svg);
 }
 
 a {
@@ -61,7 +61,6 @@ td {
 }
 
 button {
-  filter: invert(1);
   height: 2rem;
   width: 2rem;
   padding: 1.3rem;
@@ -76,6 +75,10 @@ button {
 
 button:hover {
   background-color: hsla(0, 0%, 0%, 0.25);
+}
+
+.invert {
+  filter: invert(1);
 }
 
 ::-webkit-scrollbar {
@@ -156,7 +159,7 @@ header {
 
 .mainLinks {
   display: flex;
-  font-size: xx-large !important;
+  font-size: xx-large;
   flex-wrap: wrap;
   justify-content: center;
   padding: 1em 0;
@@ -168,6 +171,27 @@ header {
   display: flex;
   align-items: center;
   column-gap: .2em;
+}
+
+#infoContainer {
+  display: flex;
+  width: 100%;
+  padding: .25em;
+  font-size: x-large;
+  border-radius: .2rem;
+  column-gap: .25em;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--secondary-background);
+}
+
+#infoIcon {
+  height: 1em;
+  width: 1em;
+  flex-shrink: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(icons/info_icon.svg);
 }
 
 .deleteBtn {
