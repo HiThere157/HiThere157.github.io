@@ -324,17 +324,17 @@ var mainTimetable = new Timetable(encodedData);
 
 //check for last settings and apply them
 if (localStorage.getItem("_lastNamesHidden") == "true") {
-  setTimeout(() => { toggleNames(false) }, 0);
+  setTimeout(toggleNames, 0);
 }
 if (localStorage.getItem("_lastLightMode") == "true") {
-  setTimeout(() => { changeMode(false) }, 0);
+  setTimeout(changeMode, 0);
 }
-
 
 //toggle theme
 var lightMode = false;
-function changeMode(writeToStorage = true) {
+function changeMode() {
   lightMode = !lightMode;
+  localStorage.setItem("_lastLightMode", lightMode);
   document.getElementById("modeBtn").style.backgroundImage = lightMode ? "url(icons/moon_icon.svg)" : "url(icons/sun_icon.svg)";
   document.documentElement.style.setProperty("--opacity", (lightMode ? 0.35 : 0.2));
 
@@ -344,24 +344,17 @@ function changeMode(writeToStorage = true) {
   [...document.getElementsByClassName("invert")].forEach(element => {
     element.style.filter = lightMode ? "invert(0)" : "invert(1)";
   });
-
-  if (writeToStorage) {
-    localStorage.setItem("_lastLightMode", lightMode);
-  }
 }
 
 //toggle teacher names
 var hideNames = false;
-function toggleNames(writeToStorage = true) {
+function toggleNames() {
   hideNames = !hideNames;
+  localStorage.setItem("_lastNamesHidden", hideNames);
   document.getElementById("namesBtn").style.backgroundImage = hideNames ? "url(icons/eye_icon.svg)" : "url(icons/eye_off_icon.svg)";
   [...document.getElementsByClassName("nameSpan")].forEach(element => {
     element.style.display = hideNames ? "none" : "block";
   });
-
-  if (writeToStorage) {
-    localStorage.setItem("_lastNamesHidden", hideNames);
-  }
 }
 
 //toggle progress bar visibility
