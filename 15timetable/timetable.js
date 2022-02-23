@@ -304,7 +304,7 @@ const url = filterUserInput(decodeURIComponent(window.location.search.substring(
 var encodedData = url[0];
 const staticTimetables = {
   //title & lesson length (delimited by ,) & Days/Lessons (delimited by ; and lessons by ,) & labels to skip & start time & Lessons with their color (delimited by , and :)
-  "OF10S2": "OF10S2&15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Technik,IT-Technik,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,BwP,BwP,Deutsch,Pause,Deutsch,IT-Technik,IT-Technik,Mittagspause,IT-Systeme,IT-Systeme;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0:Fr. Klingspor,IT-Systeme:180:Hr. Elter,AP:130:Hr. Schmidt+Fr. Hippeli,Politik:200:Hr. Berberich,Ethik/Reli:300:Fr. Beckmann+Fr. Hoffmann,BwP:240:Hr. Geheeb,Deutsch:120:Hr. Foltin,IT-Technik:260:Hr. Geheeb (KL)+Hr. Zimmermann"
+  "OF10S2": "OF10S2&15,40,40,40,20,45,45,45,45,45,45,45&Testen,Englisch,IT-Systeme,IT-Systeme,Pause,IT-Theorie,IT-Theorie,Mittagspause,AP,Politik,AP,Ethik/Reli;;;Testen,IT-Systeme,IT-Systeme,BwP,Pause,BwP,IT-Theorie,IT-Theorie;&17&7:50&Pause:60,Mittagspause:60,Testen:40,Englisch:0:Fr. Klingspor,IT-Systeme:180:Hr. Elter,AP:130:Hr. Schmidt+Fr. Hippeli,Politik:200:Hr. Berberich,Ethik/Reli:300:Fr. Beckmann+Fr. Hoffmann,BwP:240:Hr. Geheeb,IT-Theorie:260:Hr. Geheeb (KL)+Hr. Zimmermann"
 }
 const savedTimetables = {
   ...Object.fromEntries(Object.entries(localStorage).filter(([key]) => key[0] != "_")),
