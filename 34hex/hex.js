@@ -19,18 +19,20 @@ const settings = {
   lightPos: {
     r: 100,
     p: 0,
-    z: 50,
+    z: 50
   },
 
   worldGen: {
     radius: 20,
     hexShape: true,
-    scale: 7
+    scale: 7,
+    seedOffset: { x: 0, y: 0 }
   },
 
   colorMap: {
-    colors: { l0: "#1C3BD5", l1: "#E7C68F", l2: "#59804D", l3: "#9A9A9A", l4: "#D5D5D5", l5: "#FFFFFF" },
+    colors: { w1: "#0b2296", w0: "#1C3BD5", l1: "#E7C68F", l2: "#59804D", l3: "#9A9A9A", l4: "#D5D5D5", l5: "#FFFFFF" },
     waterLevel: 1,
+    w1: -0.25,
     l1: 0.2,
     l2: 0.7,
     l3: 0.9
@@ -89,8 +91,10 @@ function mapToColor(height) {
   var heightPercent = (height + settings.colorMap.waterLevel) / (maxHeight + settings.colorMap.waterLevel);
   var colors = settings.colorMap.colors;
 
-  if (heightPercent < 0) {
-    return colors.l0;
+  if (heightPercent < settings.colorMap.w1) {
+    return colors.w1;
+  } else if (heightPercent < 0) {
+    return colors.w0;
   } else if (heightPercent <= settings.colorMap.l1) {
     return colors.l1;
   } else if (heightPercent <= settings.colorMap.l2) {
@@ -105,16 +109,18 @@ function mapToColor(height) {
 var maxHeight;
 function updateAllHeights() {
   maxHeight = 0;
+  var { x, y } = settings.worldGen.seedOffset;
+
   for (let i = 0; i < points.length; i++) {
     for (let j = 0; j < points[i].length; j++) {
-      var newHeight = perlin.get(i / 7, j / 7) * settings.worldGen.scale;
+      var newHeight = perlin.get(i / 7 + x, j / 7 + y) * settings.worldGen.scale;
       maxHeight = (maxHeight < newHeight) ? newHeight : maxHeight;
     }
   }
 
   for (let i = 0; i < points.length; i++) {
     for (let j = 0; j < points[i].length; j++) {
-      var newHeight = perlin.get(i / 7, j / 7) * settings.worldGen.scale;
+      var newHeight = perlin.get(i / 7 + x, j / 7 + y) * settings.worldGen.scale;
       points[i][j].setHeight(newHeight);
     }
   }
@@ -203,15 +209,20 @@ function initOverlay() {
   worldGen.addInput(settings.worldGen, "radius", { min: 3, max: 50, step: 1, label: "Radius" }).on("change", generateWorld);
   worldGen.addInput(settings.worldGen, "hexShape", { label: "Hex Shape" }).on("change", generateWorld);
   worldGen.addInput(settings.worldGen, "scale", { min: 1, max: 15, step: 1, label: "Scale" }).on("change", updateAllHeights);
+  worldGen.addInput(settings.worldGen, "seedOffset", { label: "Offset" }).on("change", updateAllHeights);
   worldGen.addButton({ title: "New Seed" }).on("click", () => { perlin.seed(); updateAllHeights(); });
   worldGen.addButton({ title: "Reset" }).on("click", () => {
     copySettings(settingsDefault.worldGen, settings.worldGen);
+    copySettings(settingsDefault.worldGen.seedOffset, settings.worldGen.seedOffset);
     callAndRefresh(generateWorld);
   });
 
   const colorMap = mainTab.addFolder({ title: "Color Mapping" });
   colorMap.addInput(settings.colorMap, "waterLevel", { min: -2, max: 5, step: 1, label: "Water Level" }).on("change", updateAllHeights);
-  colorMap.addInput(settings.colorMap.colors, "l0", { label: "Water Color" }).on("change", updateAllHeights);
+  colorMap.addInput(settings.colorMap, "w1", { min: -1, max: 0, step: 0.05, label: "Layer 0" }).on("change", updateAllHeights);
+  colorMap.addInput(settings.colorMap.colors, "w0", { label: "Water" }).on("change", updateAllHeights);
+  colorMap.addInput(settings.colorMap.colors, "w1", { label: "Deep Water" }).on("change", updateAllHeights);
+  colorMap.addSeparator();
   colorMap.addInput(settings.colorMap, "l1", { min: 0, max: 1, step: 0.05, label: "Layer 1" }).on("change", updateAllHeights);
   colorMap.addInput(settings.colorMap, "l2", { min: 0, max: 1, step: 0.05, label: "Layer 2" }).on("change", updateAllHeights);
   colorMap.addInput(settings.colorMap, "l3", { min: 0, max: 1, step: 0.05, label: "Layer 3" }).on("change", updateAllHeights);
@@ -226,7 +237,7 @@ function initOverlay() {
   });
 
   const debug = advancedTab.addFolder({ title: "Debug" });
-  debug.addMonitor(scene.children, "length", { label: "Children", interval: 2000 });
+  debug.addMonitor(scene.children, "length", { label: "Mesh Count", interval: 2000 });
   debug.addButton({ title: "Toggle Debug View" }).on("click", () => {
     helpers.forEach(helper => {
       helper.visible = !helper.visible;
