@@ -30,12 +30,21 @@ const settings = {
   },
 
   colorMap: {
-    colors: { w1: "#0b2296", w0: "#1C3BD5", l1: "#E7C68F", l2: "#59804D", l3: "#9A9A9A", l4: "#D5D5D5", l5: "#FFFFFF" },
+    colors: { w1: "#0b2296", w0: "#314fe2", l1: "#e7c68f", l2: "#59804d", l3: "#9a9a9a", l4: "#d5d5d5", l5: "#ffffff" },
     waterLevel: 1,
     w1: -0.25,
     l1: 0.2,
     l2: 0.7,
     l3: 0.9
+  },
+
+  material: {
+    waterR: 0.55,
+    waterM: 0.5,
+    waterT: 1,
+    solidR: 1,
+    solidM: 0,
+    solidT: 1,
   },
 
   advColor: {
@@ -48,7 +57,15 @@ const settings = {
 
 const settingsDefault = JSON.parse(JSON.stringify(settings));
 
+const performance = {
+  lastFrameCount: null,
+  frameRate: 0,
+  setFrameRate: 60
+}
+
 class Hexagon {
+  static cylinderGeo = new THREE.CylinderGeometry(this.s, this.s, 1, 6, 1);
+
   constructor(scene, x, y, size) {
     this.ix = x;
     this.iy = y;
@@ -56,8 +73,7 @@ class Hexagon {
 
     this.height = 1;
 
-    this.body = new THREE.Mesh(new THREE.CylinderGeometry(this.s, this.s, 1, 6, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
-    this.body.material.flatShading = true;
+    this.body = new THREE.Mesh(Hexagon.cylinderGeo, new THREE.MeshStandardMaterial({ color: 0xffffff, flatShading: true, transparent: true }));
     this.body.position.set(this.ix * this.s * Math.sqrt(3) - this.s * Math.sqrt(0.75), 0, this.iy * this.s * 2 * 0.75);
 
     this.body.castShadow = true;
@@ -75,12 +91,20 @@ class Hexagon {
     this.body.material.color.set(mapToColor(newHeight));
 
     newHeight += settings.colorMap.waterLevel + 1;
+    var thisMaterial = this.body.material;
     if (newHeight < 1) {
       this.body.scale.y = 0.6;
       this.body.position.y = 0.5;
+      thisMaterial.roughness = settings.material.waterR;
+      thisMaterial.metalness = settings.material.waterM;
+      thisMaterial.opacity = settings.material.waterT;
+
     } else {
       this.body.scale.y = newHeight;
       this.body.position.y = newHeight * 0.5;
+      thisMaterial.roughness = settings.material.solidR;
+      thisMaterial.metalness = settings.material.solidM;
+      thisMaterial.opacity = settings.material.solidT;
     }
 
   }
@@ -141,7 +165,6 @@ function generateWorld() {
       for (let j = 0; j < points[i].length; j++) {
         var thisBody = points[i][j].body;
         thisBody.material.dispose();
-        thisBody.geometry.dispose();
         scene.remove(thisBody);
       }
     }
@@ -156,7 +179,9 @@ function generateWorld() {
         row.push(new Hexagon(scene, i, j, 1));
       }
     }
-    points.push(row);
+    if (row.length > 0) {
+      points.push(row);
+    }
   }
   updateAllHeights();
 
@@ -236,15 +261,20 @@ function initOverlay() {
     callAndRefresh(updateAllHeights);
   });
 
-  const debug = advancedTab.addFolder({ title: "Debug" });
-  debug.addMonitor(scene.children, "length", { label: "Mesh Count", interval: 2000 });
-  debug.addButton({ title: "Toggle Debug View" }).on("click", () => {
-    helpers.forEach(helper => {
-      helper.visible = !helper.visible;
-    });
+  const material = mainTab.addFolder({ title: "Material Settings", expanded: false });
+  material.addInput(settings.material, "waterR", { min: 0, max: 1, step: 0.05, label: "Water Roughness" }).on("change", updateAllHeights);
+  material.addInput(settings.material, "waterM", { min: 0, max: 1, step: 0.05, label: "Water Metalness" }).on("change", updateAllHeights);
+  material.addInput(settings.material, "waterT", { min: 0, max: 1, step: 0.05, label: "Water Opacity" }).on("change", updateAllHeights);
+  material.addSeparator();
+  material.addInput(settings.material, "solidR", { min: 0, max: 1, step: 0.05, label: "Solid Roughness" }).on("change", updateAllHeights);
+  material.addInput(settings.material, "solidM", { min: 0, max: 1, step: 0.05, label: "Solid Metalness" }).on("change", updateAllHeights);
+  material.addInput(settings.material, "solidT", { min: 0, max: 1, step: 0.05, label: "Solid Opacity" }).on("change", updateAllHeights);
+  material.addButton({ title: "Reset" }).on("click", () => {
+    copySettings(settingsDefault.material, settings.material);
+    callAndRefresh(updateAllHeights);
   });
 
-  const advColor = advancedTab.addFolder({ title: "Color" });
+  const advColor = mainTab.addFolder({ title: "Fog Settings", expanded: false });
   advColor.addInput(settings.advColor, "backgroundColor", { picker: "inline", expanded: true, label: "Background Color" }).on("change", updateFog);
   var fogEnable = advColor.addInput(settings.advColor, "fogEnabled", { label: "Enable Fog" });
   var nearInp = advColor.addInput(settings.advColor, "fogNear", { min: 0, max: 100, step: 1, disabled: true, label: "Fog Near" }).on("change", updateFog);
@@ -253,8 +283,18 @@ function initOverlay() {
     copySettings(settingsDefault.advColor, settings.advColor);
     callAndRefresh(updateFog);
   });
-
   fogEnable.on("change", () => { updateFog(nearInp, farInp) });
+
+  const debug = advancedTab.addFolder({ title: "Debug" });
+  debug.addMonitor(scene.children, "length", { label: "Mesh Count", interval: 2000 });
+  debug.addInput(performance, "setFrameRate", { min: 10, max: 144, step: 1, label: "FPS Limit" });
+  debug.addMonitor(performance, "frameRate", { view: "graph", min: 0, max: 160, label: "FPS" });
+  debug.addButton({ title: "Toggle Debug View" }).on("click", () => {
+    helpers.forEach(helper => {
+      helper.visible = !helper.visible;
+    });
+  });
+
 }
 
 var light;
@@ -291,8 +331,16 @@ function initThree() {
   const render = () => {
     setTimeout(() => {
       requestAnimationFrame(render);
-    }, 1000 / 60);
+    }, 1000 / performance.setFrameRate);
     renderer.render(scene, camera);
   }
   render();
+  setInterval(() => {
+    var frameCount = renderer.info.render.frame;
+    if (performance.lastFrameCount) {
+      performance.frameRate = frameCount - performance.lastFrameCount;
+    }
+
+    performance.lastFrameCount = frameCount;
+  }, 1000);
 }
