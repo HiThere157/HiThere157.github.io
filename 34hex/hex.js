@@ -30,7 +30,7 @@ const settings = {
   },
 
   colorMap: {
-    colors: { w1: "#0b2296", w0: "#314fe2", l1: "#e7c68f", l2: "#59804d", l3: "#9a9a9a", l4: "#d5d5d5", l5: "#ffffff" },
+    colors: { w1: "#0b2296", w0: "#314fe2", l1: "#e7c68f", l2: "#347e1e", l3: "#9a9a9a", l4: "#ffffff" },
     waterLevel: 1,
     w1: -0.25,
     l1: 0.2,
@@ -40,7 +40,7 @@ const settings = {
 
   material: {
     waterR: 0.55,
-    waterM: 0.5,
+    waterM: 0.75,
     waterT: 1,
     solidR: 1,
     solidM: 0,
@@ -52,6 +52,10 @@ const settings = {
     fogEnabled: false,
     fogNear: 0,
     fogFar: 100,
+  },
+
+  debug: {
+    wireframe: false
   }
 }
 
@@ -92,6 +96,7 @@ class Hexagon {
 
     newHeight += settings.colorMap.waterLevel + 1;
     var thisMaterial = this.body.material;
+    thisMaterial.wireframe = settings.debug.wireframe;
     if (newHeight < 1) {
       this.body.scale.y = 0.6;
       this.body.position.y = 0.5;
@@ -184,7 +189,6 @@ function generateWorld() {
     }
   }
   updateAllHeights();
-
 }
 
 function initOverlay() {
@@ -289,11 +293,13 @@ function initOverlay() {
   debug.addMonitor(scene.children, "length", { label: "Mesh Count", interval: 2000 });
   debug.addInput(performance, "setFrameRate", { min: 10, max: 144, step: 1, label: "FPS Limit" });
   debug.addMonitor(performance, "frameRate", { view: "graph", min: 0, max: 160, label: "FPS" });
+  debug.addSeparator();
   debug.addButton({ title: "Toggle Debug View" }).on("click", () => {
     helpers.forEach(helper => {
       helper.visible = !helper.visible;
     });
   });
+  debug.addButton({ title: "Toggle Wireframe" }).on("click", () => { settings.debug.wireframe = !settings.debug.wireframe; updateAllHeights(); });
 
 }
 
