@@ -40,7 +40,7 @@ var settings = {
   bodyW: 50,
   bodyParam: undefined,
   addBody: () => {
-    if (settings.addedBodies > 300) {
+    if (settings.addedBodies > 500) {
       return;
     }
 
@@ -111,22 +111,32 @@ Render.lookAt(render, {
   max: { x: ww, y: wh }
 });
 
-const gui = new dat.GUI();
-gui.domElement.parentElement.style = "z-Index: 1; user-select: none;";
+const pane = new Tweakpane.Pane();
 
-const gravityFolder = gui.addFolder("Gravity");
-gravityFolder.add(engine.gravity, "x", -1, 1, 0.05).listen();
-gravityFolder.add(engine.gravity, "y", -1, 1, 0.05).listen();
-gravityFolder.add(settings, "resetGravity").name("Reset");
-gravityFolder.open();
+function callAndRefresh(fun) {
+  fun()
+  pane.refresh();
+}
 
-const bodyFolder = gui.addFolder("Body");
-bodyFolder.add(settings, "addNBodies", 1, 10, 1).name("n Bodies").listen();
-bodyFolder.add(settings, "bodyW", 15, 150, 1).name("Wdith").listen();
-bodyFolder.add(settings, "addBody").name("Add Body");
-bodyFolder.open();
+const gravityFolder = pane.addFolder({
+  title: "Gravity",
+  expanded: true,
+});
+gravityFolder.addInput(engine.gravity, "x", { min: -1, max: 1, step: 0.05 })
+gravityFolder.addInput(engine.gravity, "y", { min: -1, max: 1, step: 0.05 })
+gravityFolder.addButton({ title: "Reset" }).on("click", () => { settings.resetGravity(); pane.refresh(); });
 
-const worldFolder = gui.addFolder("World");
-worldFolder.add(settings, "toggleWireframe").name("Toggle Wireframe");
-worldFolder.add(settings, "refresh").name("Full Reset");
-worldFolder.open();
+const bodyFolder = pane.addFolder({
+  title: "Body",
+  expanded: true,
+});
+bodyFolder.addInput(settings, "addNBodies", { min: 1, max: 10, step: 1, label: "n" })
+bodyFolder.addInput(settings, "bodyW", { min: 15, max: 150, step: 1, label: "width" })
+bodyFolder.addButton({ title: "Add Body" }).on("click", () => { settings.addBody(); pane.refresh(); });
+
+const worldFolder = pane.addFolder({
+  title: "World",
+  expanded: true,
+});
+worldFolder.addButton({ title: "Toggle Wireframe" }).on("click", settings.toggleWireframe);
+worldFolder.addButton({ title: "Reload" }).on("click", settings.refresh);

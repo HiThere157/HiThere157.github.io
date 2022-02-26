@@ -75,6 +75,12 @@
     "lib": "matter.js"
   },
   {
+    "title": "Hexagon World",
+    "desc": "Three.js Hexagon Grid Procedural World Generation",
+    "uri": "./34hex/",
+    "lib": "three.js"
+  },
+  {
     "title": "HTML Shooter",
     "desc": "'Asteroid' like Game for all HTML Websites",
     "uri": "./0shooter/shooter.js",
