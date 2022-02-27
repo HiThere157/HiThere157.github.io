@@ -69,30 +69,83 @@ const performance = {
 
 class Hexagon {
   static cylinderGeo = new THREE.CylinderGeometry(this.s, this.s, 1, 6, 1);
+  static maxHeight;
+  static hexagons = [];
+
+  static callAllHexagons(fun) {
+    for (let i = 0; i < Hexagon.hexagons.length; i++) {
+      for (let j = 0; j < Hexagon.hexagons[i].length; j++) {
+        if (Hexagon.hexagons[i][j]) {
+          fun(i, j, Hexagon.hexagons[i][j]);
+        }
+      }
+    }
+  }
+
+  // https://www.redblobgames.com/grids/hexagons/
+  static offsetToCube(x, y) {
+    var q = y
+    var r = x - (y + (y & 1)) / 2
+    return [q, r, -q - r];
+  }
+
+  static updateAllHeights() {
+    Hexagon.maxHeight = 0;
+    var { x, y } = settings.worldGen.seedOffset;
+
+    Hexagon.callAllHexagons((i, j) => {
+      var newHeight = perlin.get(i / 7 + x, j / 7 + y) * settings.worldGen.scale;
+      Hexagon.maxHeight = (Hexagon.maxHeight < newHeight) ? newHeight : Hexagon.maxHeight;
+    })
+
+    Hexagon.callAllHexagons((i, j, hexagon) => {
+      hexagon.setHeight(perlin.get(i / 7 + x, j / 7 + y) * settings.worldGen.scale);
+    })
+
+  }
+
+  static mapToColor(height) {
+    var heightPercent = (height + settings.colorMap.waterLevel) / (Hexagon.maxHeight + settings.colorMap.waterLevel);
+    var colors = settings.colorMap.colors;
+
+    if (heightPercent < settings.colorMap.w1) {
+      return colors.w1;
+    } else if (heightPercent < 0) {
+      return colors.w0;
+    } else if (heightPercent <= settings.colorMap.l1) {
+      return colors.l1;
+    } else if (heightPercent <= settings.colorMap.l2) {
+      return colors.l2;
+    } else if (heightPercent <= settings.colorMap.l3) {
+      return colors.l3;
+    } else {
+      return colors.l4;
+    }
+  }
 
   constructor(scene, x, y, size) {
     this.ix = x;
     this.iy = y;
     this.s = size;
 
-    this.height = 1;
+    this.x = this.ix * this.s * Math.sqrt(3) - this.s * Math.sqrt(0.75);
+    this.y = this.iy * this.s * 2 * 0.75;
+
+    if (this.iy % 2 == 0) {
+      this.x += this.s * Math.sqrt(0.75);
+    }
 
     this.body = new THREE.Mesh(Hexagon.cylinderGeo, new THREE.MeshStandardMaterial({ color: 0xffffff, flatShading: true, transparent: true }));
-    this.body.position.set(this.ix * this.s * Math.sqrt(3) - this.s * Math.sqrt(0.75), 0, this.iy * this.s * 2 * 0.75);
+    this.body.position.set(this.x, 0, this.y);
 
     this.body.castShadow = true;
     this.body.receiveShadow = true;
-
-    if (this.iy % 2 == 0) {
-      this.body.position.x += this.s * Math.sqrt(0.75);
-    }
 
     scene.add(this.body);
   }
 
   setHeight(newHeight) {
-    this.height = newHeight;
-    this.body.material.color.set(mapToColor(newHeight));
+    this.body.material.color.set(Hexagon.mapToColor(newHeight));
 
     newHeight += settings.colorMap.waterLevel + 1;
     var thisMaterial = this.body.material;
@@ -106,89 +159,36 @@ class Hexagon {
 
     } else {
       this.body.scale.y = newHeight;
-      this.body.position.y = newHeight * 0.5;
+      this.body.position.y = newHeight / 2;
       thisMaterial.roughness = settings.material.solidR;
       thisMaterial.metalness = settings.material.solidM;
       thisMaterial.opacity = settings.material.solidT;
     }
-
   }
-
-}
-
-function mapToColor(height) {
-  var heightPercent = (height + settings.colorMap.waterLevel) / (maxHeight + settings.colorMap.waterLevel);
-  var colors = settings.colorMap.colors;
-
-  if (heightPercent < settings.colorMap.w1) {
-    return colors.w1;
-  } else if (heightPercent < 0) {
-    return colors.w0;
-  } else if (heightPercent <= settings.colorMap.l1) {
-    return colors.l1;
-  } else if (heightPercent <= settings.colorMap.l2) {
-    return colors.l2;
-  } else if (heightPercent <= settings.colorMap.l3) {
-    return colors.l3;
-  } else {
-    return colors.l4;
-  }
-}
-
-var maxHeight;
-function updateAllHeights() {
-  maxHeight = 0;
-  var { x, y } = settings.worldGen.seedOffset;
-
-  for (let i = 0; i < points.length; i++) {
-    for (let j = 0; j < points[i].length; j++) {
-      var newHeight = perlin.get(i / 7 + x, j / 7 + y) * settings.worldGen.scale;
-      maxHeight = (maxHeight < newHeight) ? newHeight : maxHeight;
-    }
-  }
-
-  for (let i = 0; i < points.length; i++) {
-    for (let j = 0; j < points[i].length; j++) {
-      var newHeight = perlin.get(i / 7 + x, j / 7 + y) * settings.worldGen.scale;
-      points[i][j].setHeight(newHeight);
-    }
-  }
-}
-
-// https://www.redblobgames.com/grids/hexagons/
-function offsetToCube(x, y) {
-  var q = y
-  var r = x - (y + (y & 1)) / 2
-  return [q, r, -q - r];
 }
 
 var scene, camera, renderer;
-var points;
 function generateWorld() {
-  if (points) {
-    for (let i = 0; i < points.length; i++) {
-      for (let j = 0; j < points[i].length; j++) {
-        var thisBody = points[i][j].body;
-        thisBody.material.dispose();
-        scene.remove(thisBody);
-      }
-    }
-  }
+  Hexagon.callAllHexagons((i, j, hexagon) => {
+    scene.remove(hexagon.body);
+  })
+  Hexagon.hexagons = [];
 
   var r = settings.worldGen.radius;
-  points = [];
   for (let i = -r + 1; i < r; i++) {
     var row = [];
     for (let j = -r + 1; j < r; j++) {
-      if (offsetToCube(i, j).reduce((sum, n) => sum + Math.abs(n), 0) <= settings.worldGen.radius || !settings.worldGen.hexShape) {
+      if (Hexagon.offsetToCube(i, j).reduce((sum, n) => sum + Math.abs(n), 0) <= settings.worldGen.radius || !settings.worldGen.hexShape) {
         row.push(new Hexagon(scene, i, j, 1));
+      } else {
+        row.push(null);
       }
     }
     if (row.length > 0) {
-      points.push(row);
+      Hexagon.hexagons.push(row);
     }
   }
-  updateAllHeights();
+  Hexagon.updateAllHeights();
 }
 
 function initOverlay() {
@@ -237,9 +237,9 @@ function initOverlay() {
   const worldGen = mainTab.addFolder({ title: "World Generation" });
   worldGen.addInput(settings.worldGen, "radius", { min: 3, max: 50, step: 1, label: "Radius" }).on("change", generateWorld);
   worldGen.addInput(settings.worldGen, "hexShape", { label: "Hex Shape" }).on("change", generateWorld);
-  worldGen.addInput(settings.worldGen, "scale", { min: 1, max: 15, step: 1, label: "Scale" }).on("change", updateAllHeights);
-  worldGen.addInput(settings.worldGen, "seedOffset", { label: "Offset" }).on("change", updateAllHeights);
-  worldGen.addButton({ title: "New Seed" }).on("click", () => { perlin.seed(); updateAllHeights(); });
+  worldGen.addInput(settings.worldGen, "scale", { min: 1, max: 15, step: 1, label: "Scale" }).on("change", Hexagon.updateAllHeights);
+  worldGen.addInput(settings.worldGen, "seedOffset", { label: "Offset" }).on("change", Hexagon.updateAllHeights);
+  worldGen.addButton({ title: "New Seed" }).on("click", () => { perlin.seed(); Hexagon.updateAllHeights(); });
   worldGen.addButton({ title: "Reset" }).on("click", () => {
     copySettings(settingsDefault.worldGen, settings.worldGen);
     copySettings(settingsDefault.worldGen.seedOffset, settings.worldGen.seedOffset);
@@ -247,35 +247,35 @@ function initOverlay() {
   });
 
   const colorMap = mainTab.addFolder({ title: "Color Mapping" });
-  colorMap.addInput(settings.colorMap, "waterLevel", { min: -2, max: 5, step: 1, label: "Water Level" }).on("change", updateAllHeights);
-  colorMap.addInput(settings.colorMap, "w1", { min: -1, max: 0, step: 0.05, label: "Layer 0" }).on("change", updateAllHeights);
-  colorMap.addInput(settings.colorMap.colors, "w0", { label: "Water" }).on("change", updateAllHeights);
-  colorMap.addInput(settings.colorMap.colors, "w1", { label: "Deep Water" }).on("change", updateAllHeights);
+  colorMap.addInput(settings.colorMap, "waterLevel", { min: -2, max: 5, step: 1, label: "Water Level" }).on("change", Hexagon.updateAllHeights);
+  colorMap.addInput(settings.colorMap, "w1", { min: -1, max: 0, step: 0.05, label: "Layer 0" }).on("change", Hexagon.updateAllHeights);
+  colorMap.addInput(settings.colorMap.colors, "w0", { label: "Water" }).on("change", Hexagon.updateAllHeights);
+  colorMap.addInput(settings.colorMap.colors, "w1", { label: "Deep Water" }).on("change", Hexagon.updateAllHeights);
   colorMap.addSeparator();
-  colorMap.addInput(settings.colorMap, "l1", { min: 0, max: 1, step: 0.05, label: "Layer 1" }).on("change", updateAllHeights);
-  colorMap.addInput(settings.colorMap, "l2", { min: 0, max: 1, step: 0.05, label: "Layer 2" }).on("change", updateAllHeights);
-  colorMap.addInput(settings.colorMap, "l3", { min: 0, max: 1, step: 0.05, label: "Layer 3" }).on("change", updateAllHeights);
-  colorMap.addInput(settings.colorMap.colors, "l1", { label: "L1 Color" }).on("change", updateAllHeights);
-  colorMap.addInput(settings.colorMap.colors, "l2", { label: "L2 Color" }).on("change", updateAllHeights);
-  colorMap.addInput(settings.colorMap.colors, "l3", { label: "L3 Color" }).on("change", updateAllHeights);
-  colorMap.addInput(settings.colorMap.colors, "l4", { label: "L4 Color" }).on("change", updateAllHeights);
+  colorMap.addInput(settings.colorMap, "l1", { min: 0, max: 1, step: 0.05, label: "Layer 1" }).on("change", Hexagon.updateAllHeights);
+  colorMap.addInput(settings.colorMap, "l2", { min: 0, max: 1, step: 0.05, label: "Layer 2" }).on("change", Hexagon.updateAllHeights);
+  colorMap.addInput(settings.colorMap, "l3", { min: 0, max: 1, step: 0.05, label: "Layer 3" }).on("change", Hexagon.updateAllHeights);
+  colorMap.addInput(settings.colorMap.colors, "l1", { label: "L1 Color" }).on("change", Hexagon.updateAllHeights);
+  colorMap.addInput(settings.colorMap.colors, "l2", { label: "L2 Color" }).on("change", Hexagon.updateAllHeights);
+  colorMap.addInput(settings.colorMap.colors, "l3", { label: "L3 Color" }).on("change", Hexagon.updateAllHeights);
+  colorMap.addInput(settings.colorMap.colors, "l4", { label: "L4 Color" }).on("change", Hexagon.updateAllHeights);
   colorMap.addButton({ title: "Reset" }).on("click", () => {
     copySettings(settingsDefault.colorMap, settings.colorMap);
     copySettings(settingsDefault.colorMap.colors, settings.colorMap.colors);
-    callAndRefresh(updateAllHeights);
+    callAndRefresh(Hexagon.updateAllHeights);
   });
 
   const material = mainTab.addFolder({ title: "Material Settings", expanded: false });
-  material.addInput(settings.material, "waterR", { min: 0, max: 1, step: 0.05, label: "Water Roughness" }).on("change", updateAllHeights);
-  material.addInput(settings.material, "waterM", { min: 0, max: 1, step: 0.05, label: "Water Metalness" }).on("change", updateAllHeights);
-  material.addInput(settings.material, "waterT", { min: 0, max: 1, step: 0.05, label: "Water Opacity" }).on("change", updateAllHeights);
+  material.addInput(settings.material, "waterR", { min: 0, max: 1, step: 0.05, label: "Water Roughness" }).on("change", Hexagon.updateAllHeights);
+  material.addInput(settings.material, "waterM", { min: 0, max: 1, step: 0.05, label: "Water Metalness" }).on("change", Hexagon.updateAllHeights);
+  material.addInput(settings.material, "waterT", { min: 0, max: 1, step: 0.05, label: "Water Opacity" }).on("change", Hexagon.updateAllHeights);
   material.addSeparator();
-  material.addInput(settings.material, "solidR", { min: 0, max: 1, step: 0.05, label: "Solid Roughness" }).on("change", updateAllHeights);
-  material.addInput(settings.material, "solidM", { min: 0, max: 1, step: 0.05, label: "Solid Metalness" }).on("change", updateAllHeights);
-  material.addInput(settings.material, "solidT", { min: 0, max: 1, step: 0.05, label: "Solid Opacity" }).on("change", updateAllHeights);
+  material.addInput(settings.material, "solidR", { min: 0, max: 1, step: 0.05, label: "Solid Roughness" }).on("change", Hexagon.updateAllHeights);
+  material.addInput(settings.material, "solidM", { min: 0, max: 1, step: 0.05, label: "Solid Metalness" }).on("change", Hexagon.updateAllHeights);
+  material.addInput(settings.material, "solidT", { min: 0, max: 1, step: 0.05, label: "Solid Opacity" }).on("change", Hexagon.updateAllHeights);
   material.addButton({ title: "Reset" }).on("click", () => {
     copySettings(settingsDefault.material, settings.material);
-    callAndRefresh(updateAllHeights);
+    callAndRefresh(Hexagon.updateAllHeights);
   });
 
   const advColor = mainTab.addFolder({ title: "Fog Settings", expanded: false });
@@ -299,7 +299,7 @@ function initOverlay() {
       helper.visible = !helper.visible;
     });
   });
-  debug.addButton({ title: "Toggle Wireframe" }).on("click", () => { settings.debug.wireframe = !settings.debug.wireframe; updateAllHeights(); });
+  debug.addButton({ title: "Toggle Wireframe" }).on("click", () => { settings.debug.wireframe = !settings.debug.wireframe; Hexagon.updateAllHeights(); });
 
 }
 
