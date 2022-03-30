@@ -14,7 +14,7 @@ const footerElement = document.getElementsByTagName("footer")[0];
 const mainElement = document.getElementById("main");
 
 function filterUserInput(string) {
-  return string.toString().replaceAll("<", "").replaceAll(">", "");
+  return string.toString().replace("/</g", "").replaceAll("/>/g", "");
 }
 
 //make HTML table from array
