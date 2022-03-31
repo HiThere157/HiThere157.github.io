@@ -184,7 +184,7 @@ class Timetable {
         }
 
         if (this.teachers[tmp]) {
-          currentField.innerHTML += "<span class=nameSpan>" + filterUserInput(this.teachers[tmp]).replace(/+/g, "<br>") + "<span>";
+          currentField.innerHTML += "<span class=nameSpan>" + filterUserInput(this.teachers[tmp]).replace(/\+/g, "<br>") + "<span>";
         }
 
         //remove lesson name if is already labeld above
