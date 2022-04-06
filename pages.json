@@ -8,7 +8,7 @@
   {
     "title": "Maze Generator",
     "desc": "Depth First Search (DFS) Maze Generator. One of the simplest ways to generate a maze.",
-    "uri": "./6maze/",
+    "uri": "./35mazeGen/",
     "lib": "p5.js",
     "info": "https://en.wikipedia.org/wiki/Maze_generation_algorithm#Randomized_depth-first_search"
   },
@@ -78,7 +78,8 @@
     "title": "Hexagon World",
     "desc": "Three.js Hexagon Grid Procedural World Generation",
     "uri": "./34hex/",
-    "lib": "three.js"
+    "lib": "three.js",
+    "info": "https://www.redblobgames.com/grids/hexagons/"
   },
   {
     "title": "HTML Shooter",
