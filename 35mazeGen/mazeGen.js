@@ -90,6 +90,7 @@ class Tile {
     }
     Tile.tiles = tiles;
     Tile.walker = new Walker();
+    Walker.isWalking = true;
   }
 
   constructor(x, y) {
@@ -173,7 +174,8 @@ function draw() {
 
     if (!Walker.isWalking) {
       fill(0, 255, 0);
-      rect((Tile.rows - 1) * res + 10, (Tile.columns - 1) * res + 10, res - 20, res - 20);
+      let diff = res * 0.2;
+      rect((Tile.rows - 1) * res + diff, (Tile.columns - 1) * res + diff, res - diff * 2, res - diff * 2);
     }
 
   } catch {
