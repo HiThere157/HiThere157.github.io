@@ -28,7 +28,7 @@ fetch("./pages.json").then(response => response.json())
     var id = page.uri.split("/")[1];
 
     if (page.noBg == true) {
-      cardClone.style = `background-image: url(assets/icons/logo-github.svg); background-size: 50%; background-position: 50% 40%;`;
+      cardClone.style = "background-image: url(assets/icons/logo-github.svg); background-size: 50%; background-position: 50% 40%; backdrop-filter: blur( .05rem );";
     } else {
       cardClone.style = `background-image: url(assets/${id}.webp);`;
     }
