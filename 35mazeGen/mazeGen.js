@@ -131,7 +131,7 @@ function initOverlay() {
 }
 
 function setup() {
-  createCanvas(windowWidth - 5, windowHeight - 5);
+  createCanvas(windowWidth, windowHeight);
   frameRate(settings.speed);
   Tile.createTiles();
   initOverlay();

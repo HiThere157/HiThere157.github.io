@@ -82,6 +82,12 @@
     "info": "https://www.redblobgames.com/grids/hexagons/"
   },
   {
+    "title": "Particles",
+    "desc": "Particle Simulation in p5.js",
+    "uri": "./36particles/",
+    "lib": "p5.js"
+  },
+  {
     "title": "HTML Shooter",
     "desc": "'Asteroid' like Game for all HTML Websites",
     "uri": "./0shooter/shooter.js",
