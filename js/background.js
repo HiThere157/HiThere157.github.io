@@ -1,10 +1,11 @@
 class Particle {
   static canvas = document.getElementById("canvas");
   static context = Particle.canvas.getContext("2d");
+  static intervalId;
   static init() {
     Particle.canvas.width = window.innerWidth;
     Particle.canvas.height = window.innerHeight;
-    Particle.canvas.style = "position: absolute; top:0;";
+    Particle.canvas.style = "position: fixed; top:0;";
 
     Particle.context.strokeStyle = "#fff";
     Particle.context.lineWidth = .1;
@@ -16,15 +17,19 @@ class Particle {
         particle.update();
       });
     };
-    
-    setInterval(draw, 33);
-    Particle.generateParticles();
+
+    if (Particle.intervalId) {
+      clearInterval(Particle.intervalId);
+    }
+
+    Particle.intervalId = setInterval(draw, 33);
+    Particle.generateParticles(Math.floor(window.innerHeight * window.innerWidth * (100 / (1057 * 1920))));
   }
 
   static particles = [];
-  static generateParticles() {
+  static generateParticles(n) {
     Particle.particles = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < n; i++) {
       Particle.particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
     }
   }
@@ -77,3 +82,4 @@ class Particle {
 }
 
 document.onload = Particle.init();
+window.onresize = Particle.init;
