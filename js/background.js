@@ -5,7 +5,10 @@ class Particle {
   static init() {
     Particle.canvas.width = window.innerWidth;
     Particle.canvas.height = window.innerHeight;
-    Particle.canvas.style = "position: fixed; top:0;";
+
+    setTimeout(() => {
+      Particle.canvas.classList.toggle("fadeIn", true);
+    }, 0);
 
     Particle.context.strokeStyle = "#fff";
     Particle.context.lineWidth = .1;
@@ -82,4 +85,7 @@ class Particle {
 }
 
 document.onload = Particle.init();
-window.onresize = Particle.init;
+window.onresize = () => {
+  Particle.canvas.classList.toggle("fadeIn", false);
+  Particle.init();
+};
