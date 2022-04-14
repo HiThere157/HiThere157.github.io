@@ -3,7 +3,8 @@ function setDefaultSettings() {
   settings.particleCount = 250;
   settings.mouseRadius = 200;
   settings.connectedRadius = 130;
-  settings.velocityBias = { x: 0, y: 0 };
+  settings.maxVelocity = 4;
+  settings.velocityBias = { x: 1, y: 1 };
 }
 setDefaultSettings();
 
@@ -18,8 +19,8 @@ class Particle {
 
   static particlesInRadius(x, y, radius2) {
     return Particle.particles.filter(particle => {
-      const distance = Math.pow(particle.x - x, 2) + Math.pow(particle.y - y, 2);
-      return distance < radius2;
+      const distance2 = Math.pow(particle.x - x, 2) + Math.pow(particle.y - y, 2);
+      return distance2 < radius2;
     });
   }
 
@@ -29,8 +30,8 @@ class Particle {
     this.radius = Math.random() * 2 + 1;
 
     this.velocity = {
-      x: Math.random() * 4 - 1,
-      y: Math.random() * 4 - 1
+      x: Math.random() * settings.maxVelocity - settings.maxVelocity / 2,
+      y: Math.random() * settings.maxVelocity - settings.maxVelocity / 2
     };
   }
 
@@ -61,7 +62,6 @@ class Particle {
     this.x += dx_mouse / distance * mouseFactor;
     this.y += dy_mouse / distance * mouseFactor;
 
-    //connect particles in radius
     Particle.particlesInRadius(this.x, this.y, settings.connectedRadius * settings.connectedRadius).forEach(particle => {
       line(this.x, this.y, particle.x, particle.y);
     });
@@ -80,6 +80,7 @@ function initOverlay() {
   general.addInput(settings, "particleCount", { min: 0, max: 500, step: 1, label: "Count" }).on("change", Particle.generateParticles);
   general.addInput(settings, "mouseRadius", { min: 100, max: 500, step: 1, label: "Mouse Radius" });
   general.addInput(settings, "connectedRadius", { min: 50, max: 300, step: 1, label: "Lines Radius" });
+  general.addInput(settings, "maxVelocity", { min: 0, max: 19, step: 1, label: "Max Velocity" }).on("change", Particle.generateParticles);
   general.addInput(settings, "velocityBias", { label: "Velocity Bias" });
   general.addButton({ title: "Reset" }).on("click", () => {
     setDefaultSettings();
