@@ -63,5 +63,5 @@ fetch("./pages.json").then(response => response.json())
     setTimeout(() => {
       cardClone.classList.add("cardFadeIn");
       cardClone.style.opacity = 1;
-    }, i*75);
+    }, i * 75);
   }));
