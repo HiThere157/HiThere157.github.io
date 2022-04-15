@@ -7,7 +7,6 @@ html,
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
   width: 100%;
 
   font-family: Verdana, sans-serif;
@@ -90,6 +89,7 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  padding-bottom: 1rem;
 }
 
 .cardContainer {
@@ -179,9 +179,12 @@ h1 {
 
 /*-- Card Text --*/
 .cardTextContainer {
-  position: relative;
+  position: absolute;
   height: 100%;
-  width: 100%;
+  width: calc(100% + 2px);
+  border-radius: .5em;
+  left: -1px;
+  bottom: -1px;
   overflow: hidden;
 }
 
