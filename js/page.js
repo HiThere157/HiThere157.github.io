@@ -23,7 +23,7 @@ const cardTemplate = document.getElementById("cardTemplate");
 const mainContainer = document.getElementById("mainContainer");
 
 fetch("./pages.json").then(response => response.json())
-  .then(pages => pages.forEach(page => {
+  .then(pages => pages.forEach((page, i) => {
     var cardClone = cardTemplate.content.firstElementChild.cloneNode(true);
     var id = page.uri.split("/")[1];
 
@@ -60,4 +60,8 @@ fetch("./pages.json").then(response => response.json())
       }
     }
     mainContainer.appendChild(cardClone);
+    setTimeout(() => {
+      cardClone.classList.add("cardFadeIn");
+      cardClone.style.opacity = 1;
+    }, i*75);
   }));
