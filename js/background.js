@@ -37,13 +37,6 @@ class Particle {
     }
   }
 
-  static particlesInRadius(x, y, radius2) {
-    return Particle.particles.filter(particle => {
-      const distance2 = Math.pow(particle.x - x, 2) + Math.pow(particle.y - y, 2);
-      return distance2 < radius2;
-    });
-  }
-
   constructor(x, y) {
     this.x = x;
     this.y = y;
@@ -71,12 +64,19 @@ class Particle {
       this.y = canvas.height;
     }
 
-    Particle.particlesInRadius(this.x, this.y, 27500).forEach(particle => {
-      Particle.context.beginPath();
-      Particle.context.moveTo(this.x, this.y);
-      Particle.context.lineTo(particle.x, particle.y);
-      Particle.context.stroke();
+    Particle.particles.forEach(particle => {
+      if(Math.pow(particle.x - this.x, 2) + Math.pow(particle.y - this.y, 2) < 27500){
+        Particle.context.beginPath();
+        Particle.context.moveTo(this.x, this.y);
+        Particle.context.lineTo(particle.x, particle.y);
+  
+        // let opacity = 4 - (distance2 / (27500 / 4));
+        // Particle.context.globalAlpha = opacity;
+        Particle.context.stroke();
+      }
     });
+
+    // Particle.context.globalAlpha = 1;
 
     Particle.context.beginPath();
     Particle.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
