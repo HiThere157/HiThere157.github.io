@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Change Base</title>
+  <meta charset="UTF-8">
+  <meta name="author" content="HiThere157">
+  <link href="bootstrap_lux.min.css" rel="stylesheet">
+  <style>
+    html,
+    body {
+      height: 100%;
+      font-size: larger;
+    }
+
+    html {
+      filter: invert(calc(0.8 * var(--dark-theme)));
+      transition: 500ms filter;
+      --dark-theme: 1;
+    }
+
+    @media screen and (max-width: 80rem) {
+      #main {
+        flex-wrap: wrap;
+      }
+    }
+
+    ::selection {
+      background-color: #ced4da;
+    }
+
+    #reverseInput:hover {
+      transform: rotateZ(180deg);
+    }
+  </style>
+</head>
+
+<body>
+  <button id="toggleTheme" class="btn btn-outline-secondary m-3">Light Theme</button>
+  
+  <div class="d-flex justify-content-center w-100 h-75">
+    <div id="main" class="d-flex justify-content-center align-items-center w-75">
+
+      <div class="input-group" style="min-width: 30rem;">
+        <span class="input-group-text">Input Number:</span>
+        <input id="inputNumber" type="text" class="form-control" placeholder="0" autofocus>
+        <select id="inputBase" class="form-select flex-grow-0 w-auto border border-2">
+          <option value="2">2</option>
+          <option value="8">8</option>
+          <option value="10" selected>10</option>
+          <option value="16">16</option>
+        </select>
+        <div class="invalid-feedback ms-2">
+          Please enter a valid number.
+        </div>
+      </div>
+
+      <div id="reverseInput" class="ps-4 pe-4 fs-1 user-select-none" style="cursor: pointer; transition: 500ms;">&#10132</div>
+
+      <div class="input-group" style="min-width: 30rem;">
+        <span class="input-group-text">Output Number:</span>
+        <input id="outputNumber" type="text" class="form-control" value="0" readonly>
+        <select id="outputBase" class="form-select flex-grow-0 w-auto border border-2">
+          <option value="2">2</option>
+          <option value="8">8</option>
+          <option value="10">10</option>
+          <option value="16" selected>16</option>
+        </select>
+        <div class="invalid-feedback ms-2">
+          NaN = Not a Number
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <script src="changeBase.js"></script>
+</body>
+
+</html>
