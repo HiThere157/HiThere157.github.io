@@ -126,7 +126,7 @@ function initOverlay() {
 
   const general = pane.addFolder({ title: "Maze Settings" });
   general.addInput(settings, "resolution", { min: 20, max: 100, step: 1, label: "Resolution" }).on("change", Tile.createTiles);
-  general.addInput(settings, "speed", { min: 1, max: 60, step: 1, label: "Speed" }).on("change", () => { frameRate(settings.speed); });
+  general.addInput(settings, "speed", { min: 1, max: 75, step: 1, label: "Speed" }).on("change", () => { frameRate(settings.speed); });
   general.addButton({ title: "Generate Maze" }).on("click", Tile.createTiles);
 }
 
