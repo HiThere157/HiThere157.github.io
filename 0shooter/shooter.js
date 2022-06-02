@@ -222,23 +222,23 @@ class _Particle {
   }
 }
 
-function play() {
+function _play() {
   _shooter.score += 1;
 
-  if (keyDowns["ArrowRight"] == true) {
+  if (_keyDowns["ArrowRight"] == true) {
     _shooter.r = (_shooter.r + 6) % 360;
   }
-  if (keyDowns["ArrowLeft"] == true) {
+  if (_keyDowns["ArrowLeft"] == true) {
     _shooter.r = (_shooter.r - 6) % 360;
   }
-  if (keyDowns["ArrowUp"] == true) {
+  if (_keyDowns["ArrowUp"] == true) {
     _shooter.a = -1.5;
     _shooter.particles.push(new _Particle(_shooter.x + (Math.random() - 0.5) * 10, _shooter.y + (Math.random() - 0.5) * 10, _shooter.r + (Math.random() - 0.5) * 20, Math.random() * 4 + 2, 1, 0.1 + Math.random() * 0.05, -15, false, _shooter.colors[parseInt(Math.random() * 4)], 2))
   }
-  if (keyDowns["ArrowDown"] == true) {
+  if (_keyDowns["ArrowDown"] == true) {
     _shooter.a = 1.5;
   }
-  if (keyDowns[" "] == true) {
+  if (_keyDowns[" "] == true) {
     let time = new Date();
     if (time.getTime() - _shooter.lastShot > 200) {
       _shooter.lastShot = time.getTime();
@@ -246,7 +246,7 @@ function play() {
     }
   }
 
-  // if (keyDowns["f"] == true) {
+  // if (_keyDowns["f"] == true) {
   //   if (_shooter.score > 25000) {
   //     _shooter.score -= 25000;
   //     for (let i = 0; i < 10; i++) {
@@ -268,11 +268,12 @@ function play() {
 }
 
 var _shooter;
-var IntervalId;
+var _intervalId;
 function _start() {
   if (_shooter == undefined) {
     _shooter = new _Shooter(150, 150, 40, 30);
-    IntervalId = setInterval(play, 20);
+    _intervalId = setInterval(_play, 20);
+    alert("Use the Arrow Keys to move. Space to Shoot.")
   } else {
     _shooter.x = 150;
     _shooter.y = 150;
@@ -282,9 +283,9 @@ function _start() {
   _shooter.explode(_shooter.x, _shooter.y, 50);
 }
 
-var keyDowns = {};
+var _keyDowns = {};
 function _keyDown(event) {
-  keyDowns[event.key] = true;
+  _keyDowns[event.key] = true;
 
   if (event.key == "F8") {
     _start();
@@ -293,13 +294,13 @@ function _keyDown(event) {
     _shooter.particles.forEach(particle => {
       particle.particleElem.remove();
     });
-    clearInterval(IntervalId);
+    clearInterval(_intervalId);
     _shooter = undefined;
     document.getElementsByTagName("html")[0].style.overflow = "visible";
   }
 }
 function _keyUp(event) {
-  delete keyDowns[event.key];
+  delete _keyDowns[event.key];
 }
 window.addEventListener("keydown", _keyDown);
 window.addEventListener("keyup", _keyUp);
