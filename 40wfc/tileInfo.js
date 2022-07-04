@@ -1,0 +1,80 @@
+const tileData = [
+  {
+    url: "tiles/0.png",
+    sideInfo: [0, 0, 0, 0],
+    rotations: 1,
+    bias: 20,
+  },
+  {
+    url: "tiles/1.png",
+    sideInfo: [0, 1, 0, 0],
+    rotations: 4,
+    bias: 1,
+  },
+  {
+    url: "tiles/2.png",
+    sideInfo: [0, 2, 0, 2],
+    rotations: 2,
+    bias: 5,
+  },
+  {
+    url: "tiles/3.png",
+    sideInfo: [0, 1, 0, 1],
+    rotations: 2,
+    bias: 10,
+  },
+  {
+    url: "tiles/4.png",
+    sideInfo: [2, 1, 2, 1],
+    rotations: 2,
+    bias: 1,
+  },
+  {
+    url: "tiles/5.png",
+    sideInfo: [2, 0, 1, 0],
+    rotations: 4,
+    bias: 1,
+  },
+  {
+    url: "tiles/6.png",
+    sideInfo: [2, 1, 0, 0],
+    rotations: 4,
+    bias: 1,
+  },
+  {
+    url: "tiles/7.png",
+    sideInfo: [2, 1, 0, 1],
+    rotations: 4,
+    bias: 1,
+  },
+  {
+    url: "tiles/8.png",
+    sideInfo: [2, 0, 0, 1],
+    rotations: 4,
+    bias: 1,
+  },
+  {
+    url: "tiles/9.png",
+    sideInfo: [1, 1, 0, 1],
+    rotations: 4,
+    bias: 10,
+  },
+  {
+    url: "tiles/10.png",
+    sideInfo: [1, 1, 1, 1],
+    rotations: 2,
+    bias: 1,
+  },
+  {
+    url: "tiles/11.png",
+    sideInfo: [1, 1, 0, 0],
+    rotations: 4,
+    bias: 1,
+  },
+  {
+    url: "tiles/12.png",
+    sideInfo: [0, 1, 0, 1],
+    rotations: 2,
+    bias: 1,
+  },
+];

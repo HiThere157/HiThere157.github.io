@@ -88,6 +88,18 @@
     "lib": "p5.js"
   },
   {
+    "title": "WFC",
+    "desc": "Wave Function Collapse Algorithm implementation in p5.js",
+    "link": "/40wfc/",
+    "lib": "p5.js"
+  },
+  {
+    "title": "Base Change",
+    "desc": "Change the base of a number",
+    "link": "/38baseChange/",
+    "noBg": true
+  },
+  {
     "title": "HTML Shooter",
     "desc": "'Asteroid' like Game for all HTML Websites",
     "link": "/0shooter/shooter.js",
