@@ -36,7 +36,7 @@ function generateGrid() {
 
 const settings = {};
 function setDefaultSettings() {
-  settings.tileHeight = 100;
+  settings.tileHeight = 70;
   settings.frameRate = 60;
 }
 
