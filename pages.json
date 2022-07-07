@@ -91,7 +91,8 @@
     "title": "WFC",
     "desc": "Wave Function Collapse Algorithm implementation in p5.js",
     "link": "/40wfc/",
-    "lib": "p5.js"
+    "lib": "p5.js",
+    "info": "https://github.com/mxgmn/WaveFunctionCollapse"
   },
   {
     "title": "Base Change",
