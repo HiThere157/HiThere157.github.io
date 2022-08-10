@@ -103,7 +103,7 @@
   {
     "title": "HTML Shooter",
     "desc": "'Asteroid' like Game for all HTML Websites",
-    "link": "/0shooter/shooter.js",
+    "link": "/7shooter/shooter.js",
     "noBg": true
   }
 ]
